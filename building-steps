@@ -1,0 +1,4 @@
+1) Partition
+2) Edit config.sh
+3) Create lfs user (adduser.sh)
+4) Run ./prepare.sh
