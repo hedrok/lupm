@@ -2,3 +2,8 @@
 2) Edit config.sh
 3) Create lfs user (adduser.sh)
 4) Run ./prepare.sh
+5) Run ./chapter5.sh
+6) Run ./prechroot.sh
+7) Run ./init-chroot.sh
+8) Run ./create-dirs.sh
+9) Run ./chapter6.sh

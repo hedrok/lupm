@@ -1,0 +1,8 @@
+name: grep
+download: 
+ - link: http://ftp.gnu.org/gnu/grep/
+pass1:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

@@ -1,0 +1,11 @@
+name: Term-ANSIColor
+download: 
+ - link: http://search.cpan.org/~rra/Term-ANSIColor-4.02/ANSIColor.pm
+build:
+ - config:
+    dir: src
+    command: perl Makefile.PL
+ - make:
+    dir: src
+ - install:
+    dir: src

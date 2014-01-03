@@ -1,0 +1,30 @@
+name: binutils
+download: 
+ - link: http://ftp.gnu.org/gnu/binutils
+pass1:
+ - configure: 
+     --prefix=$PREFIX
+     --with-sysroot=$LFS
+     --with-lib-path=$PREFIX/lib
+     --target=$LFS_TGT
+     --disable-nls
+     --disable-werror
+ - make: ~
+ - preinstall: case $(uname -m) in
+                 x86_64) mkdir -pv $PREFIX/lib && ln -svf lib $PREFIX/lib64 ;;
+               esac
+ - install: ~
+pass2:
+ - configure: 
+     vars: CC=$LFS_TGT-gcc
+           AR=$LFS_TGT-ar
+           RANLIB=$LFS_TGT-ranlib
+     params: --prefix=$PREFIX
+             --disable-nls
+             --with-lib-path=$PREFIX/lib
+             --with-sysroot
+ - make: ~
+ - install: ~
+ - postinstall: make -C ld clean
+                make -C ld LIB_PATH=/usr/lib:/lib
+                cp -v ld/ld-new $PREFIX/bin

@@ -1,0 +1,10 @@
+name: texinfo
+download: 
+ - link: http://ftp.gnu.org/gnu/texinfo/
+pass1:
+ - preconfigure: sed -i "s#\.\./\"\$srcdir#\"\$srcdir#" $PACKAGE_SRCDIR/tp/tests/test_scripts/*.sh;
+                 sed -i "s#\.\./\$srcdir#\$srcdir#" $PACKAGE_SRCDIR/tp/tests/run_parser_all.sh
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

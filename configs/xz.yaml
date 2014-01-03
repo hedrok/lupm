@@ -1,0 +1,8 @@
+name: xz
+download: 
+ - link: http://tukaani.org/xz/
+pass1:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

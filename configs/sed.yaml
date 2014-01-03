@@ -1,0 +1,8 @@
+name: sed
+download: 
+ - link: http://ftp.gnu.org/gnu/sed/
+pass1:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

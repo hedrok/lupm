@@ -7,6 +7,6 @@
 ./check-host.pl &&
 ./check-partition.pl $LFS_PARTITION &&
 mkdir -p $LFS/tools $LFS/tools-build &&
-./check-yaml.pl &&
+./check-perl.pl &&
 $SUDO ln -svf $LFS/tools / &&
 echo "Done"

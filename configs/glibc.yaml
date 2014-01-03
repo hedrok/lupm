@@ -1,0 +1,24 @@
+name: glibc
+download: 
+ - link: http://ftp.gnu.org/gnu/glibc/
+pass1:
+ - preconfigure: if [ ! -r /usr/include/rpc/types.h ]; then
+                     su -c 'mkdir -p /usr/include/rpc';
+                     su -c 'cp -v sunrpc/rpc/*.h /usr/include/rpc';
+                 fi
+ - configure: 
+            --prefix=$PREFIX
+            --host=$LFS_TGT
+            --build=$(../glibc-2.17/scripts/config.guess)
+            --disable-profile
+            --enable-kernel=2.6.25
+            --with-headers=$PREFIX/include
+            libc_cv_forced_unwind=yes
+            libc_cv_ctors_header=yes
+            libc_cv_c_cleanup=yes
+ - make: ~
+ - install: ~
+ - postinstall: "echo 'main(){}' > dummy.c;
+                 $LFS_TGT-gcc dummy.c;
+                 readelf -l a.out | grep ': $PREFIX';
+                 rm dummy.c a.out;"

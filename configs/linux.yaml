@@ -1,0 +1,16 @@
+name: linux
+download: 
+ - link: http://www.kernel.org/
+headers:
+ - clean:
+         command: make mrproper;
+         dir: src
+ - check:
+    command: make headers_check;
+    dir: src
+ - temp_install:
+    command: make INSTALL_HDR_PATH=dest headers_install;
+    dir: src
+ - install:
+    command: cp -rv dest/include/* $PREFIX/include;
+    dir: src

@@ -8,9 +8,10 @@ umask 022
 LFS=/mnt/lfs
 LC_ALL=POSIX
 LFS_TGT=$(uname -m)-lfs-linux-gnu
+MAKEFLAGS='-j 6'
 PATH=/tools/bin:/bin:/usr/bin
 alias ls="ls --color"
-export LFS LC_ALL LFS_TGT PATH
+export LFS LC_ALL LFS_TGT PATH MAKEFLAGS
 EOF
 cat > ~/.vimrc << "EOF"
 set switchbuf="useopen,usetab,newtab"

@@ -1,0 +1,9 @@
+name: tar
+download: 
+ - link: http://ftp.gnu.org/gnu/tar/
+pass1:
+ - preconfigure: sed -i -e '/gets is a/d' gnu/stdio.in.h
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

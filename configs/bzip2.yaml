@@ -1,0 +1,9 @@
+name: bzip2
+download: 
+ - link: http://www.bzip.org/downloads.html
+pass1:
+ - make:
+     dir: src
+ - inst: 
+     command: make PREFIX=$PREFIX install
+     dir: src

@@ -1,0 +1,9 @@
+name: gettext
+download: 
+ - link: http://ftp.gnu.org/gnu/gettext/
+pass1:
+ - configure: 
+     command: EMACS="no" $PACKAGE_SRCDIR/gettext-tools/configure --prefix=$PREFIX --disable-shared
+ - gnulib: make -C gnulib-lib
+ - msgfmt: make -C src msgfmt
+ - msgfmtinstall: cp -v src/msgfmt $PREFIX/bin

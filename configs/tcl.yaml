@@ -1,0 +1,14 @@
+name: tcl
+download: 
+ - method: sourceforge
+   suffix: -src
+pass1:
+ - conf: $PACKAGE_SRCDIR/unix/configure --prefix=$PREFIX
+ - make: ~
+ - test:
+     vars: TZ=UTC
+ - install: ~
+ - postinstall: chmod -v u+w $PREFIX/lib/libtcl*.so;
+                make install-private-headers;
+                rm $PREFIX/bin/tclsh;
+                ln -sv `ls $PREFIX/bin/tclsh* | sed -n 's/\(tclsh[0-9.]\+\)$/\1/p' | sort -V | tail -n 1` $PREFIX/bin/tclsh;

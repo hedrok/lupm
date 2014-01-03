@@ -78,7 +78,7 @@ if ( `readlink -f /usr/bin/awk` != '/usr/bin/gawk' ) {
     exit 1;
 }
 
-if (   checkVersion('gcc', '4.7.2')
+if (   checkVersion('g++', '4.7.2')
     || checkVersion('ldd', '2.5.1')
     || checkVersion('grep', '2.5.1a')
     || checkVersion('gzip', '1.3.12')

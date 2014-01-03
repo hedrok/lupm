@@ -1,0 +1,8 @@
+name: gzip
+download: 
+ - link: http://ftp.gnu.org/gnu/gzip/
+pass1:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

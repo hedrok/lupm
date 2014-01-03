@@ -1,0 +1,11 @@
+name: ncurses
+download: 
+ - link: ftp://ftp.gnu.org/gnu/ncurses/
+pass1:
+ - configure: --prefix=$PREFIX 
+              --with-shared
+              --without-debug
+              --without-ada
+              --enable-overwrite
+ - make: ~
+ - install: ~

@@ -1,0 +1,9 @@
+name: file
+download: 
+ - link: ftp://ftp.astron.com/pub/file/
+pass1:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - precheck: sed -i 's!\$T/\$\$!\$\$!g' tests/Makefile
+ - check: ~
+ - install: ~

@@ -1,0 +1,12 @@
+name: expect
+download: 
+ - method: sourceforge
+pass1:
+ - preconfigure: cp -uv configure{,.orig};
+                 sed 's:/usr/local/bin:/bin:' configure.orig > configure;
+ - configure: --prefix=$PREFIX
+              --with-tcl=$PREFIX/lib
+              --with-tclinclude=$PREFIX/include
+ - make: ~
+ - test: ~
+ - install: ~
