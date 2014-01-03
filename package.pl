@@ -5,170 +5,233 @@
 # under sources with package name, during chapter 6 and BLFS it is
 # package user's directory.
 #
-# hierarchy:
-# download/list.html
-# download/version.yaml
-#   filetype=tar.bz2
-#   packagename=binutils
-#   extra:
-#       -name: bla
-#       -link: url
-#       -exportvar: BLA_ARCHIVE
-#       -name: bar
-#       -link: urlbar
-#       -exportvar: BAR_ARCHIVE
-# download/archive.tar.bz2
-# source/ (unarchived source)
-# build/ (build directory)
-# logs/configure.log
-# logs/make.log
-# logs/install.log
-# status.yaml
-# config.yaml
-#name: package-name
-#download:
-#    - name: ~ (default: package-name)
-#      method: wget/wget-folders/git/svn
-#      link: url
-#    - name: ~ (default: package-name)
-#      method: wget/wget-folders/git/svn
-#      link: url
-#    - name: ~ (default: package-name)
-#      method: wget/wget-folders/git/svn
-#      link: url
+# Config file has one download section and arbitrary number of
+# target sections. Default target is "build". Also 'name' field is
+# required as main name of package. Note that one config file can be used
+# by several package users (e. g. binutils for avr/arm/x86).
+#
+# Download section:
+# download:
+#  - link: http://ftp.gnu.org/gnu/gcc
+#    method: wget-folders
+#  - name: mpfr
+#    link: http://www.mpfr.org/mpfr-current/
+#  - name: mpc
+#    link: http://www.multiprecision.org/index.php?prog=mpc&page=download
+#  - name: gmp
+#    link: http://gmplib.org/
+#  - name: tcl
+#    method: sourceforge
+#    suffix = '-src'
+#  - name: bash-patches
+#    method: wget-multiple
+#    link:
+#        eval: print "http://ftp.gnu.org/gnu/bash/bash" . $status->{'downloads'}{'bash'}{'version'} . "-patches/"
+#    re: <a href="\\(bash[0-9]\\+-[0-9]\+\\)">
+#
+# Each item of download section should be a hash. Keys 'link', 'method' and 'name'
+# are recognised. Default method is 'wget', default 'name' is package name.
+# Currently recognised methods:
+#   wget: gets link, searches for latest version of package there, downloads it.
+#   wget-folder: same as wget, but searches for folders of package, than calls
+#                wget method.
+#   sourceforge:
+#                http://sourceforge.net/api/project/name/tcl/json
+#                Get from that link project id, use it to find lates package:
+#                http://sourceforge.net/api/file/index/project-id/10894/json
+#                Get from this link
+#                'http://sourceforge.net/projects/tcl/files/Tcl/8.6.0/tcl-core8.6.0-src.tar.gz/download'
+#                -src?..
+#                 packagesuffix, versionsuffix
+#   wget-multiple: tough one. Really needed for bash patches only right now. It needs not only download all patches,
+#                  it should write list of all patches to $status->{'downloads'}{'name'} On update it should
+#                  check whether there is some changes in file set that match regular expression.
+#
+# Planned methods are: git, svn, fixed
+#
+# Each download exports variable NAME_SRC_DIR, and creates (except wget-multiple)
+# $status->{'downloads'}{'name'}{'srcdir'} - extracted or synced source tree
+# $status->{'downloads'}{'name'}{'version'} - version of sources (like "-3.2.2" in archive case, revision in git/svn)
+# $status->{'downloads'}{'name'}{'archive'} - full path to archive (or none in case of none)
+# $status->{'downloads'}{'name'}{'filetype'} - filetype of archive (or none in case of none)
+#
+# wget-multiple has completely another structure (it is used fot patches currently, so nothing is extracted):
+# $status->{'downloads'}{'name'} is list of hashes with kesy 'filename' and 'path'
 
 # Default 'target' is "build".
 # Any number of arbitrary named targets can be made,
+# Each target consists of list of 'stages'. E.g.:
+# build:
+#    - preconfigure:
+#    - configure: --sysconfdir=/etc/
+#    - premake: any commands run in build tree
+#    - make:
+#          exportvars: CFLAGS="-O3"
+#          target: headers
+#    - test: make test
+#    - fullsample:
+#         vars: VAR=23
+#         command: echo $VAR
+#         params: "'And this'"
+#         dir: src
+#    - preinstall: any commands run after test in build tree
+#    - install: ~
+#    - postinstall: any commands run after install in build tree
+
+# Stages are run in order of list. Each stage must be a hash with unique name,
+# each stage has four params: vars, command, params and dir.
+# Result is like:
+# cd $dir && $vars $command $params;
+# Some stages have default values for dir/command:
+# preconfigure: dir: src
+# configure: command: $PACKAGE_SRCDIR/configure
+# make: command: make
+# install: command: make install
+#
+# dir is either 'src', or 'build'. Any other values will be used literally.
+# 'build' is default for any stage.
+#
+# Each stage is run separately, was it run or not is stored in status file.
+# Also logs/$name.log and logs/$name.sh are created.
 
 # Command line arguments:
-# -d package directory (default - current directory)
-# -c config file (default - config.yaml in package directory, if relative - it will be relative
-#                 to package directory)
-# update [target] - checks for newer version, if available, runs "clean" and target (default build)
-# clean [target] - delete everything for target (default cleans all targets but not downloads)
-# fullclean - delete all files produced by package.pl (all targets and downloads)
-# [target] - build traget (default - download)
+# -d,--directory "package directory" (default - current directory)
+# -c,--config "config file" (default - config.yaml in package directory, if relative - it will be relative
+#                   to package directory)
+# -u,--update checks for newer version, if available, runs "clean" and builds (if no new version available, does nothing)
+# -l,--clean cLean everything for target (if no target cleans all targets but not downloads)
+# -f,--fullclean delete all files produced by package.pl (all targets and downloads, status.yaml)
+# -t,--target "target" - build traget (or clean only this target if -l given)
+# -s,--sources "dir" - directory with all source archives
 
-#build:
-#    method: autoconf/configure/cmake/scons/
-#    preconfigure: any_commands run in source tree
-#    configure: exportvars: CFLAGS="-O3"
-#               command: $PACKAGE_SRCDIR/specialconfigure
-#               params: --sysconfdir=/etc/
-#    premake: any commands run in build tree
-#    make: exportvars: CFLAGS="-O3"
-#          target:
-#    test: any commands run after make in build tree
-#    preinstall: any commands run after test in build tree
-#    install: exportvars: DEST="/usr"
-#    postinstall: any commands run after install in build tree
+# If anything is changed in 'download' section, fullclean is called
+# If anything is changed in some target configuration, 'clean' is called for that target before it is built
 
-#Each download export vars NAME_SRC_DIR, and creates:
-#$status->{'downloads'}{'name'}{'srcdir'} - extracted or synced source tree
-#$status->{'downloads'}{'name'}{'version'} - version of sources (like "-3.2.2" in archive case, revision in git/svn)
-#$status->{'downloads'}{'name'}{'archive'} - full path to archive (or none in case of none)
-#$status->{'downloads'}{'name'}{'filetype'} - filetype of archive (or none in case of none)
-#
-#All other items are pretty simple, but all of them make logs:
-#logs/preconfigure.log
-#logs/configure.log
-#logs/premake.log
-#logs/make.log
-#logs/test.log
-#logs/preinstall.log
-#logs/install.log
-#logs/postinstall.log
-#
-#preconfigure, premake, preinstall and postinstall just run commands and save logs
-#Currently only configure is supported:
-#configure: exportvars $srcdir/configure $params
-#make: exportvars make $target
-#install: exportvars make install
-#
-#So functions:
-#getLatestWgetLink($name, $link, $pattern);
-#extract($filename, $filetype);
-#download($name, $method, $link);
-#runLoggedCommand($dir, $command, $name, $before = '', $after = '');
-#    - download: 
-#         method: wget/git/svn
-#         link: http://ftp.gnu.org/gnu/binutils
-#    - build:
-#         method: autoconf/configure/make/scons/cmake
-#         pre-configure: ~
-#         configure: ~
-#         pre-make: ~
-#         make: ~
-#    - install: ~
-# status:
-#  version: 3.2.1
-#  filetype: tar.bz2 tar.xz2
-#  downloaded:
-#  extracted:
-#  configured:
-#  built:
-#  installed:
-
+use Term::ANSIColor;
 use YAML::XS;
 use Data::Dumper;
-use v5.14;
+use strict;
+use warnings;
+use Cwd;
 
-my $packagedir = $ARGV[0];
-if (!(-d $packagedir)) {
-    print "Package dir '$packagedir' should be directory";
-    exit 1;
-}
+use Getopt::Long qw( :config posix_default bundling no_ignore_case );
 
-my $config = YAML::XS::LoadFile("$packagedir/config.yaml");
-my $status = undef;
-if (-f "$packagedir/status.yaml") {
-    $status = YAML::XS::LoadFile("$packagedir/status.yaml");
-} else {
-    my $hash = "version: ~";
-    $status = YAML::XS::Load($hash);
-}
-
-sub clean { #{{{
-    my $stage = shift(@_);
-    given ($stage) {
-        when ([undef, '', 'download']) {
-            `rm -rf status.pl download source build logs`;
-        }
-        when ('source') {
-            `rm -rf source build logs`;
-        }
-        when ('build') {
-            `rm -rf build logs`;
-        }
-        default {
-            `rm -rf download soure build logs status.pl`
-        }
-    }
-} #}}}
 sub error {
     my $message = shift(@_);
-    print "Error: $message\n";
+    print STDERR colored ['bold red'], "Error: $message\n";
     exit(1);
 }
 sub message {
     my $message = shift(@_);
-    print "$message\n";
+    print colored ['bold yellow'], "$message\n";
 }
 sub status {
     my $message = shift(@_);
-    print "Status: $message\n";
+    print colored ['bold green'], "$message\n";
 }
+
+
+my $packagedir = '';
+my $configfile = '';
+my $update = '';
+my $clean = '';
+my $fullclean = '';
+my $target = '';
+my $prefix = '';
+my $packageDownloadDir = '';
+GetOptions(
+    'directory|d=s' => \$packagedir,
+    'config|c=s' => \$configfile,
+    'update|u' => \$update,
+    'clean|l' => \$clean,
+    'fullclean|f' => \$fullclean,
+    'target|t=s' => \$target,
+    'prefix|p=s' => \$prefix,
+    'sources|s=s' => \$packageDownloadDir
+) or die("usage\n");
+
+
+if (!(-d $packageDownloadDir)) {
+    error("No sources directory provided: '$packageDownloadDir'");
+}
+if (!(-d $prefix)) {
+    error("Prefix directory doesn't exist: '$prefix'");
+}
+if (!$packagedir) {
+    $packagedir = getcwd();
+}
+if (!(-d $packagedir)) {
+    error("Package dir '$packagedir' should be directory");
+}
+my $status = undef;
+if (-f "$packagedir/status.yaml") {
+    $status = YAML::XS::LoadFile("$packagedir/status.yaml");
+} else {
+    $status = YAML::XS::Load('');
+}
+if (!$configfile) {
+    if (exists($status->{'configfile'})) {
+        $configfile = $status->{'configfile'};
+    } else {
+        $configfile = "$packagedir/config.yaml";
+    }
+}
+
+sub fullclean {
+    system("rm -rf $packagedir/status.yaml $packagedir/download $packagedir/source $packagedir/targets") == 0
+       or error("Couldn't full clean");
+    $status = YAML::XS::Load('');
+}
+sub clean {
+    my $target = shift(@_);
+    my $status2;
+    if ($target) {
+        system("rm -rf $packagedir/targets/$target") == 0
+            or error("Couldn't clean target $target");
+        delete $status->{$target};
+        $status2 = $status;
+    } else {
+        system("rm -rf $packagedir/targets") == 0
+            or error("Couldn't clean targets");
+        $status2 = {
+            'downloaded' => $status->{'downloaded'},
+            'downloads' => $status->{'downloads'},
+            '_prevconfig' => $status->{'_prevconfig'}
+        };
+    }
+    YAML::XS::DumpFile("$packagedir/status.yaml", $status2);
+}
+if ($fullclean) {
+    $clean = 1;
+    fullclean();
+    exit(0);
+}
+if ($clean) {
+    print "Cleaning target '$target'\n";
+    clean($target);
+    exit(0);
+}
+if (!$target) {
+    $target = 'build';
+}
+
+my $config = YAML::XS::LoadFile($configfile);
+$status->{'configfile'} = $configfile;
+YAML::XS::DumpFile("$packagedir/status.yaml", $status);
 
 sub fixRelativeLink { #{{{
     my $absoluteLink = shift(@_);
     my $possiblyRelativeLink = shift(@_);
     my $link = $possiblyRelativeLink;
     if ($possiblyRelativeLink !~ m#^[a-z]+://#) {
-        $absoluteLink =~ s#\?.*$##;
-        print "abs1: $absoluteLink\n";
-        $absoluteLink =~ s#/[^/]+\.[a-z]+(\?.*)?$#/#;
-        if ($absoluteLink !~ m#/$#) {
-            $absoluteLink .= '/';
+        if ($possiblyRelativeLink =~ m#^/#) {
+            $absoluteLink =~ s#([a-z]+://[^/]+)/.*#\1#;
+        } else {
+            $absoluteLink =~ s#\?.*$##;
+            $absoluteLink =~ s#/[^/]+\.[a-z]+(\?.*)?$#/#;
+            if ($absoluteLink !~ m#/$#) {
+                $absoluteLink .= '/';
+            }
         }
         $link = $absoluteLink . $possiblyRelativeLink;
     }
@@ -180,6 +243,13 @@ sub testFixRelativeLink {
     my $res = fixRelativeLink($abs, $rel);
     if (!($res eq $rel)) {
         error("Test failed: fixRelativeLink($abs, $rel) = $res\n");
+    }
+    $abs = 'http://thisshouldbe.com/this/should/be/removed.html';
+    $rel = '/relative/to/root.html';
+    my $expected = 'http://thisshouldbe.com/relative/to/root.html';
+    $res = fixRelativeLink($abs, $rel);
+    if (!($res eq $expected)) {
+        error("Test failed: fixRelativeLink($abs, $rel) = $res, expected: $expected\n");
     }
 }
 testFixRelativeLink();
@@ -194,19 +264,53 @@ sub getLinkFolderWget { #{{{
     message("Trying to get $link to $tmpfile\n");
     system("wget -O $tmpfile \"$link\"") == 0
         or error("Couldn't download list from '$link' to '$tmpfile'\n");
-    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-[0-9.]\\+\\/\\?\\)[\\"'].*\$/\\1/p" $tmpfile | sort -V | tail -n 1`;
+    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-?[0-9.]\\+\\/\\?\\)[\\"'].*\$/\\1/p" $tmpfile | sort -V | tail -n 1`;
     $flink =~ s/^\s+//;
     $flink =~ s/\s+$//;
     if ($flink eq '') {
         error("Couldn't get version of $package (folder method).\n");
     }
     $flink = fixRelativeLink($link, $flink);
-    print "got link: $link, flink: $flink\n";
+    message("got link: $link, flink: $flink");
     return $flink;
 } #}}}
-sub getVersionWget { #($link, $package, $downloaddir) #{{{
-    my $link = shift(@_);
+sub getSupportedArchiveFiletypes {
+    return ('tar.xz', 'tar.bz2', 'tar.gz', 'zip');
+}
+sub getLinkSourceForge { #{{{
+#                http://sourceforge.net/api/project/name/tcl/json
+#                Get from that link project id, use it to find lates package:
+#                http://sourceforge.net/api/file/index/project-id/10894/json
+#                Get from this link
+#                'http://sourceforge.net/projects/tcl/files/Tcl/8.6.0/tcl-core8.6.0-src.tar.gz/download'
+#                -src?..
+#                 packagesuffix, versionsuffix
     my $package = shift(@_);
+    my $downloaddir = "$packagedir/download";
+    system("mkdir -p $downloaddir") == 0
+        or error("Couldn't create directory $downloaddir");
+    my $tmpfile = "$downloaddir/$package-project-sf";
+    my $link = "http://sourceforge.net/api/project/name/$package/json";
+    message("Trying to get $link to $tmpfile\n");
+    system("wget -O $tmpfile \"$link\"") == 0
+        or error("Couldn't download list from '$link' to '$tmpfile' (sourceforge)\n");
+    my $id = `sed -n "s/\\"id\\":\\([0-9]\\+\\)/\\1/p" $tmpfile`;
+    $id  =~ s/^\s+//;
+    $id  =~ s/,\s+$//;
+    if (!$id) {
+        error("Couldn't get id of sourceforge package!");
+    }
+    return "http://sourceforge.net/api/file/index/project-id/$id/rss";
+} #}}}
+sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, $afterpackage) #{{{
+    my $params = shift(@_);
+    my $link = $params->{'link'};
+    my $package = $params->{'package'};
+    my $suffix = $params->{'suffix'} // '';
+    my $posturl = $params->{'posturl'} // '';
+    my $prelink = $params->{'prelink'} // "href=[\\\"']";
+    my $postlink = $params->{'postlink'} // "[\\\"']";
+    my $versionPattern = $params->{'versionPattern'} // '-\\?[0-9.]\\+';
     my $downloaddir = "$packagedir/download";
     system("mkdir -p $downloaddir") == 0
         or error("Couldn't create directory $downloaddir");
@@ -216,27 +320,35 @@ sub getVersionWget { #($link, $package, $downloaddir) #{{{
         or error("Couldn't download list from '$link' to '$tmpfile'\n");
     my $packageFilename = '';
     my $filetype = '';
-    my @filetypes = ('tar.xz', 'tar.bz2', 'tar.gz', 'zip');
+    my @filetypes = getSupportedArchiveFiletypes();
+    my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
     my $downloadLink = '';
-    foreach (@filetypes) {
-        $downloadLink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-[0-9.]\\+\.$_\\)[\\"'].*\$/\\1/p" $tmpfile | sort -V | tail -n 1`;
-        $downloadLink  =~ s/^\s+//;
-        $downloadLink  =~ s/\s+$//;
-        if (!($downloadLink  eq "" )) {
-            $filetype = $_;
-            last;
-        }
-    }
-    if ($filetype eq '') {
+#print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package-\\?[0-9.]\\+$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p\" $tmpfile | sort -V | tail -n 1\n";
+    $downloadLink =`sed -n "s/^.*$prelink\\([^'\\"]*$package$versionPattern$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p" $tmpfile | sort -V | tail -n 1`;
+    $downloadLink  =~ s/^\s+//;
+    $downloadLink  =~ s/\s+$//;
+    if ($downloadLink  eq "") {
         error("Couldn't get version of $package.\n");
     }
     $downloadLink = fixRelativeLink($link, $downloadLink);
-    $downloadLink =~ /$package([0-9.-]*)\.$filetype/;
-    my $version = $1;
-    $packageFilename = "$package$version.$filetype";
-
-    return ($packageFilename, $filetype, $downloadLink, $version);
+    $params->{'link'} = $downloadLink;
+    return getVersionByLink($params);
 } #}}}
+sub getVersionByLink {
+    my $params = shift(@_);
+    my $link = $params->{'link'};
+    my $package = $params->{'package'};
+    my $suffix = $params->{'suffix'} // '';
+    my @filetypes = getSupportedArchiveFiletypes();
+    my $filetypesRe = join("|", @filetypes);
+    print "filetypesRe: $filetypesRe\n";
+    $link =~ /$package([0-9.-]*)$suffix\.($filetypesRe)/;
+    my $version = $1;
+    my $filetype = $2;
+    my $packageFilename = "$package$version$suffix.$filetype";
+
+    return ($packageFilename, $filetype, $link, $version);
+}
 sub extract { #($archivename, $filetype, $srcdir) #{{{
     my $archivename = shift(@_);
     my $filetype = shift(@_);
@@ -257,95 +369,183 @@ sub extract { #($archivename, $filetype, $srcdir) #{{{
         error("Unknown filetype: $filetype");
     }
 }#}}}
+sub getMultipleWget { #($name, $link, $re);
+    my $name = shift(@_);
+    my $link = shift(@_);
+    my $re = shift(@_);
 
-if (!exists $status->{'downloaded'}) {
+    my $downloaddir = "$packagedir/download";
+    system("mkdir -p $downloaddir") == 0
+        or error("Couldn't create directory $downloaddir");
+    my $tmpfile = "$downloaddir/$name-mult-list";
+    message("Trying to get $link to $tmpfile\n");
+    system("wget -O $tmpfile \"$link\"") == 0
+        or error("Couldn't download list from '$link' to '$tmpfile'\n");
+    my $filenames = '';
+
+#    print "sed -n \"s/^.*$re.*\$/\\1/p\" $tmpfile | sort -V\n";
+    my $downloadLink =`sed -n "s/^.*$re.*\$/\\1/p" $tmpfile | sort -V`;
+    my @links = split /\s+/, $downloadLink;
+    my @resultList;
+
+    for (@links) {
+        /([^\/]*)$/;
+        my $filename = $1;
+        my $path = "$packageDownloadDir/$filename";
+        my $l = fixRelativeLink($link, $_);
+        my $h = {
+            'filename' => $filename,
+            'path' => $path,
+            'link' => $l
+        };
+        push(@resultList, $h);
+    }
+    return \@resultList;
+}
+
+if (!(   ($status->{'_prevconfig'}{'download'} ~~ $config->{'download'})
+      && ($config->{'download'} ~~ $status->{'_prevconfig'}{'download'})
+   ))
+{
+    message("Something changed in download configuration - making fullclean.");
+    fullclean();
+    $status->{'_prevconfig'}{'download'} = $config->{'download'};
+    YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+}
+if (!exists $status->{'downloaded'} || $update) {
+    my $somethingnew = 0;
     my $packagename = $config->{'name'};
-    status("Trying to download $packagename");
     foreach (@{$config->{'download'}}) {
-        my $name = $_->{'name'};
+        my $name = $_->{'name'} // $packagename;
         my $link = $_->{'link'};
-        my $method = $_->{'method'};
+        if (ref($link)) {
+            if (!$link->{'eval'}) {
+                error ("Link can be hash with eval key or string.");
+            }
+            $link = eval($link->{'eval'});
+        }
+        my $method = $_->{'method'} // 'wget';
+        my $suffix = $_->{'suffix'} // '';
+        my $posturl = '';
         my $archivename = undef;
         my $filetype = undef;
         my $srcdir = undef;
         my $version = undef;
-        if (!$name) {
-            $name = $packagename;
+        my $wgetParams = {
+            'link' => $link,
+            'package' => $name,
+            'suffix' => ($_->{'suffix'} // '')
+        };
+        if (exists($_->{'versionPattern'})) {
+            $wgetParams->{'versionPattern'} = $_->{'versionPattern'};
         }
-        if (!$method) {
-            $method = 'wget';
-        }
-        if (!$link) {
-            error("No link provided for download of $name");
-        }
-        if ($status->{'downloads'}{$name}{'downloaded'} eq '1') {
+        if (exists($status->{'downloads'}{$name}{'downloaded'}) && ($status->{'downloads'}{$name}{'downloaded'} eq '1') && !$update) {
             next;
         }
 
-        print "Method: $method\n";
         if ($method eq 'wget-folder') {
-            print "Using wget-folder\n";
-            $link = getLinkFolderWget($link, $name);
             if (!$link) {
+                error("No link provided for download of $name (wget-folder)");
+            }
+            $wgetParams->{'link'} = getLinkFolderWget($link, $name);
+            if (!$wgetParams->{'link'}) {
                 error("Couldn't get last version from folder $link, $name");
             }
-            status("Latest version link: $link");
+            message("Latest version link: $link");
             $method = 'wget';
         }
-        if ($method eq 'wget') {
-            print "Using wget\n";
+        if ($method eq 'sourceforge') {
+            $wgetParams->{'link'} = getLinkSourceForge($name);
+            if (!$wgetParams->{'link'}) {
+                error("Couldn't get last version from sourceforge $link, $name");
+            }
+            $wgetParams->{'posturl'} = '\\/download';
+            $wgetParams->{'prelink'} = '<link>';
+            $wgetParams->{'postlink'} = '<\\/link>';
+            $method = 'wget';
+        }
+        if ($method eq 'wget' || $method eq 'fixed') {
+            if (!$wgetParams->{'link'}) {
+                error("No link provided for download of $name (wget)");
+            }
             my $packageFilename;
-            ($packageFilename, $filetype, $link, $version) = getVersionWget($link, $name);
+            if ($method eq 'wget') {
+                ($packageFilename, $filetype, $link, $version) = getVersionWget($wgetParams);
+            } elsif($method eq 'fixed') {
+                ($packageFilename, $filetype, $link, $version) = getVersionByLink($wgetParams);
+            }
             if (!$packageFilename) {
                 error("Error getting version of $name by link $link.");
             }
-            $archivename = "$packagedir/download/$packageFilename";
+            if (!exists($status->{'downloads'}{$name}{'version'}) || !($version eq $status->{'downloads'}{$name}{'version'})) {
+                $somethingnew = 1;
+            } else {
+                message("No new version for $name. Last version: $version");
+                next;
+            }
+            $archivename = "$packageDownloadDir/$packageFilename";
             system("wget \"$link\" -c -O \"$archivename\"") == 0
                 or error("Couldn't download $link (package: $name).\n");
             $srcdir = "$packagedir/source";
-            message("Downloaded $archivename");
+            status("Downloaded $archivename");
             extract($archivename, $filetype, $srcdir);
-            message("Extracted $archivename");
+            status("Extracted $archivename");
+            $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$name$version";
+            $status->{'downloads'}{$name}{'version'} = $version;
+            $status->{'downloads'}{$name}{'archive'} = $archivename;
+            $status->{'downloads'}{$name}{'filetype'} = $filetype;
+            $status->{'downloads'}{$name}{'downloaded'} = '1';
+        } elsif ($method eq 'wget-multiple') {
+            my $re = $_->{'re'};
+            my $list = getMultipleWget($name, $link, $re);
+            if (!exists($status->{'downloads'}{$name}{'list'}) || !($list ~~ $status->{'downloads'}{$name}{'list'} && $status->{'downloads'}{$name}{'list'})) {
+                $somethingnew = 1;
+            } else {
+                message("No new files for $name.");
+            }
+            for (@{$list}) {
+                system("wget \"$_->{'link'}\" -c -O \"$_->{'path'}\"") == 0
+                    or error("Couldn't download $_->{'link'} to $_->{'path'} (multiple: $name).\n");
+            }
+            $status->{'downloads'}{$name}{'downloaded'} = '1';
+            $status->{'downloads'}{$name}{'list'} = $list;
+            status("Downloaded multiple $name");
         } else {
-            error("Unsupported download method $method");
+            error("Unsupported download method '$method'");
         }
-        $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$name$version";
-        $status->{'downloads'}{$name}{'version'} = $version;
-        $status->{'downloads'}{$name}{'archive'} = $archivename;
-        $status->{'downloads'}{$name}{'filetype'} = $filetype;
-        $status->{'downloads'}{$name}{'downloaded'} = '1';
         YAML::XS::DumpFile("$packagedir/status.yaml", $status);
     }
-    status("Downloaded $packagename successfully\n");
     $status->{'downloaded'} = 1;
     YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+    if ($somethingnew) {
+        status("Downloaded $packagename successfully\n");
+        clean();
+    } elsif($update) {
+        status("Nothing new, everything is up to date");
+        exit(0);
+    }
 }
 sub exportDownloadVariables {
     foreach my $packagename (keys %{$status->{'downloads'}}) {
-        my $varname = "\U${packagename}_SRC_DIR";
-        $ENV{$varname} = $status->{'downloads'}{$packagename}{'srcdir'};
-        if ($packagename == $config->{'name'}) {
-            $ENV{'PACKAGE_SRCDIR'} = $status->{'downloads'}{$packagename}{'srcdir'};
+        if (exists($status->{'downloads'}{$packagename}{'list'})) {
+            my @values = ();
+            foreach (@{$status->{'downloads'}{$packagename}{'list'}}) {
+                push(@values, "$_->{'path'}");
+            }
+            $ENV{"\U${packagename}_FILENAMES"} = join(' ', @values);
+        } else {
+            my $varname = "\U${packagename}_SRC_DIR";
+            $ENV{$varname} = $status->{'downloads'}{$packagename}{'srcdir'};
+            if ($packagename eq $config->{'name'}) {
+                $ENV{'PACKAGE_SRCDIR'} = $status->{'downloads'}{$packagename}{'srcdir'};
+            }
         }
     }
 }
 exportDownloadVariables();
+$ENV{'PREFIX'} = $prefix;
 
-#preconfigure, premake, preinstall and postinstall just run commands and save logs
-#Currently only configure is supported:
-#configure: exportvars $srcdir/configure $params
-#make: exportvars make $target
-#install: exportvars make install
-
-my @stagesList = ('autoconf',
-           'preconfigure',
-           'configure',
-           'premake',
-           'make',
-           'test',
-           'install',
-           'postinstall');
-my $stagesCommands = {
+my $stageDefaultParams = {
     'autoconf' => {
         'dir' => 'src',
         'command' => '$PACKAGE_SRCDIR/autoconf'
@@ -356,59 +556,65 @@ my $stagesCommands = {
     'configure' => {
         'command' => '$PACKAGE_SRCDIR/configure'
     },
-    'premake' => {},
     'make' => {
         'command' => 'make'
     },
-    'test' => {},
+    'test' => {
+        'command' => 'make test'
+    },
     'install' => {
         'command' => 'make install'
     },
-    'postinstall' => {}
+    'check' => {
+        'command' => 'make check'
+    },
 };
 
 sub processStage {
     my $name = shift(@_);
     my $conf = shift(@_);
-    my $stage = shift(@_);
-    my $command = '';
-    # possible stage keys:
-    # dir - in what directory to run: src/build
-    # command
 
-    if ($status->{$name}) {
+    if ($status->{$target}{$name}) {
+        message("Phase $name is already done");
         return;
     }
-    print "Running phase $name\n";
+    my $command = '';
+
+    my @params = ('dir', 'vars', 'command', 'params');
+    my %paramValues = ();
+    for (@params) {
+        if (ref($conf) && exists($conf->{$_})) {
+            $paramValues{$_} = $conf->{$_};
+        } elsif (exists($stageDefaultParams->{$name}{$_})) {
+            $paramValues{$_} = $stageDefaultParams->{$name}{$_};
+        } else {
+            $paramValues{$_} = '';
+        }
+    }
+    if ($paramValues{'dir'} eq '') {
+        $paramValues{'dir'} = 'build';
+    }
+
+    message("Running phase $name");
 
     my $srcdir = $status->{'downloads'}{$config->{'name'}}{'srcdir'};
-    my $builddir = "$packagedir/build";
-    my $logdir = "$packagedir/logs";
+    my $builddir = "$packagedir/targets/$target";
+    my $logdir = "$packagedir/targets/$target-logs";
     my $logfile = "$logdir/$name.log";
     system("mkdir -p $logdir") == 0
         or error("Couldn't create directory $logdir");
 
     my $dir = '';
-    
-    if ($stage->{'dir'} eq 'src') {
+    if ($paramValues{'dir'} eq 'src') {
         $dir = $srcdir;
-    } else {
+    } elsif ($paramValues{'dir'} eq 'build') {
         $dir = $builddir;
         system("mkdir -p $builddir") == 0
             or error("Couldn't create directory $builddir");
     }
     chdir($dir);
-    if ($stage->{'command'}) {
-        $command = $stage->{'command'};
-    }
-    if (ref($conf)) {
-        if ($conf->{'exportvars'}) {
-            $command = $conf->{'exportvars'} . " $command";
-        }
-        if ($conf->{'params'}) {
-            $command .= " $conf->{'params'}";
-        }
-    } else {
+    $command = "$paramValues{'vars'} $paramValues{'command'} $paramValues{'params'}";
+    if (!ref($conf) && $conf) {
         $command .= " $conf";
     }
 
@@ -417,9 +623,9 @@ sub processStage {
         or error("Couldn't create $scriptfile\n");
     print SCRIPT "#!/bin/bash\n";
     print SCRIPT "set -e\n";
-    print SCRIPT "{\n";
+    print SCRIPT "{ time {\n";
     print SCRIPT "$command\n";
-    print SCRIPT "} 2>&1 | tee $logfile\n";
+    print SCRIPT "}; } 2>&1 | tee $logfile\n";
     print SCRIPT "exit \${PIPESTATUS[0]}\n";
     close SCRIPT;
     system("chmod +x $scriptfile") == 0
@@ -428,58 +634,24 @@ sub processStage {
     system("$scriptfile") == 0
         or error("Failure running $name phase");
 
-    $status->{$name} = '1';
+    status("Phase $name is done");
+    $status->{$target}{$name} = '1';
     YAML::XS::DumpFile("$packagedir/status.yaml", $status);
 }
 
-foreach (@stagesList) {
-    if (exists $config->{'build'}{$_}) {
-        processStage($_, $config->{'build'}{$_}, $stagesCommands->{$_});
-    }
-}
-=comment
-
-#premake: any commands run in build tree
-#    make: exportvars: CFLAGS="-O3"
-#          target:
-#    test: any commands run after make in build tree
-#    preinstall: any commands run after test in build tree
-#    install: exportvars: DEST="/usr"
-#    postinstall: any commands run after install in build tree
-if (!exists $status->{'configured'}) {
-    clean('build');
-    if ($config->{'build'}{'method'} != 'configure') {
-        die("Unkown build method: " . $config->{'build'}{'method'});
-    }
-    my $builddir = "$packagedir/build";
-    my $logdir = "$packagedir/logs";
-    system("mkdir -p $builddir") == 0
-        or die("Couldn't create build directory '$builddir'\n");
-    system("mkdir -p $logdir") == 0
-        or die("Couldn't create build directory '$logdir'\n");
-    my $logfile = "$logdir/configure.log";
-
-    my $configure = $config->{'build'}{'configure'};
-    my $configurevars = $config->{'build'}{'configvars'};
-    my $prefix = $config->{'build'}{'prefix'};
-    my $foldername = $config->{'name'} . $status->{'version'};
-    if ($prefix) {
-        $configurevars = $configurevars . " --prefix=$prefix";
-    }
-
-    chdir("$packagedir/source/$foldername");
-    my $exportvars = $status->{'exportvars'};
-    my $preconfigure = $exportvars . $config->{'build'}{'preconfigure'};
-    if ($preconfigure) {
-        system($preconfigure) == 0
-            or die("Failed to run preconfigure command: $preconfigure");
-    }
-
-    chdir($builddir);
-    system("$configurevars ../source/$foldername/configure $configure 2>&1 | tee $logfile ") == 0
-        or die ("Configure failed.\n");
-    $status->{'configured'} = '1';
+if (!(   ($status->{'_prevconfig'}{$target} ~~ $config->{$target})
+      && ($config->{$target} ~~ $status->{'_prevconfig'}{$target})
+   ))
+{
+    message("Something changed in '$target' configuration - making clean.");
+    clean($target);
+    $status->{'_prevconfig'}{$target} = $config->{$target};
     YAML::XS::DumpFile("$packagedir/status.yaml", $status);
-} else {
-    print "Configured\n";
+}
+foreach (@{$config->{$target}}) {
+    my $key;
+    my $value;
+    while (($key, $value) = each %{$_}) {
+        processStage($key, $value);
+    }
 }
