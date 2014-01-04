@@ -264,7 +264,7 @@ sub getLinkFolderWget { #{{{
     message("Trying to get $link to $tmpfile\n");
     system("wget -O $tmpfile \"$link\"") == 0
         or error("Couldn't download list from '$link' to '$tmpfile'\n");
-    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-?[0-9.]\\+\\/\\?\\)[\\"'].*\$/\\1/p" $tmpfile | sort -V | tail -n 1`;
+    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-?[0-9.]\\+\\/\\?\\)[\\"'].*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
     $flink =~ s/^\s+//;
     $flink =~ s/\s+$//;
     if ($flink eq '') {
@@ -324,7 +324,7 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
     my $downloadLink = '';
 #print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package-\\?[0-9.]\\+$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p\" $tmpfile | sort -V | tail -n 1\n";
-    $downloadLink =`sed -n "s/^.*$prelink\\([^'\\"]*$package$versionPattern$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p" $tmpfile | sort -V | tail -n 1`;
+    $downloadLink =`sed -n "s/^.*$prelink\\([^'\\"]*$package$versionPattern$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
     $downloadLink  =~ s/^\s+//;
     $downloadLink  =~ s/\s+$//;
     if ($downloadLink  eq "") {
@@ -342,7 +342,7 @@ sub getVersionByLink {
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = join("|", @filetypes);
     print "filetypesRe: $filetypesRe\n";
-    $link =~ /$package([0-9.-]*)$suffix\.($filetypesRe)/;
+    $link =~ /$package([0-9.-]*[a-z]?)$suffix\.($filetypesRe)/;
     my $version = $1;
     my $filetype = $2;
     my $packageFilename = "$package$version$suffix.$filetype";

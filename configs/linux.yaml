@@ -3,8 +3,8 @@ download:
  - link: http://www.kernel.org/
 headers:
  - clean:
-         command: make mrproper;
-         dir: src
+    command: make mrproper;
+    dir: src
  - check:
     command: make headers_check;
     dir: src

@@ -57,3 +57,7 @@ touch /var/log/{btmp,lastlog,wtmp}
 chgrp -v utmp /var/log/lastlog
 chmod -v 664  /var/log/lastlog
 chmod -v 600  /var/log/btmp
+
+# for package user management
+ln -svf /usr/src/scripts/useradd.pl /tools/bin/useradd
+ln -svf /usr/src/scripts/groupadd.pl /tools/bin/groupadd

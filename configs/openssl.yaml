@@ -1,0 +1,16 @@
+name: openssl
+download: 
+ - link: http://www.openssl.org/source/ 
+   versionPattern: -\\?[0-9.]\\+[a-z]\\?
+pass1:
+ - configure:
+    command: $PACKAGE_SRCDIR/config
+    params: --prefix=$PREFIX --openssldir=$PREFIX/etc/ssl --libdir=lib shared zlib-dynamic
+    vars: MAKEFLAGS=''
+    dir: src
+ - make:
+    vars: MAKEFLAGS=''
+    dir: src
+ - install:
+    vars: MAKEFLAGS=''
+    dir: src

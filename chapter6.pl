@@ -11,6 +11,7 @@
 #   installgroups: install
 #   description: something about package
 #   prefix: /usr
+#   target: build
 #   configname: ~
 #   root-before: ~
 #   root-after: ~
@@ -59,20 +60,68 @@ if (-f$statusFilename) {
 }
 
 sub buildPackage {
-    my $configname = shift(@_);
-    my $target = shift(@_);
-    if (exists $status->{"$configname-$target"} && $status->{"$configname-$target"} == 1) {
-        message("$configname $target already done");
+    my $packageconfigname = shift(@_);
+    if (exists $status->{"$packageconfigname"} && $status->{"$packageconfigname"} == 1) {
+        message("$packageconfigname already done");
         return;
     }
-    system("mkdir -p $builddir/$dirname") == 0
-        or error("Couldn't create directory $builddir/$dirname");
-    print("time $scriptdir/package.pl -d $builddir/$dirname -c $scriptdir/configs/${configname}.yaml -t $target -s /usr/src/downloads\n");
-    system("time $scriptdir/package.pl -d $builddir/$dirname -c $scriptdir/configs/${configname}.yaml -t $target -s /usr/src/downloads") == 0
-        or error("Failed to build package $dirname-$configname-$target");
-    status("$dirname($target): done");
-    $status->{"$dirname-$configname-$target"} = 1;
+    my $packageconfpath = "$scriptdir/packages/$packageconfigname.yaml";
+    if (not -f $packageconfpath) {
+        $packageconfpath = "$scriptdir/configs/$packageconfigname.yaml";
+        if (not -f $packageconfpath) {
+            error "Could not load package config: $packageconfpath. No such file.";
+        }
+    }
+    my $packageconfig = YAML::XS::LoadFile($packageconfpath);
+    my $configpath = $packageconfpath;
+    if (exists($packageconfig->{'configname'})) {
+        $configpath = "$scriptdir/configs/$packageconfig->{'configname'}.yaml";
+    }
+    if (not -f$configpath) {
+        error "Config file does not exist: $configpath";
+    }
+    my $installgroups = 'install';
+    my $description = '';
+    my $prefix = '/usr';
+    my $target = 'build';
+    my $root_before = '';
+    my $root_after = '';
+
+    if (exists($packageconfig->{'installgroups'})) {
+        $installgroups = $packageconfig->{'installgroups'};
+    }
+    if (exists($packageconfig->{'description'})) {
+        $description = $packageconfig->{'description'};
+    }
+    if (exists($packageconfig->{'prefix'})) {
+        $prefix = $packageconfig->{'prefix'};
+    }
+    if (exists($packageconfig->{'target'})) {
+        $target = $packageconfig->{'target'};
+    }
+
+    print ("useradd -b $builddir -c '$description' -g '$packageconfigname' -G '$installgroups' '$packageconfigname'\n");
+    system("useradd -b $builddir -c '$description' -g '$packageconfigname' -G '$installgroups' '$packageconfigname'");
+    if ($? == -1) {
+        error ("Could not create user $packageconfigname: " + ($? & 127));
+    }
+    if (($? & 127) != 0 && ($? & 127) != 9) {
+        error ("Could not create user $packageconfigname: " + ($? & 127));
+    }
+
+    $ENV{'PREFIX'} = $prefix;
+    system("mkdir -vp $builddir/$packageconfigname") == 0
+        or error ("Could not create user home directory $builddir/$packageconfigname");
+    system("chown -R $packageconfigname:$packageconfigname $builddir/$packageconfigname") == 0
+        or error ("Could not chown home directory");
+
+    print("su -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname\n");
+    system("su -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname") == 0
+        or error("Failed to build package $packageconfigname");
+
+    status("$packageconfigname: done");
+    $status->{"$packageconfigname"} = 1;
     YAML::XS::DumpFile($statusFilename, $status);
 }
 
-buildPackage('linux', 'headers');
+buildPackage('linux-headers');

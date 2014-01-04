@@ -1,0 +1,13 @@
+name: zlib
+download: 
+ - link: http://www.zlib.net/
+build:
+ - configure: 
+    params: --prefix=$PREFIX
+    dir: src
+ - make:
+    dir: src
+ - check:
+    dir: src
+ - install:
+    dir: src
