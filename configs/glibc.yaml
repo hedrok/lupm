@@ -22,3 +22,65 @@ pass1:
                  $LFS_TGT-gcc dummy.c;
                  readelf -l a.out | grep ': $PREFIX';
                  rm dummy.c a.out;"
+build:
+ - configure:
+            --prefix=$PREFIX
+            --disable-profile
+            --enable-kernel=2.6.32
+            --libexecdir=$PREFIX/lib/glibc
+ - make: ~
+ - check: ~
+ - preinstall: touch /etc/ld.so.conf
+ - install: ~
+ - postinstall: cp -v $PACKAGE_SRCDIR/sunrpc/rpc/*.h $PREFIX/include/rpc;
+                cp -v $PACKAGE_SRCDIR/sunrpc/rpcsvc/*.h $PREFIX/include/rpcsvc;
+                cp -v $PACKAGE_SRCDIR/nis/rpcsvc/*.h $PREFIX/include/rpcsvc;
+ - locales: mkdir -pv /usr/lib/locale;
+            localedef -i cs_CZ -f UTF-8 cs_CZ.UTF-8;
+            localedef -i de_DE -f ISO-8859-1 de_DE;
+            localedef -i de_DE@euro -f ISO-8859-15 de_DE@euro;
+            localedef -i de_DE -f UTF-8 de_DE.UTF-8;
+            localedef -i en_GB -f UTF-8 en_GB.UTF-8;
+            localedef -i en_HK -f ISO-8859-1 en_HK;
+            localedef -i en_PH -f ISO-8859-1 en_PH;
+            localedef -i en_US -f ISO-8859-1 en_US;
+            localedef -i en_US -f UTF-8 en_US.UTF-8;
+            localedef -i es_MX -f ISO-8859-1 es_MX;
+            localedef -i fa_IR -f UTF-8 fa_IR;
+            localedef -i fr_FR -f ISO-8859-1 fr_FR;
+            localedef -i fr_FR@euro -f ISO-8859-15 fr_FR@euro;
+            localedef -i fr_FR -f UTF-8 fr_FR.UTF-8;
+            localedef -i it_IT -f ISO-8859-1 it_IT;
+            localedef -i it_IT -f UTF-8 it_IT.UTF-8;
+            localedef -i ja_JP -f EUC-JP ja_JP;
+            localedef -i ru_RU -f KOI8-R ru_RU.KOI8-R;
+            localedef -i ru_RU -f UTF-8 ru_RU.UTF-8;
+            localedef -i tr_TR -f UTF-8 tr_TR.UTF-8;
+            localedef -i zh_CN -f GB18030 zh_CN.GB18030;
+ - nsswitch: |
+             cat > /etc/nsswitch.conf << "EOF"
+             # Begin /etc/nsswitch.conf
+             
+             passwd: files
+             group: files
+             shadow: files
+             
+             hosts: files dns
+             networks: files
+             
+             protocols: files
+             services: files
+             ethers: files
+             rpc: files
+             
+             # End /etc/nsswitch.conf
+             EOF
+ - ld: |
+       cat > /etc/ld.so.conf << "EOF"
+       # Begin /etc/ld.so.conf
+       /usr/local/lib
+       /opt/lib
+       
+       include /etc/ld.so.conf.d/*.conf
+       EOF
+       mkdir -pv /etc/ld.so.conf.d
