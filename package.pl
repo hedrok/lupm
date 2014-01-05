@@ -484,8 +484,10 @@ if (!exists $status->{'downloaded'} || $update) {
                 next;
             }
             $archivename = "$packageDownloadDir/$packageFilename";
-            system("wget \"$link\" -c -O \"$archivename\"") == 0
-                or error("Couldn't download $link (package: $name).\n");
+            if (not -f$archivename) {
+                system("wget \"$link\" -c -O \"$archivename\"") == 0
+                    or error("Couldn't download $link (package: $name).\n");
+            }
             $srcdir = "$packagedir/source";
             status("Downloaded $archivename");
             extract($archivename, $filetype, $srcdir);

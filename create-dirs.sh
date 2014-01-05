@@ -61,3 +61,4 @@ chmod -v 600  /var/log/btmp
 # for package user management
 ln -svf /usr/src/scripts/useradd.pl /tools/bin/useradd
 ln -svf /usr/src/scripts/groupadd.pl /tools/bin/groupadd
+ln -svf /tools/lib/ld-2.17.so ld-linux-x86-64.so.2

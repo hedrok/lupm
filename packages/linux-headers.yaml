@@ -2,4 +2,4 @@ name: linux-headers
 description: Linux API headers
 target: headers
 configname: linux
-prefix: /tmp/test
+prefix: /usr
