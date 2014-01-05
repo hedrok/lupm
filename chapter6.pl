@@ -59,6 +59,19 @@ if (-f$statusFilename) {
     $status = YAML::XS::Load('');
 }
 
+sub addGroup {
+    my $group = shift(@_);
+
+    print ("groupadd '$group'\n");
+    system("groupadd '$group'");
+    if ($? == -1) {
+        error ("Could not create group $group: " + ($? & 127));
+    }
+    if (($? & 127) != 0 && ($? & 127) != 9) {
+        error ("Could not create group $group: " + ($? & 127));
+    }
+}
+
 sub buildPackage {
     my $packageconfigname = shift(@_);
     if (exists $status->{"$packageconfigname"} && $status->{"$packageconfigname"} == 1) {
@@ -98,6 +111,12 @@ sub buildPackage {
     }
     if (exists($packageconfig->{'target'})) {
         $target = $packageconfig->{'target'};
+    }
+
+    addGroup($packageconfigname);
+    my @grouplist = split(',', $installgroups);
+    for (@grouplist) {
+        addGroup($_);
     }
 
     print ("useradd -b $builddir -c '$description' -g '$packageconfigname' -G '$installgroups' '$packageconfigname'\n");

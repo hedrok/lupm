@@ -18,7 +18,6 @@ my $lastline = '';
 open (GROUPREAD, "</etc/group") or exit 10;
 while (<GROUPREAD>)
 {
-    print "group: $group, line: $_";
     if (/^$group:/) {
         exit 9;
     }

@@ -31,6 +31,32 @@ sub getGroupId {
     close (GROUPREAD);
     return 0;
 }
+sub addUserToGroup {
+    my $id = shift(@_);
+    my $user = shift(@_);
+
+    my $lastline = '';
+    open (GROUPREAD, "</etc/group")
+        or exit 10;
+    while (<GROUPREAD>)
+    {
+        if (/^[^:]+:x:$id:/) {
+            close (GROUPREAD);
+            if (/:$/) {
+                print "sed -i 's/^\\([^:]\\+:x:$id:\\)/\\1$user/' /etc/group\n";
+                system("sed -i 's/^\\([^:]\\+:x:$id:\\)/\\1$user/' /etc/group") == 0
+                    or die("add user $user to group $id failed (:)")
+            } else {
+                print "sed -i 's/^\\([^:]\\+:x:$id:.*\\)/\\1,$user/' /etc/group\n";
+                system("sed -i 's/^\\([^:]\\+:x:$id:.*\\)/\\1,$user/' /etc/group") == 0
+                    or die("add user $user to group $id failed (,)")
+            }
+            return 1
+        }
+    }
+    close (GROUPREAD);
+    return 0;
+}
 
 use Getopt::Long qw( :config posix_default bundling no_ignore_case );
 
@@ -88,8 +114,22 @@ my $uid = $lastid + 1;
 if ($uid < $minuid) {
     $uid = $minuid;
 }
+my @grouplist = split(',', $othergroups);
+my @groupids;
+for (@grouplist) {
+    my $i = getGroupId($_);
+    if ($i == 0) {
+        print "Group $_ does not exist\n";
+        exit 10;
+    }
+    push(@groupids, $i)
+}
 system("echo '$username:x:$uid:$maingid:$comment:$basedir/$username:/bin/bash' >> /etc/passwd") == 0
     or exit 10;
+
+for (@groupids) {
+    addUserToGroup($_, $username);
+}
 
 exit 0;
 
