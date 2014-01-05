@@ -1,0 +1,1 @@
+http://www.linuxfromscratch.org/hints/downloads/files/ATTACHMENTS/more_control_and_pkg_man/more_control_helpers.tar.bz2
