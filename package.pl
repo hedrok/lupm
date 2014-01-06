@@ -538,6 +538,8 @@ sub exportDownloadVariables {
         } else {
             my $varname = "\U${packagename}_SRC_DIR";
             $ENV{$varname} = $status->{'downloads'}{$packagename}{'srcdir'};
+            my $varnamearch = "\U${packagename}_SRC_ARCHIVE";
+            $ENV{$varnamearch} = $status->{'downloads'}{$packagename}{'archive'};
             if ($packagename eq $config->{'name'}) {
                 $ENV{'PACKAGE_SRCDIR'} = $status->{'downloads'}{$packagename}{'srcdir'};
             }

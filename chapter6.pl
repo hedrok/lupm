@@ -146,3 +146,4 @@ sub buildPackage {
 buildPackage('linux-headers');
 buildPackage('man-pages');
 buildPackage('glibc');
+buildPackage('tzdata');
