@@ -1,0 +1,45 @@
+name: adjusttoolchain
+description: Adjust toolchain in the beginning of Chapter6 of LFS
+download: ~
+target: check-toolchain
+
+root-before: 
+ - adjust: |
+           mv -v /tools/bin/{ld,ld-old};
+           mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old};
+           mv -v /tools/bin/{ld-new,ld};
+           ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld;
+           gcc -dumpspecs | sed -e 's@/tools@@g'                                    \
+                                -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+                                -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+                                `dirname $(gcc --print-libgcc-file-name)`/specs
+
+check-toolchain:
+ - compile: |
+            echo 'main(){}' > dummy.c;
+            cc dummy.c -v -Wl,--verbose &> dummy.log;
+ - checks: |
+           readelf -l a.out | grep ': /lib\(64\)\?/ld-linux[^/ ]\+.so.[^/ ]\+'
+           #[Requesting program interpreter: /lib/ld-linux.so.2]
+           grep -o '/usr/lib.*/crt1.*succeeded' dummy.log
+           grep -o '/usr/lib.*/crti.*succeeded' dummy.log
+           grep -o '/usr/lib.*/crtn.*succeeded' dummy.log
+           #/usr/lib/crt1.o succeeded
+           #/usr/lib/crti.o succeeded
+           #/usr/lib/crtn.o succeeded
+           grep -B1 '^ /usr/include' dummy.log > got.txt
+           echo -e "#include <...> search starts here:\n /usr/include" > expected.txt
+           diff expected.txt got.txt
+           #include <...> search starts here:
+           #/usr/include
+           sed 's|; |\n|g' dummy.log | grep 'SEARCH.*("/usr/lib")'
+           sed 's|; |\n|g' dummy.log | grep 'SEARCH.*("/lib")'
+           #SEARCH_DIR("/usr/lib")
+           #SEARCH_DIR("/lib");
+           grep "open /lib\(64\)\?/libc.so.6 " dummy.log
+           #allowing for a lib64 directory on 64-bit hosts
+           #attempt to open /lib/libc.so.6 succeeded
+           grep "found ld-linux[^/ ]\+.so.[^/ ] at /lib\(64\)\?/ld-linux[^/ ]\+.so.[^/ ]\+" dummy.log
+           #(allowing for platform-specific differences in dynamic linker name and a lib64 directory on 64-bit hosts):
+           #found ld-linux.so.2 at /lib/ld-linux.so.2
+ - cleanup: rm -v dummy.c a.out dummy.log

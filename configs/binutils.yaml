@@ -25,6 +25,6 @@ pass2:
              --with-sysroot
  - make: ~
  - install: ~
- - postinstall: make -C ld clean
-                make -C ld LIB_PATH=/usr/lib:/lib
-                cp -v ld/ld-new $PREFIX/bin
+ - postinstall: make -C ld clean;
+                make -C ld LIB_PATH=/usr/lib:/lib;
+                cp -v ld/ld-new $PREFIX/bin;

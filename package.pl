@@ -139,6 +139,7 @@ my $fullclean = '';
 my $target = '';
 my $prefix = '';
 my $packageDownloadDir = '';
+my $statusFilename = 'status.yaml';
 GetOptions(
     'directory|d=s' => \$packagedir,
     'config|c=s' => \$configfile,
@@ -147,7 +148,8 @@ GetOptions(
     'fullclean|f' => \$fullclean,
     'target|t=s' => \$target,
     'prefix|p=s' => \$prefix,
-    'sources|s=s' => \$packageDownloadDir
+    'sources|s=s' => \$packageDownloadDir,
+    'statusfilename=s' => \$statusFilename
 ) or die("usage\n");
 
 
@@ -164,8 +166,9 @@ if (!(-d $packagedir)) {
     error("Package dir '$packagedir' should be directory");
 }
 my $status = undef;
-if (-f "$packagedir/status.yaml") {
-    $status = YAML::XS::LoadFile("$packagedir/status.yaml");
+my $statusPath =  "$packagedir/$statusFilename";
+if (-f $statusPath) {
+    $status = YAML::XS::LoadFile("$packagedir/$statusFilename");
 } else {
     $status = YAML::XS::Load('');
 }
@@ -178,7 +181,7 @@ if (!$configfile) {
 }
 
 sub fullclean {
-    system("rm -rf $packagedir/status.yaml $packagedir/download $packagedir/source $packagedir/targets") == 0
+    system("rm -rf $statusPath $packagedir/download $packagedir/source $packagedir/targets") == 0
        or error("Couldn't full clean");
     $status = YAML::XS::Load('');
 }
@@ -199,7 +202,7 @@ sub clean {
             '_prevconfig' => $status->{'_prevconfig'}
         };
     }
-    YAML::XS::DumpFile("$packagedir/status.yaml", $status2);
+    YAML::XS::DumpFile("$statusPath", $status2);
 }
 if ($fullclean) {
     $clean = 1;
@@ -217,7 +220,7 @@ if (!$target) {
 
 my $config = YAML::XS::LoadFile($configfile);
 $status->{'configfile'} = $configfile;
-YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+YAML::XS::DumpFile("$statusPath", $status);
 
 sub fixRelativeLink { #{{{
     my $absoluteLink = shift(@_);
@@ -410,7 +413,7 @@ if (!(   ($status->{'_prevconfig'}{'download'} ~~ $config->{'download'})
     message("Something changed in download configuration - making fullclean.");
     fullclean();
     $status->{'_prevconfig'}{'download'} = $config->{'download'};
-    YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+    YAML::XS::DumpFile("$statusPath", $status);
 }
 if (!exists $status->{'downloaded'} || $update) {
     my $somethingnew = 0;
@@ -515,10 +518,10 @@ if (!exists $status->{'downloaded'} || $update) {
         } else {
             error("Unsupported download method '$method'");
         }
-        YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+        YAML::XS::DumpFile("$statusPath", $status);
     }
     $status->{'downloaded'} = 1;
-    YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+    YAML::XS::DumpFile("$statusPath", $status);
     if ($somethingnew) {
         status("Downloaded $packagename successfully\n");
         clean();
@@ -640,7 +643,7 @@ sub processStage {
 
     status("Phase $name is done");
     $status->{$target}{$name} = '1';
-    YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+    YAML::XS::DumpFile("$statusPath", $status);
 }
 
 if (!(   ($status->{'_prevconfig'}{$target} ~~ $config->{$target})
@@ -650,7 +653,7 @@ if (!(   ($status->{'_prevconfig'}{$target} ~~ $config->{$target})
     message("Something changed in '$target' configuration - making clean.");
     clean($target);
     $status->{'_prevconfig'}{$target} = $config->{$target};
-    YAML::XS::DumpFile("$packagedir/status.yaml", $status);
+    YAML::XS::DumpFile("$statusPath", $status);
 }
 foreach (@{$config->{$target}}) {
     my $key;

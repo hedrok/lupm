@@ -49,6 +49,7 @@ sub status {
 }
 
 my $scriptdir = "/usr/src/scripts";
+my $logdir = "/usr/src/scripts/logs";
 my $builddir = "/usr/src";
 my $statusFilename = "$builddir/chapter6.yaml";
 
@@ -134,9 +135,23 @@ sub buildPackage {
     system("chown -R $packageconfigname:$packageconfigname $builddir/$packageconfigname") == 0
         or error ("Could not chown home directory");
 
+    if (exists($packageconfig->{'root-before'})) {
+        print("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml\n");
+        system("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml") == 0
+            or error("Failed to build package $packageconfigname: root-before");
+        system("chown $packageconfigname:$packageconfigname $builddir/$packageconfigname/targets") == 0
+            or error ("Could not chown $builddir/$packageconfigname/targets directory");
+    }
+
     print("su -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname\n");
     system("su -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname") == 0
-        or error("Failed to build package $packageconfigname");
+        or error("Failed to build package $packageconfigname: $target");
+
+    if (exists($packageconfig->{'root-after'})) {
+        print("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml\n");
+        system("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml") == 0
+            or error("Failed to build package $packageconfigname: root-after");
+    }
 
     status("$packageconfigname: done");
     $status->{"$packageconfigname"} = 1;
@@ -147,3 +162,4 @@ buildPackage('linux-headers');
 buildPackage('man-pages');
 buildPackage('glibc');
 buildPackage('tzdata');
+buildPackage('adjust-toolchain');
