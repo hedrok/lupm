@@ -163,3 +163,4 @@ buildPackage('man-pages');
 buildPackage('glibc');
 buildPackage('tzdata');
 buildPackage('adjust-toolchain');
+buildPackage('zlib');

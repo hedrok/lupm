@@ -1,6 +1,16 @@
 name: zlib
 download: 
  - link: http://www.zlib.net/
+chapter5:
+ - configure:
+    params: --prefix=$PREFIX
+    dir: src
+ - make:
+    dir: src
+ - check:
+    dir: src
+ - install:
+    dir: src
 build:
  - configure: 
     params: --prefix=$PREFIX
@@ -11,3 +21,6 @@ build:
     dir: src
  - install:
     dir: src
+ - postinstall: |
+                mv -v $PREFIX/lib/libz.so.* /lib;
+                ln -sfv ../../lib/$(readlink $PREFIX/lib/libz.so) $PREFIX/lib/libz.so;
