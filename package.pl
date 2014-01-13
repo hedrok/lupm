@@ -165,6 +165,7 @@ if (!$packagedir) {
 if (!(-d $packagedir)) {
     error("Package dir '$packagedir' should be directory");
 }
+die "Can't cd to $packagedir\n" unless chdir $packagedir;
 my $status = undef;
 my $statusPath =  "$packagedir/$statusFilename";
 if (-f $statusPath) {

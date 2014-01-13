@@ -66,7 +66,7 @@ buildPackage('bash', 'bash', 'pass1');
 buildPackage('bzip2', 'bzip2', 'pass1');
 buildPackage('coreutils', 'coreutils', 'pass1');
 buildPackage('diffutils', 'diffutils', 'pass1');
-buildPackage('file', 'file', 'pass1');
+buildPackage('file', 'file', 'build');
 buildPackage('findutils', 'findutils', 'pass1');
 buildPackage('gawk', 'gawk', 'pass1');
 buildPackage('gettext', 'gettext', 'pass1');
