@@ -1,4 +1,5 @@
 name: binutils
+installgroups: install,tty
 download: 
  - link: http://ftp.gnu.org/gnu/binutils
 pass1:
@@ -28,3 +29,21 @@ pass2:
  - postinstall: make -C ld clean;
                 make -C ld LIB_PATH=/usr/lib:/lib;
                 cp -v ld/ld-new $PREFIX/bin;
+build:
+ - test-pty: |
+             expect -c "spawn ls" 2> spawn-got.txt
+             touch spawn-expected.txt
+             diff spawn-expected.txt spawn-got.txt
+             rm spawn-expected.txt spawn-got.txt
+ - supress-info:
+    command: |
+             rm -fv etc/standards.info;
+             sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in;
+    dir: src
+ - configure:
+        --prefix=$PREFIX
+        --enable-shared
+ - make: tooldir=/usr
+ - check: ~
+ - install:
+    command: make tooldir=/usr install
