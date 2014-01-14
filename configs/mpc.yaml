@@ -1,0 +1,8 @@
+name: mpc
+download:
+ - link: http://www.multiprecision.org/index.php?prog=mpc&page=download
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
