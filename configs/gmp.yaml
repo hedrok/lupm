@@ -1,0 +1,10 @@
+name: gmp
+download: 
+ - link: http://gmplib.org/
+build:
+ - configure: 
+     --prefix=$PREFIX
+     --enable-cxx
+ - make: ~
+ - check: ~
+ - install: ~

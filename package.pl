@@ -228,7 +228,9 @@ sub fixRelativeLink { #{{{
     my $possiblyRelativeLink = shift(@_);
     my $link = $possiblyRelativeLink;
     if ($possiblyRelativeLink !~ m#^[a-z]+://#) {
-        if ($possiblyRelativeLink =~ m#^/#) {
+        if ($possiblyRelativeLink =~ m#^//#) {
+            $absoluteLink =~ s#([a-z]+:).*#\1#;
+        } elsif ($possiblyRelativeLink =~ m#^/#) {
             $absoluteLink =~ s#([a-z]+://[^/]+)/.*#\1#;
         } else {
             $absoluteLink =~ s#\?.*$##;
