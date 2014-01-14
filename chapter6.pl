@@ -167,3 +167,4 @@ buildPackage('zlib');
 buildPackage('file');
 buildPackage('binutils');
 buildPackage('gmp');
+buildPackage('mpfr');

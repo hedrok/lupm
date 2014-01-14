@@ -326,11 +326,17 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
         or error("Couldn't download list from '$link' to '$tmpfile'\n");
     my $packageFilename = '';
     my $filetype = '';
-    my @filetypes = getSupportedArchiveFiletypes();
-    my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
     my $downloadLink = '';
-#print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package-\\?[0-9.]\\+$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p\" $tmpfile | sort -V | tail -n 1\n";
-    $downloadLink =`sed -n "s/^.*$prelink\\([^'\\"]*$package$versionPattern$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+    my @filetypes = getSupportedArchiveFiletypes();
+    for (@filetypes) {
+        #my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
+        my $filetypesRe = $_;
+        print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package-\\?[0-9.]\\+$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p\" $tmpfile | sort -V | tail -n 1\n";
+        $downloadLink =`sed -n "s/^.*$prelink\\([^'\\"]*$package$versionPattern$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+        if ($downloadLink) {
+            last;
+        }
+    }
     $downloadLink  =~ s/^\s+//;
     $downloadLink  =~ s/\s+$//;
     if ($downloadLink  eq "") {
@@ -548,6 +554,7 @@ sub exportDownloadVariables {
             $ENV{$varnamearch} = $status->{'downloads'}{$packagename}{'archive'};
             if ($packagename eq $config->{'name'}) {
                 $ENV{'PACKAGE_SRCDIR'} = $status->{'downloads'}{$packagename}{'srcdir'};
+                $ENV{'PACKAGE_VERSION'} = $status->{'downloads'}{$packagename}{'version'};
             }
         }
     }

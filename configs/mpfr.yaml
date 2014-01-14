@@ -1,0 +1,12 @@
+name: mpfr
+download:
+ - link: http://www.mpfr.org/mpfr-current/
+build:
+ - configure:
+     --prefix=$PREFIX
+     --enable-thread-safe
+     --docdir=$PREFIX/share/doc/mpfr$VERSION
+ - make: ~
+ - check: ~
+ - install: ~
+ - documentation: make html && make install-html
