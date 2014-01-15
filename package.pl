@@ -270,7 +270,7 @@ sub getLinkFolderWget { #{{{
     message("Trying to get $link to $tmpfile\n");
     system("wget -O $tmpfile \"$link\"") == 0
         or error("Couldn't download list from '$link' to '$tmpfile'\n");
-    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-?[0-9.]\\+\\/\\?\\)[\\"'].*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-\\?[0-9.]\\+\\/\\?\\)[\\"'].*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
     $flink =~ s/^\s+//;
     $flink =~ s/\s+$//;
     if ($flink eq '') {
