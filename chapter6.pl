@@ -170,3 +170,4 @@ buildPackage('gmp');
 buildPackage('mpfr');
 buildPackage('mpc');
 buildPackage('gcc');
+buildPackage('sed');

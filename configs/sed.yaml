@@ -1,8 +1,15 @@
 name: sed
 download: 
  - link: http://ftp.gnu.org/gnu/sed/
-pass1:
+chapter6:
  - configure: --prefix=$PREFIX
  - make: ~
  - check: ~
  - install: ~
+build:
+ - configure: --prefix=/usr --bindir=/bin --htmldir=/usr/share/doc/sed$PACKAGE_VERSION
+ - make: ~
+ - make-html: make html
+ - check: ~
+ - install: ~
+ - install-doc: make -C doc install-html

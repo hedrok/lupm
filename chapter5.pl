@@ -76,7 +76,7 @@ buildPackage('m4', 'm4', 'pass1');
 buildPackage('make', 'make', 'pass1');
 buildPackage('patch', 'patch', 'pass1');
 buildPackage('perl', 'perl', 'pass1');
-buildPackage('sed', 'sed', 'pass1');
+buildPackage('sed', 'sed', 'chapter5');
 buildPackage('tar', 'tar', 'pass1');
 buildPackage('texinfo', 'texinfo', 'pass1');
 buildPackage('xz', 'xz', 'pass1');
