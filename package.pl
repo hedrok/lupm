@@ -316,7 +316,7 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $posturl = $params->{'posturl'} // '';
     my $prelink = $params->{'prelink'} // "href=[\\\"']";
     my $postlink = $params->{'postlink'} // "[\\\"']";
-    my $versionPattern = $params->{'versionPattern'} // '-\\?[0-9.]\\+';
+    my $versionPattern = $params->{'versionPattern'} // '[-_]\\?[0-9.]\\+';
     my $downloaddir = "$packagedir/download";
     system("mkdir -p $downloaddir") == 0
         or error("Couldn't create directory $downloaddir");
@@ -331,7 +331,7 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     for (@filetypes) {
         #my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
         my $filetypesRe = $_;
-        print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package-\\?[0-9.]\\+$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p\" $tmpfile | sort -V | tail -n 1\n";
+        #print "sed -n \"s/^.*$prelink\\([^'\\\"]*${package}[-_]\\?[0-9.]\\+$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p\" $tmpfile | sort -V | tail -n 1\n";
         $downloadLink =`sed -n "s/^.*$prelink\\([^'\\"]*$package$versionPattern$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
         if ($downloadLink) {
             last;
@@ -354,7 +354,7 @@ sub getVersionByLink {
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = join("|", @filetypes);
     print "filetypesRe: $filetypesRe\n";
-    $link =~ /$package([0-9.-]*[a-z]?)$suffix\.($filetypesRe)/;
+    $link =~ /$package([-_]?[0-9.-]*[a-z]?)$suffix\.($filetypesRe)/;
     my $version = $1;
     my $filetype = $2;
     my $packageFilename = "$package$version$suffix.$filetype";
@@ -415,130 +415,6 @@ sub getMultipleWget { #($name, $link, $re);
     return \@resultList;
 }
 
-if (!(   ($status->{'_prevconfig'}{'download'} ~~ $config->{'download'})
-      && ($config->{'download'} ~~ $status->{'_prevconfig'}{'download'})
-   ))
-{
-    message("Something changed in download configuration - making fullclean.");
-    fullclean();
-    $status->{'_prevconfig'}{'download'} = $config->{'download'};
-    YAML::XS::DumpFile("$statusPath", $status);
-}
-if (!exists $status->{'downloaded'} || $update) {
-    my $somethingnew = 0;
-    my $packagename = $config->{'name'};
-    foreach (@{$config->{'download'}}) {
-        my $name = $_->{'name'} // $packagename;
-        my $link = $_->{'link'};
-        if (ref($link)) {
-            if (!$link->{'eval'}) {
-                error ("Link can be hash with eval key or string.");
-            }
-            $link = eval($link->{'eval'});
-        }
-        my $method = $_->{'method'} // 'wget';
-        my $suffix = $_->{'suffix'} // '';
-        my $posturl = '';
-        my $archivename = undef;
-        my $filetype = undef;
-        my $srcdir = undef;
-        my $version = undef;
-        my $wgetParams = {
-            'link' => $link,
-            'package' => $name,
-            'suffix' => ($_->{'suffix'} // '')
-        };
-        if (exists($_->{'versionPattern'})) {
-            $wgetParams->{'versionPattern'} = $_->{'versionPattern'};
-        }
-        if (exists($status->{'downloads'}{$name}{'downloaded'}) && ($status->{'downloads'}{$name}{'downloaded'} eq '1') && !$update) {
-            next;
-        }
-
-        if ($method eq 'wget-folder') {
-            if (!$link) {
-                error("No link provided for download of $name (wget-folder)");
-            }
-            $wgetParams->{'link'} = getLinkFolderWget($link, $name);
-            if (!$wgetParams->{'link'}) {
-                error("Couldn't get last version from folder $link, $name");
-            }
-            message("Latest version link: $link");
-            $method = 'wget';
-        }
-        if ($method eq 'sourceforge') {
-            $wgetParams->{'link'} = getLinkSourceForge($name);
-            if (!$wgetParams->{'link'}) {
-                error("Couldn't get last version from sourceforge $link, $name");
-            }
-            $wgetParams->{'posturl'} = '\\/download';
-            $wgetParams->{'prelink'} = '<link>';
-            $wgetParams->{'postlink'} = '<\\/link>';
-            $method = 'wget';
-        }
-        if ($method eq 'wget' || $method eq 'fixed') {
-            if (!$wgetParams->{'link'}) {
-                error("No link provided for download of $name (wget)");
-            }
-            my $packageFilename;
-            if ($method eq 'wget') {
-                ($packageFilename, $filetype, $link, $version) = getVersionWget($wgetParams);
-            } elsif($method eq 'fixed') {
-                ($packageFilename, $filetype, $link, $version) = getVersionByLink($wgetParams);
-            }
-            if (!$packageFilename) {
-                error("Error getting version of $name by link $link.");
-            }
-            if (!exists($status->{'downloads'}{$name}{'version'}) || !($version eq $status->{'downloads'}{$name}{'version'})) {
-                $somethingnew = 1;
-            } else {
-                message("No new version for $name. Last version: $version");
-                next;
-            }
-            $archivename = "$packageDownloadDir/$packageFilename";
-            if (not -f$archivename) {
-                system("wget \"$link\" -c -O \"$archivename\"") == 0
-                    or error("Couldn't download $link (package: $name).\n");
-            }
-            $srcdir = "$packagedir/source";
-            status("Downloaded $archivename");
-            extract($archivename, $filetype, $srcdir);
-            status("Extracted $archivename");
-            $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$name$version";
-            $status->{'downloads'}{$name}{'version'} = $version;
-            $status->{'downloads'}{$name}{'archive'} = $archivename;
-            $status->{'downloads'}{$name}{'filetype'} = $filetype;
-            $status->{'downloads'}{$name}{'downloaded'} = '1';
-        } elsif ($method eq 'wget-multiple') {
-            my $re = $_->{'re'};
-            my $list = getMultipleWget($name, $link, $re);
-            if (!exists($status->{'downloads'}{$name}{'list'}) || !($list ~~ $status->{'downloads'}{$name}{'list'} && $status->{'downloads'}{$name}{'list'})) {
-                $somethingnew = 1;
-            } else {
-                message("No new files for $name.");
-            }
-            for (@{$list}) {
-                system("wget \"$_->{'link'}\" -c -O \"$_->{'path'}\"") == 0
-                    or error("Couldn't download $_->{'link'} to $_->{'path'} (multiple: $name).\n");
-            }
-            $status->{'downloads'}{$name}{'downloaded'} = '1';
-            $status->{'downloads'}{$name}{'list'} = $list;
-            status("Downloaded multiple $name");
-        } else {
-            error("Unsupported download method '$method'");
-        }
-        YAML::XS::DumpFile("$statusPath", $status);
-    }
-    $status->{'downloaded'} = 1;
-    YAML::XS::DumpFile("$statusPath", $status);
-    if ($somethingnew) {
-        status("Downloaded $packagename successfully\n");
-        clean();
-    } elsif($update) {
-        status("Nothing new, everything is up to date");
-        exit(0);
-    }
-}
 sub exportDownloadVariables {
     foreach my $packagename (keys %{$status->{'downloads'}}) {
         if (exists($status->{'downloads'}{$packagename}{'list'})) {
@@ -559,7 +435,134 @@ sub exportDownloadVariables {
         }
     }
 }
-exportDownloadVariables();
+if ($target ne 'root-before' && $target ne 'root-after') {
+    if (!(   ($status->{'_prevconfig'}{'download'} ~~ $config->{'download'})
+          && ($config->{'download'} ~~ $status->{'_prevconfig'}{'download'})
+          )
+       )
+    {
+        message("Something changed in download configuration - making fullclean.");
+        fullclean();
+        $status->{'_prevconfig'}{'download'} = $config->{'download'};
+        YAML::XS::DumpFile("$statusPath", $status);
+    }
+    if (!exists $status->{'downloaded'} || $update) {
+        my $somethingnew = 0;
+        my $packagename = $config->{'name'};
+        foreach (@{$config->{'download'}}) {
+            my $name = $_->{'name'} // $packagename;
+            my $link = $_->{'link'};
+            if (ref($link)) {
+                if (!$link->{'eval'}) {
+                    error ("Link can be hash with eval key or string.");
+                }
+                $link = eval($link->{'eval'});
+            }
+            my $method = $_->{'method'} // 'wget';
+            my $suffix = $_->{'suffix'} // '';
+            my $posturl = '';
+            my $archivename = undef;
+            my $filetype = undef;
+            my $srcdir = undef;
+            my $version = undef;
+            my $wgetParams = {
+                'link' => $link,
+                'package' => $name,
+                'suffix' => ($_->{'suffix'} // '')
+            };
+            if (exists($_->{'versionPattern'})) {
+                $wgetParams->{'versionPattern'} = $_->{'versionPattern'};
+            }
+            if (exists($status->{'downloads'}{$name}{'downloaded'}) && ($status->{'downloads'}{$name}{'downloaded'} eq '1') && !$update) {
+                next;
+            }
+
+            if ($method eq 'wget-folder') {
+                if (!$link) {
+                    error("No link provided for download of $name (wget-folder)");
+                }
+                $wgetParams->{'link'} = getLinkFolderWget($link, $name);
+                if (!$wgetParams->{'link'}) {
+                    error("Couldn't get last version from folder $link, $name");
+                }
+                message("Latest version link: $link");
+                $method = 'wget';
+            }
+            if ($method eq 'sourceforge') {
+                $wgetParams->{'link'} = getLinkSourceForge($name);
+                if (!$wgetParams->{'link'}) {
+                    error("Couldn't get last version from sourceforge $link, $name");
+                }
+                $wgetParams->{'posturl'} = '\\/download';
+                $wgetParams->{'prelink'} = '<link>';
+                $wgetParams->{'postlink'} = '<\\/link>';
+                $method = 'wget';
+            }
+            if ($method eq 'wget' || $method eq 'fixed') {
+                if (!$wgetParams->{'link'}) {
+                    error("No link provided for download of $name (wget)");
+                }
+                my $packageFilename;
+                if ($method eq 'wget') {
+                    ($packageFilename, $filetype, $link, $version) = getVersionWget($wgetParams);
+                } elsif($method eq 'fixed') {
+                    ($packageFilename, $filetype, $link, $version) = getVersionByLink($wgetParams);
+                }
+                if (!$packageFilename) {
+                    error("Error getting version of $name by link $link.");
+                }
+                if (!exists($status->{'downloads'}{$name}{'version'}) || !($version eq $status->{'downloads'}{$name}{'version'})) {
+                    $somethingnew = 1;
+                } else {
+                    message("No new version for $name. Last version: $version");
+                    next;
+                }
+                $archivename = "$packageDownloadDir/$packageFilename";
+                if (not -f$archivename) {
+                    system("wget \"$link\" -c -O \"$archivename\"") == 0
+                        or error("Couldn't download $link (package: $name).\n");
+                }
+                $srcdir = "$packagedir/source";
+                status("Downloaded $archivename");
+                extract($archivename, $filetype, $srcdir);
+                status("Extracted $archivename");
+                $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$name$version";
+                $status->{'downloads'}{$name}{'version'} = $version;
+                $status->{'downloads'}{$name}{'archive'} = $archivename;
+                $status->{'downloads'}{$name}{'filetype'} = $filetype;
+                $status->{'downloads'}{$name}{'downloaded'} = '1';
+            } elsif ($method eq 'wget-multiple') {
+                my $re = $_->{'re'};
+                my $list = getMultipleWget($name, $link, $re);
+                if (!exists($status->{'downloads'}{$name}{'list'}) || !($list ~~ $status->{'downloads'}{$name}{'list'} && $status->{'downloads'}{$name}{'list'})) {
+                    $somethingnew = 1;
+                } else {
+                    message("No new files for $name.");
+                }
+                for (@{$list}) {
+                    system("wget \"$_->{'link'}\" -c -O \"$_->{'path'}\"") == 0
+                        or error("Couldn't download $_->{'link'} to $_->{'path'} (multiple: $name).\n");
+                }
+                $status->{'downloads'}{$name}{'downloaded'} = '1';
+                $status->{'downloads'}{$name}{'list'} = $list;
+                status("Downloaded multiple $name");
+            } else {
+                error("Unsupported download method '$method'");
+            }
+            YAML::XS::DumpFile("$statusPath", $status);
+        }
+        $status->{'downloaded'} = 1;
+        YAML::XS::DumpFile("$statusPath", $status);
+        if ($somethingnew) {
+            status("Downloaded $packagename successfully\n");
+            clean();
+        } elsif($update) {
+            status("Nothing new, everything is up to date");
+            exit(0);
+        }
+    }
+    exportDownloadVariables();
+}
 $ENV{'PREFIX'} = $prefix;
 
 my $stageDefaultParams = {

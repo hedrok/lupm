@@ -1,0 +1,29 @@
+name: shadow
+download: 
+ - link: http://cdn.debian.net/debian/pool/main/s/shadow/
+   suffix: .orig
+root-before:
+ - clear-man-pages: |
+                    rm -vf /usr/share/man/man5/passwd.5;
+                    rm -vf /usr/share/man/man3/getspnam.3;
+build:
+ - makesrcdir: |
+    if ! [ -h $PACKAGE_SRCDIR ]; then
+        orig=`echo $PACKAGE_SRCDIR | sed 's/_/-/g'`;
+        ln -svf $orig $PACKAGE_SRCDIR;
+    fi
+ - preconfigure:
+    command: |
+             echo $PACKAGE_SRCDIR | sed 's/_/-/g';
+             sed -i 's/groups$(EXEEXT) //' src/Makefile.in;
+             find man -name Makefile.in -exec sed -i 's/groups\.1 / /' {} \;
+             sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+                    -e 's@/var/spool/mail@/var/mail@' etc/login.defs
+ - configure: --prefix=$PREFIX --sysconfdir=/etc
+ - make: ~
+ - install: ~
+ - postinstall: mv -v /usr/bin/passwd /bin
+root-after:
+ - start: pwconv;
+          grpconv;
+ - root-pwd: passwd

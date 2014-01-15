@@ -56,6 +56,10 @@ if [ \( z"$1" = z"-d" \) -o \( z"$1" = z"-m" -a z"$3" = z"-d" \) ]; then
       	     set -- "$@"
       	   fi             
       	   ;;
+      /usr/share/man/[a-l,n-z]*)
+           echo 1>&2 "*** Ignoring install $a"
+           exit 0
+           ;;
       *) set -- "$@" "$a" ;;
     esac
   done
@@ -103,6 +107,10 @@ else  #if "$1" != "-d"  ,i.e. we do not create directories *****************
       		shift 1; i=$(($i-1))
           	set -- "$@" 
           ;;
+      /usr/share/man/[a-l,n-z]*)
+           echo 1>&2 "*** Ignoring install $a"
+           exit 0
+           ;;
       */man/man?/*) 
                 if [ -e "$a" -a ! -O "$a" ]; then
                   if [ `find "$a" -printf \%u` = $manpagesowner ]; then

@@ -174,3 +174,4 @@ buildPackage('sed');
 buildPackage('bzip2');
 buildPackage('pkg-config');
 buildPackage('ncurses');
+buildPackage('shadow');

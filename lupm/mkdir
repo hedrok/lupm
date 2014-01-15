@@ -31,6 +31,10 @@ do
     $watchdir/*) dirs="$dirs ""`expr $a : "$watchdir/\(.*\)"`" 
                  set -- "$@" "$a" 
                  ;;
+    /usr/share/man/[a-l,n-z]*)
+        echo 1>&2 "*** mkdir: ignoring dir $a"
+        exit 0;
+    ;;
     *) set -- "$@" "$a" ;;
   esac
 done
