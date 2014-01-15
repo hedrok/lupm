@@ -6,6 +6,7 @@ mkdir -pv /usr/{bin,include,lib,sbin,src}
 mkdir -pv /usr/share/{doc,info,locale,man}
 mkdir -v  /usr/share/{misc,terminfo,zoneinfo}
 mkdir -pv /usr/share/man/man{1..8}
+mkdir -v /usr/lib/pkgconfig
 ln -sv share/{man,doc,info} /usr
 case $(uname -m) in
     x86_64) ln -sv lib /lib64 && ln -sv lib /usr/lib64 ;;

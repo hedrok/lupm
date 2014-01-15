@@ -61,7 +61,7 @@ buildPackage('tcl', 'tcl', 'pass1');
 buildPackage('expect', 'expect', 'pass1');
 buildPackage('dejagnu', 'dejagnu', 'pass1');
 buildPackage('check', 'check', 'pass1');
-buildPackage('ncurses', 'ncurses', 'pass1');
+buildPackage('ncurses', 'ncurses', 'chapter5');
 buildPackage('bash', 'bash', 'pass1');
 buildPackage('bzip2', 'bzip2', 'chapter5');
 buildPackage('coreutils', 'coreutils', 'pass1');
