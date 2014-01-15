@@ -63,7 +63,7 @@ buildPackage('dejagnu', 'dejagnu', 'pass1');
 buildPackage('check', 'check', 'pass1');
 buildPackage('ncurses', 'ncurses', 'pass1');
 buildPackage('bash', 'bash', 'pass1');
-buildPackage('bzip2', 'bzip2', 'pass1');
+buildPackage('bzip2', 'bzip2', 'chapter5');
 buildPackage('coreutils', 'coreutils', 'pass1');
 buildPackage('diffutils', 'diffutils', 'pass1');
 buildPackage('file', 'file', 'build');

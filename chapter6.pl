@@ -171,3 +171,4 @@ buildPackage('mpfr');
 buildPackage('mpc');
 buildPackage('gcc');
 buildPackage('sed');
+buildPackage('bzip2');
