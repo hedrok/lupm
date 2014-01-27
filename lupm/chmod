@@ -10,7 +10,7 @@ for p in $(type -ap chmod) ; do
 done
 
 if [ ! -n "$DAISY_CHAIN" ]; then
-  echo Cannot find real ${0##*/} command 
+  echo Cannot find real ${0##*/} command
   exit 1
 fi
 
@@ -31,14 +31,22 @@ while true ; do
     _g+s|_u+s) report=1; doit=0  ;;
     _4755) arg=755 ; report=1; doit=1 ;;
     _4555) arg=555 ; report=1; doit=1 ;;
-    *) ;;
+    *)
+      if [ -f $arg ]; then
+          group=$(stat -c %G $arg)
+          if [ "x$group" == "xinstall" ]; then
+            echo 1>&2 "$reportmsg; Refused to change for install group"
+            exit 0
+          fi
+      fi
+    ;;
   esac
   set -- "$@" "$arg"
 done
 
 if [ "$report" = 1 ]; then echo 1>&2 "$reportmsg" ; fi
 
-if [ "$doit" = 1 ]; then  
+if [ "$doit" = 1 ]; then
   exec $DAISY_CHAIN "$@"
 fi
 

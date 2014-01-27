@@ -120,8 +120,8 @@ sub buildPackage {
         addGroup($_);
     }
 
-    print ("useradd -b $builddir -c '$description' -g '$packageconfigname' -G '$installgroups' '$packageconfigname'\n");
-    system("useradd -b $builddir -c '$description' -g '$packageconfigname' -G '$installgroups' '$packageconfigname'");
+    print ("useradd -m -k $scriptdir/lupm/skel -b $builddir -c '$description' -g '$packageconfigname' -G '$installgroups' '$packageconfigname'\n");
+    system("useradd -m -k $scriptdir/lupm/skel -b $builddir -c '$description' -g '$packageconfigname' -G '$installgroups' '$packageconfigname'");
     if ($? == -1) {
         error ("Could not create user $packageconfigname: " + ($? & 127));
     }
@@ -130,10 +130,11 @@ sub buildPackage {
     }
 
     $ENV{'PREFIX'} = $prefix;
-    system("mkdir -vp $builddir/$packageconfigname") == 0
-        or error ("Could not create user home directory $builddir/$packageconfigname");
-    system("chown -R $packageconfigname:$packageconfigname $builddir/$packageconfigname") == 0
-        or error ("Could not chown home directory");
+#should be done in useradd
+#    system("mkdir -vp $builddir/$packageconfigname") == 0
+#        or error ("Could not create user home directory $builddir/$packageconfigname");
+#    system("chown -R $packageconfigname:$packageconfigname $builddir/$packageconfigname") == 0
+#        or error ("Could not chown home directory");
 
     if (exists($packageconfig->{'root-before'})) {
         print("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml\n");
@@ -143,8 +144,8 @@ sub buildPackage {
             or error ("Could not chown $builddir/$packageconfigname/targets directory");
     }
 
-    print("su -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname\n");
-    system("su -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname") == 0
+    print("su - -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname\n");
+    system("su - -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t $target -s $builddir/downloads' $packageconfigname") == 0
         or error("Failed to build package $packageconfigname: $target");
 
     if (exists($packageconfig->{'root-after'})) {
@@ -174,4 +175,5 @@ buildPackage('sed');
 buildPackage('bzip2');
 buildPackage('pkg-config');
 buildPackage('ncurses');
-buildPackage('shadow');
+buildPackage('attr');
+#buildPackage('shadow');

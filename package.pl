@@ -281,7 +281,7 @@ sub getLinkFolderWget { #{{{
     return $flink;
 } #}}}
 sub getSupportedArchiveFiletypes {
-    return ('tar.xz', 'tar.bz2', 'tar.gz', 'zip');
+    return ('tar.xz', 'src.tar.xz', 'tar.bz2', 'src.tar.bz2', 'tar.gz', 'src.tar.gz', 'zip');
 }
 sub getLinkSourceForge { #{{{
 #                http://sourceforge.net/api/project/name/tcl/json
