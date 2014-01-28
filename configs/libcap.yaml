@@ -1,0 +1,17 @@
+name: libcap
+download: 
+ - link: http://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/
+root-before:
+ - permissions: lupm-dir.sh /usr/include/sys
+build:
+ - make:
+    dir: src
+ - inst:
+    command: make RAISE_SETFCAP=no prefix=$PREFIX install
+    dir: src
+ - postinstall: |
+                chmod -v 755 $PREFIX/lib/libcap.so
+                mv -v $PREFIX/lib/libcap.so.* /lib
+                ln -sfv ../../lib/libcap.so.2 /usr/lib/libcap.so
+root-after:
+ - permissions: chown glibc:glibc /usr/include/sys && chmod 755 /usr/include/sys;
