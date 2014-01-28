@@ -1,0 +1,11 @@
+name: util-linux
+download:
+ - link: http://www.kernel.org/pub/linux/utils/util-linux/
+   method: wget-folder
+   wget-folder-name: v
+build:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+              --disable-nologin
+ - make: ~
+ - install: ~

@@ -13,7 +13,7 @@
 # Download section:
 # download:
 #  - link: http://ftp.gnu.org/gnu/gcc
-#    method: wget-folders
+#    method: wget-folder
 #  - name: mpfr
 #    link: http://www.mpfr.org/mpfr-current/
 #  - name: mpc
@@ -481,7 +481,8 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                 if (!$link) {
                     error("No link provided for download of $name (wget-folder)");
                 }
-                $wgetParams->{'link'} = getLinkFolderWget($link, $name);
+                my $n = $_->{'wget-folder-name'} // $name;
+                $wgetParams->{'link'} = getLinkFolderWget($link, $n);
                 if (!$wgetParams->{'link'}) {
                     error("Couldn't get last version from folder $link, $name");
                 }
