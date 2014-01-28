@@ -140,7 +140,7 @@ sub buildPackage {
         print("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml\n");
         system("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml") == 0
             or error("Failed to build package $packageconfigname: root-before");
-        system("chown $packageconfigname:$packageconfigname $builddir/$packageconfigname/targets") == 0
+        system("chown -R $packageconfigname:$packageconfigname $builddir/$packageconfigname/targets") == 0
             or error ("Could not chown $builddir/$packageconfigname/targets directory");
     }
 
@@ -152,6 +152,8 @@ sub buildPackage {
         print("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml\n");
         system("$scriptdir/package.pl -p $prefix -d $builddir/$packageconfigname -c $configpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml") == 0
             or error("Failed to build package $packageconfigname: root-after");
+        system("chown -R $packageconfigname:$packageconfigname $builddir/$packageconfigname/targets/root-after") == 0
+            or error ("Could not chown $builddir/$packageconfigname/targets/root-after directory");
     }
 
     status("$packageconfigname: done");
@@ -178,4 +180,4 @@ buildPackage('ncurses');
 buildPackage('attr');
 buildPackage('acl');
 buildPackage('libcap');
-#buildPackage('shadow');
+buildPackage('shadow');
