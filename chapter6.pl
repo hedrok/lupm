@@ -183,3 +183,4 @@ buildPackage('libcap');
 buildPackage('shadow');
 buildPackage('util-linux');
 buildPackage('psmisc');
+buildPackage('procps-ng');

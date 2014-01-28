@@ -1,0 +1,16 @@
+name: procps-ng
+download:
+ - method: sourceforge
+build:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+              --exec-prefix=
+              --libdir=$PREFIX/lib
+              --docdir=$PREFIX/share/doc/procps-ng$PACKAGE_VERSION
+              --disable-static
+              --disable-kill
+ - make: ~
+ - install: ~
+ - postinstall: mv -v /usr/bin/pidof /bin;
+                mv -v /usr/lib/libprocps.so.* /lib;
+                ln -sfv ../../lib/$(readlink /usr/lib/libprocps.so) /usr/lib/libprocps.so;
