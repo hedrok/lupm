@@ -1,0 +1,10 @@
+name: psmisc
+download:
+ - method: sourceforge
+build:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+ - make: ~
+ - install: ~
+ - postinstall: mv -v $PREFIX/bin/fuser   /bin;
+                mv -v $PREFIX/bin/killall /bin;

@@ -182,3 +182,4 @@ buildPackage('acl');
 buildPackage('libcap');
 buildPackage('shadow');
 buildPackage('util-linux');
+buildPackage('psmisc');
