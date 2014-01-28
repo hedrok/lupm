@@ -1,5 +1,5 @@
 name: attr
-download: 
+download:
  - link: http://download.savannah.gnu.org/releases/attr
 build:
  - configure:

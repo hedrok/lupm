@@ -1,9 +1,9 @@
 name: perl
-download: 
+download:
  - link: http://www.cpan.org/src/
    versionPattern: -\?[0-9]\+\.[0-9]\?[02468].[0-9.]\+
 pass1:
- - config: 
+ - config:
      command: sh $PACKAGE_SRCDIR/Configure -des -Dprefix=$PREFIX -Dusedevel
      dir: src
  - make:

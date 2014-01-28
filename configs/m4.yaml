@@ -1,5 +1,5 @@
 name: m4
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/m4/
 pass1:
  - preconfigure: sed -i -e '/gets is a/d' lib/stdio.in.h

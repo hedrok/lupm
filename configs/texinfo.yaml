@@ -1,5 +1,5 @@
 name: texinfo
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/texinfo/
 pass1:
  - preconfigure: sed -i "s#\.\./\"\$srcdir#\"\$srcdir#" $PACKAGE_SRCDIR/tp/tests/test_scripts/*.sh;

@@ -1,5 +1,5 @@
 name: gawk
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/gawk/
 pass1:
  - configure: --prefix=$PREFIX

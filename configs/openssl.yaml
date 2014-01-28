@@ -1,6 +1,6 @@
 name: openssl
-download: 
- - link: http://www.openssl.org/source/ 
+download:
+ - link: http://www.openssl.org/source/
    versionPattern: -\\?[0-9.]\\+[a-z]\\?
 pass1:
  - configure:

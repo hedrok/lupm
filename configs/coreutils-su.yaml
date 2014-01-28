@@ -1,8 +1,8 @@
 name: coreutils
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/coreutils/coreutils-8.17.tar.xz
    method: fixed
 build:
  - configure: --prefix=$PREFIX
  - make: ~
- - inst: cp -v src/su $PREFIX/bin 
+ - inst: cp -v src/su $PREFIX/bin

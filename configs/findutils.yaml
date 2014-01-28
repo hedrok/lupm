@@ -1,5 +1,5 @@
 name: findutils
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/findutils/
 pass1:
  - configure: --prefix=$PREFIX

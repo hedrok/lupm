@@ -1,5 +1,5 @@
 name: pkg-config
-download: 
+download:
  - link: http://pkgconfig.freedesktop.org/releases/
 build:
  - configure: --prefix=$PREFIX

@@ -1,5 +1,5 @@
 name: shadow
-download: 
+download:
  - link: http://cdn.debian.net/debian/pool/main/s/shadow/
    suffix: .orig
 root-before:

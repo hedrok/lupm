@@ -1,10 +1,10 @@
 name: bzip2
-download: 
+download:
  - link: http://www.bzip.org/downloads.html
 chapter5:
  - make:
      dir: src
- - inst: 
+ - inst:
      command: make PREFIX=$PREFIX install
      dir: src
 build:

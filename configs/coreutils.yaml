@@ -1,5 +1,5 @@
 name: coreutils
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/coreutils/
 pass1:
  - configure: --prefix=$PREFIX --enable-install-program=hostname

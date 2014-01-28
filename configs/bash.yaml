@@ -1,15 +1,15 @@
 name: bash
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/bash/
  - name: patches
    method: wget-multiple
-   link: 
+   link:
        eval: return "http://ftp.gnu.org/gnu/bash/bash" . $status->{'downloads'}{'bash'}{'version'} . "-patches/"
    re: <a href=\"\(bash[0-9]\+-[0-9]\+\)\">
 pass1:
  - preconfigure: for i in $PATCHES_FILENAMES; do
                      patch -Np0 -i $i;
-                 done 
+                 done
  - configure: --prefix=$PREFIX
               --without-bash-malloc
  - make: ~

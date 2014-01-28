@@ -1,5 +1,5 @@
 name: linux
-download: 
+download:
  - link: http://www.kernel.org/
 headers:
  - clean:

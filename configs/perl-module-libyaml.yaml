@@ -1,5 +1,5 @@
 name: YAML-LibYAML
-download: 
+download:
  - link: http://search.cpan.org/~ingy/YAML-LibYAML-0.41/lib/YAML/XS.pm
 build:
  - config:

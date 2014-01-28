@@ -3,7 +3,7 @@ description: Adjust toolchain in the beginning of Chapter6 of LFS
 download: ~
 target: check-toolchain
 
-root-before: 
+root-before:
  - adjust: |
            mv -v /tools/bin/{ld,ld-old};
            mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old};

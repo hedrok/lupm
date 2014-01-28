@@ -1,9 +1,9 @@
 name: binutils
 installgroups: install,tty
-download: 
+download:
  - link: http://ftp.gnu.org/gnu/binutils
 pass1:
- - configure: 
+ - configure:
      --prefix=$PREFIX
      --with-sysroot=$LFS
      --with-lib-path=$PREFIX/lib
@@ -16,7 +16,7 @@ pass1:
                esac
  - install: ~
 pass2:
- - configure: 
+ - configure:
      vars: CC=$LFS_TGT-gcc
            AR=$LFS_TGT-ar
            RANLIB=$LFS_TGT-ranlib

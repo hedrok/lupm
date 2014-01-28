@@ -1,5 +1,5 @@
 name: check
-download: 
+download:
  - method: sourceforge
 pass1:
  - configure: --prefix=$PREFIX

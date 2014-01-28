@@ -1,5 +1,5 @@
 name: man-pages
-download: 
+download:
  - link: http://www.kernel.org/pub/linux/docs/man-pages/
 build:
  - install:

@@ -1,5 +1,5 @@
 name: Term-ANSIColor
-download: 
+download:
  - link: http://search.cpan.org/~rra/Term-ANSIColor-4.02/ANSIColor.pm
 build:
  - config:

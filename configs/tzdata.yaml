@@ -1,5 +1,5 @@
 name: tzdata
-download: 
+download:
    - link: http://www.iana.org/time-zones
      suffix: i
 build:
