@@ -176,4 +176,5 @@ buildPackage('bzip2');
 buildPackage('pkg-config');
 buildPackage('ncurses');
 buildPackage('attr');
+buildPackage('acl');
 #buildPackage('shadow');
