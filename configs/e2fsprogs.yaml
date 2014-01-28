@@ -1,0 +1,23 @@
+name: e2fsprogs
+download:
+ - method: sourceforge
+root-before:
+ - prepare-info: chown root:install /usr/share/info/dir;
+                 chmod g+w /usr/share/info/dir;
+build:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+              --with-root-prefix=""
+              --enable-elf-shlibs
+              --disable-libblkid
+              --disable-libuuid
+              --disable-uuidd
+              --disable-fsck
+ - make: ~
+ - install: ~
+ - install-libs: make install-libs
+ - info: |
+         if [ -f $PREFIX/share/info/libext2fs.info.gz ]; then
+            gunzip -v $PREFIX/share/info/libext2fs.info.gz;
+         fi;
+         install-info --dir-file=$PREFIX/share/info/dir $PREFIX/share/info/libext2fs.info;

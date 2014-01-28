@@ -184,3 +184,4 @@ buildPackage('shadow');
 buildPackage('util-linux');
 buildPackage('psmisc');
 buildPackage('procps-ng');
+buildPackage('e2fsprogs');
