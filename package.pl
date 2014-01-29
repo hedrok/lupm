@@ -554,8 +554,10 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                     message("No new files for $name.");
                 }
                 for (@{$list}) {
-                    system("wget \"$_->{'link'}\" -c -O \"$_->{'path'}\"") == 0
-                        or error("Couldn't download $_->{'link'} to $_->{'path'} (multiple: $name).\n");
+                    if (not -f$_->{'path'}) {
+                        system("wget \"$_->{'link'}\" -c -O \"$_->{'path'}\"") == 0
+                            or error("Couldn't download $_->{'link'} to $_->{'path'} (multiple: $name).\n");
+                    }
                 }
                 $status->{'downloads'}{$name}{'downloaded'} = '1';
                 $status->{'downloads'}{$name}{'list'} = $list;

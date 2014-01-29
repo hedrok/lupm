@@ -62,7 +62,7 @@ buildPackage('expect', 'expect', 'pass1');
 buildPackage('dejagnu', 'dejagnu', 'pass1');
 buildPackage('check', 'check', 'pass1');
 buildPackage('ncurses', 'ncurses', 'chapter5');
-buildPackage('bash', 'bash', 'pass1');
+buildPackage('bash', 'bash', 'chapter5');
 buildPackage('bzip2', 'bzip2', 'chapter5');
 buildPackage('coreutils', 'coreutils', 'chapter5');
 buildPackage('diffutils', 'diffutils', 'pass1');

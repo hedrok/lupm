@@ -192,3 +192,4 @@ buildPackage('flex');
 buildPackage('bison');
 buildPackage('grep');
 buildPackage('readline');
+buildPackage('bash');
