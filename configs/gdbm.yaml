@@ -1,0 +1,9 @@
+name: gdbm
+download:
+ - link: http://ftp.gnu.org/gnu/gdbm/
+build:
+ - configure: --prefix=$PREFIX
+              --enable-libgdbm-compat
+ - make: ~
+ - check: ~
+ - install: ~

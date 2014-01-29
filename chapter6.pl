@@ -195,3 +195,4 @@ buildPackage('readline');
 buildPackage('bash');
 buildPackage('bc');
 buildPackage('libtool');
+buildPackage('gdbm');
