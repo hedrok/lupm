@@ -1,8 +1,24 @@
 name: coreutils
 download:
  - link: http://ftp.gnu.org/gnu/coreutils/
-pass1:
+chapter5:
  - configure: --prefix=$PREFIX --enable-install-program=hostname
  - make: ~
  - tst: make RUN_EXPENSIVE_TESTS=yes check
  - install: ~
+root-before:
+ - permissions: chown --no-dereference coreutils:coreutils /bin/{cat,echo,pwd,stty}
+build:
+ - configure: --prefix=$PREFIX
+              --libexecdir=$PREFIX/lib
+              --enable-no-install-program=kill,uptime
+#FORCE_UNSAFE_CONFIGURE=1 ./configure \
+ - make: ~
+#- tst: make RUN_EXPENSIVE_TESTS=yes check
+ - install: ~
+ - postinstall: mv -v /usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} /bin;
+                mv -v /usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} /bin;
+                mv -v /usr/bin/{rmdir,stty,sync,true,uname} /bin;
+                mv -v /usr/bin/chroot /usr/sbin;
+                mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8;
+                sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8;

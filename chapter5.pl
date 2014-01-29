@@ -64,7 +64,7 @@ buildPackage('check', 'check', 'pass1');
 buildPackage('ncurses', 'ncurses', 'chapter5');
 buildPackage('bash', 'bash', 'pass1');
 buildPackage('bzip2', 'bzip2', 'chapter5');
-buildPackage('coreutils', 'coreutils', 'pass1');
+buildPackage('coreutils', 'coreutils', 'chapter5');
 buildPackage('diffutils', 'diffutils', 'pass1');
 buildPackage('file', 'file', 'build');
 buildPackage('findutils', 'findutils', 'pass1');
