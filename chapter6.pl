@@ -189,3 +189,4 @@ buildPackage('coreutils');
 buildPackage('iana-etc');
 buildPackage('m4');
 buildPackage('flex');
+buildPackage('bison');

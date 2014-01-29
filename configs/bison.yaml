@@ -1,0 +1,8 @@
+name: bison
+download:
+ - link: http://ftp.gnu.org/gnu/bison/
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
