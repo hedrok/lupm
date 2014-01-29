@@ -193,3 +193,4 @@ buildPackage('bison');
 buildPackage('grep');
 buildPackage('readline');
 buildPackage('bash');
+buildPackage('bc');
