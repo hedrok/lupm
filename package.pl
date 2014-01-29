@@ -234,7 +234,7 @@ sub fixRelativeLink { #{{{
             $absoluteLink =~ s#([a-z]+://[^/]+)/.*#\1#;
         } else {
             $absoluteLink =~ s#\?.*$##;
-            $absoluteLink =~ s#/[^/]+\.[a-z]+(\?.*)?$#/#;
+            $absoluteLink =~ s#/[^/]+$#/#;
             if ($absoluteLink !~ m#/$#) {
                 $absoluteLink .= '/';
             }
@@ -254,6 +254,14 @@ sub testFixRelativeLink {
     $rel = '/relative/to/root.html';
     my $expected = 'http://thisshouldbe.com/relative/to/root.html';
     $res = fixRelativeLink($abs, $rel);
+    if (!($res eq $expected)) {
+        error("Test failed: fixRelativeLink($abs, $rel) = $res, expected: $expected\n");
+    }
+
+    $abs = 'http://sethwklein.net/iana-etc';
+    $rel = 'iana-etc-2.30.tar.bz2';
+    $res = fixRelativeLink($abs, $rel);
+    $expected = 'http://sethwklein.net/iana-etc-2.30.tar.bz2';
     if (!($res eq $expected)) {
         error("Test failed: fixRelativeLink($abs, $rel) = $res, expected: $expected\n");
     }

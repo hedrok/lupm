@@ -1,0 +1,8 @@
+name: iana-etc
+download:
+ - link: http://sethwklein.net/iana-etc
+build:
+ - make: 
+    dir: src
+ - install:
+    dir: src

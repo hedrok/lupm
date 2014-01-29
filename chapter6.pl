@@ -186,3 +186,4 @@ buildPackage('psmisc');
 buildPackage('procps-ng');
 buildPackage('e2fsprogs');
 buildPackage('coreutils');
+buildPackage('iana-etc');
