@@ -187,3 +187,4 @@ buildPackage('procps-ng');
 buildPackage('e2fsprogs');
 buildPackage('coreutils');
 buildPackage('iana-etc');
+buildPackage('m4');

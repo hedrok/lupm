@@ -72,7 +72,7 @@ buildPackage('gawk', 'gawk', 'pass1');
 buildPackage('gettext', 'gettext', 'pass1');
 buildPackage('grep', 'grep', 'pass1');
 buildPackage('gzip', 'gzip', 'pass1');
-buildPackage('m4', 'm4', 'pass1');
+buildPackage('m4', 'm4', 'chapter5');
 buildPackage('make', 'make', 'pass1');
 buildPackage('patch', 'patch', 'pass1');
 buildPackage('perl', 'perl', 'pass1');

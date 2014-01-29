@@ -1,8 +1,13 @@
 name: m4
 download:
  - link: http://ftp.gnu.org/gnu/m4/
-pass1:
+chapter5:
  - preconfigure: sed -i -e '/gets is a/d' lib/stdio.in.h
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
+build:
  - configure: --prefix=$PREFIX
  - make: ~
  - check: ~
