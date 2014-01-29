@@ -336,11 +336,16 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $filetype = '';
     my $downloadLink = '';
     my @filetypes = getSupportedArchiveFiletypes();
+    my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
+    #print "sed -n \"s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort -V | tail -n 1\n";
+    my $version = `sed -n "s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+    $version  =~ s/^\s+//;
+    $version  =~ s/\s+$//;
+    #print "version: $version\n";
     for (@filetypes) {
-        #my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
         my $filetypesRe = $_;
-        #print "sed -n \"s/^.*$prelink\\([^'\\\"]*${package}[-_]\\?[0-9.]\\+$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/p\" $tmpfile | sort -V | tail -n 1\n";
-        $downloadLink =`sed -n "s/^.*$prelink\\([^'\\"]*$package$versionPattern$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+        #print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort -V | tail -n 1\n";
+        $downloadLink = `sed -n "s/^.*$prelink\\([^'\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
         if ($downloadLink) {
             last;
         }

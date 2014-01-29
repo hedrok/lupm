@@ -1,0 +1,18 @@
+name: flex
+download:
+ - method: sourceforge
+build:
+ - preconfigure: sed -i -e '/test-bison/d' tests/Makefile.in
+ - configure: --prefix=$PREFIX
+              --docdir=/usr/share/doc/flex$PACKAGE_VERSION
+ - make: ~
+ - check: ~
+ - install: ~
+ - lex-wrapper: |
+                cat > /usr/bin/lex << "EOF"
+                #!/bin/sh
+                # Begin /usr/bin/lex
+                exec /usr/bin/flex -l "$@"
+                # End /usr/bin/lex
+                EOF
+                chmod -v 755 /usr/bin/lex;
