@@ -1,0 +1,22 @@
+name: readline
+download:
+ - link: http://ftp.gnu.org/gnu/readline/
+ - name: patches
+   method: wget-multiple
+   link:
+       eval: return "http://ftp.gnu.org/gnu/readline/readline" . $status->{'downloads'}{'readline'}{'version'} . "-patches/"
+   re: <a href=\"\(readline[0-9]\+-[0-9]\+\)\">
+build:
+ - patch:
+    command: for i in $PATCHES_FILENAMES; do
+                patch -Np0 -i $i;
+             done
+    dir: src
+ - preconfigure: sed -i '/MV.*old/d' Makefile.in;
+                 sed -i '/{OLDSUFF}/c:' support/shlib-install;
+ - configure: --prefix=$PREFIX
+ - mk: make SHLIB_LIBS=-lncurses
+ - install: ~
+ - postinstall: mv -v /usr/lib/lib{readline,history}.so.* /lib;
+                ln -sfv ../../lib/$(readlink /usr/lib/libreadline.so) /usr/lib/libreadline.so;
+                ln -sfv ../../lib/$(readlink /usr/lib/libhistory.so ) /usr/lib/libhistory.so;

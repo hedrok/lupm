@@ -191,3 +191,4 @@ buildPackage('m4');
 buildPackage('flex');
 buildPackage('bison');
 buildPackage('grep');
+buildPackage('readline');
