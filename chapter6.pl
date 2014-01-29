@@ -194,3 +194,4 @@ buildPackage('grep');
 buildPackage('readline');
 buildPackage('bash');
 buildPackage('bc');
+buildPackage('libtool');

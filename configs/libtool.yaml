@@ -1,0 +1,8 @@
+name: libtool
+download:
+ - link: http://ftp.gnu.org/gnu/libtool/
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
