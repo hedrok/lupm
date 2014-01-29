@@ -197,3 +197,4 @@ buildPackage('bc');
 buildPackage('libtool');
 buildPackage('gdbm');
 buildPackage('expat');
+buildPackage('inetutils');
