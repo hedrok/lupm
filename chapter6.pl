@@ -196,3 +196,4 @@ buildPackage('bash');
 buildPackage('bc');
 buildPackage('libtool');
 buildPackage('gdbm');
+buildPackage('expat');

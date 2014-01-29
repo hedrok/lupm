@@ -1,0 +1,8 @@
+name: expat
+download:
+ - method: sourceforge
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
