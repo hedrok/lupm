@@ -2,11 +2,33 @@ name: perl
 download:
  - link: http://www.cpan.org/src/
    versionPattern: -\?[0-9]\+\.[0-9]\?[02468].[0-9.]\+
-pass1:
+chapter6:
  - config:
      command: sh $PACKAGE_SRCDIR/Configure -des -Dprefix=$PREFIX -Dusedevel
      dir: src
  - make:
      dir: src
+ - install:
+     dir: src
+root-before:
+ - permissions: chown -h perl:perl /usr/bin/perl
+build:
+ - preconfigure: sed -i -e "s|BUILD_ZLIB\s*= True|BUILD_ZLIB = False|"
+                        -e "s|INCLUDE\s*= ./zlib-src|INCLUDE    = /usr/include|"
+                        -e "s|LIB\s*= ./zlib-src|LIB        = /usr/lib|"
+                        cpan/Compress-Raw-Zlib/config.in
+ - config:
+     command: sh Configure -des -Dprefix=$PREFIX
+                                -Dvendorprefix=$PREFIX
+                                -Dman1dir=$PREFIX/share/man/man1
+                                -Dman3dir=$PREFIX/share/man/man3
+                                -Dpager="/usr/bin/less -isR"
+                                -Duseshrplib
+     dir: src
+ - make:
+     dir: src
+# - tst:
+#     command: make -k test
+#     dir: src
  - install:
      dir: src

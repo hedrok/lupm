@@ -177,9 +177,9 @@ buildPackage('sed');
 buildPackage('bzip2');
 buildPackage('pkg-config');
 buildPackage('ncurses');
-buildPackage('attr');
-buildPackage('acl');
-buildPackage('libcap');
+buildPackage('attr'); #systemd requirement
+buildPackage('acl'); #systemd requirement
+buildPackage('libcap'); #systemd requirement
 buildPackage('shadow');
 buildPackage('util-linux');
 buildPackage('psmisc');
@@ -198,3 +198,4 @@ buildPackage('libtool');
 buildPackage('gdbm');
 buildPackage('expat');
 buildPackage('inetutils');
+buildPackage('perl');
