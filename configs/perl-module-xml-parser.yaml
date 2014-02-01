@@ -1,8 +1,8 @@
-name: Term-ANSIColor
-packagename: perlmod-term-ansicolor
+name: XML-Parser
+packagename: perlmod-xml-parser
 installgroups: perlmod,install
 download:
- - link: http://search.cpan.org/~rra/Term-ANSIColor-4.02/ANSIColor.pm
+ - link: http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/
 build:
  - config:
     dir: src

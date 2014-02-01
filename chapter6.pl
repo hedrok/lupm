@@ -220,5 +220,4 @@ buildPackage('expat');
 buildPackage('inetutils');
 buildPackage('perl');
 buildPackage('perl-module-libyaml');
-#buildPackage('perl-module-term-ansicolor');
-#buildPackage('perl-module-xml-parser');
+buildPackage('perl-module-xml-parser');
