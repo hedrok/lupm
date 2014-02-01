@@ -107,6 +107,24 @@
 # If anything is changed in 'download' section, fullclean is called
 # If anything is changed in some target configuration, 'clean' is called for that target before it is built
 
+BEGIN
+{
+    ITER: {
+        foreach $prefix (@INC) {
+            my $realfilename = "$prefix/YAML/XS.pm";
+            if (-f $realfilename) {
+                last ITER;
+            }
+        }
+        if (-e '/tools/bin/perl') {
+            my @extrapath = split(/:/, `/tools/bin/perl -e 'print join(":", \@INC);'`);
+            push(@INC, @extrapath);
+            print 'new path: ';
+            print join(':', @INC);
+        }
+    }
+}
+
 use Term::ANSIColor;
 use YAML::XS;
 use Data::Dumper;
@@ -131,6 +149,8 @@ sub status {
 }
 
 
+my $defaultStatusName = 'status.yaml';
+
 my $packagedir = '';
 my $configfile = '';
 my $update = '';
@@ -139,7 +159,7 @@ my $fullclean = '';
 my $target = '';
 my $prefix = '';
 my $packageDownloadDir = '';
-my $statusFilename = 'status.yaml';
+my $statusFilename = $defaultStatusName;
 GetOptions(
     'directory|d=s' => \$packagedir,
     'config|c=s' => \$configfile,
@@ -229,9 +249,9 @@ sub fixRelativeLink { #{{{
     my $link = $possiblyRelativeLink;
     if ($possiblyRelativeLink !~ m#^[a-z]+://#) {
         if ($possiblyRelativeLink =~ m#^//#) {
-            $absoluteLink =~ s#([a-z]+:).*#\1#;
+            $absoluteLink =~ s#([a-z]+:).*#$1#;
         } elsif ($possiblyRelativeLink =~ m#^/#) {
-            $absoluteLink =~ s#([a-z]+://[^/]+)/.*#\1#;
+            $absoluteLink =~ s#([a-z]+://[^/]+)/.*#$1#;
         } else {
             $absoluteLink =~ s#\?.*$##;
             $absoluteLink =~ s#/[^/]+$#/#;
@@ -429,21 +449,22 @@ sub getMultipleWget { #($name, $link, $re);
 }
 
 sub exportDownloadVariables {
-    foreach my $packagename (keys %{$status->{'downloads'}}) {
-        if (exists($status->{'downloads'}{$packagename}{'list'})) {
+    my $s = $1;
+    foreach my $packagename (keys %{$s->{'downloads'}}) {
+        if (exists($s->{'downloads'}{$packagename}{'list'})) {
             my @values = ();
-            foreach (@{$status->{'downloads'}{$packagename}{'list'}}) {
+            foreach (@{$s->{'downloads'}{$packagename}{'list'}}) {
                 push(@values, "$_->{'path'}");
             }
             $ENV{"\U${packagename}_FILENAMES"} = join(' ', @values);
         } else {
             my $varname = "\U${packagename}_SRC_DIR";
-            $ENV{$varname} = $status->{'downloads'}{$packagename}{'srcdir'};
+            $ENV{$varname} = $s->{'downloads'}{$packagename}{'srcdir'};
             my $varnamearch = "\U${packagename}_SRC_ARCHIVE";
-            $ENV{$varnamearch} = $status->{'downloads'}{$packagename}{'archive'};
+            $ENV{$varnamearch} = $s->{'downloads'}{$packagename}{'archive'};
             if ($packagename eq $config->{'name'}) {
-                $ENV{'PACKAGE_SRCDIR'} = $status->{'downloads'}{$packagename}{'srcdir'};
-                $ENV{'PACKAGE_VERSION'} = $status->{'downloads'}{$packagename}{'version'};
+                $ENV{'PACKAGE_SRCDIR'} = $s->{'downloads'}{$packagename}{'srcdir'};
+                $ENV{'PACKAGE_VERSION'} = $s->{'downloads'}{$packagename}{'version'};
             }
         }
     }
@@ -577,7 +598,17 @@ if ($target ne 'root-before' && $target ne 'root-after') {
             exit(0);
         }
     }
-    exportDownloadVariables();
+}
+if ($target eq "root-after") {
+   my $normalStatusPath = "$packagedir/$statusFilename";
+    if (-f $normalStatusPath) {
+        my $normalStatus = YAML::XS::LoadFile("$packagedir/$defaultStatusName");
+        if (exists($normalStatus->{'downloads'})) {
+            exportDownloadVariables($normalStatus);
+        }
+    }
+} else {
+    exportDownloadVariables($status);
 }
 $ENV{'PREFIX'} = $prefix;
 

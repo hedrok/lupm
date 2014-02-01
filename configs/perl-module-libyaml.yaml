@@ -1,4 +1,6 @@
 name: YAML-LibYAML
+packagename: perlmod-libyaml
+installgroups: perlmod,install
 download:
  - link: http://search.cpan.org/~ingy/YAML-LibYAML-0.41/lib/YAML/XS.pm
 build:

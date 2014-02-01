@@ -1,3 +1,7 @@
 #!/bin/sh
-chgrp -v install $1
+group=install
+if [ "x" != "x$2" ]; then
+    group=$2
+fi
+chgrp -v $group $1
 chmod -v ug=rwx,o=rxt $1

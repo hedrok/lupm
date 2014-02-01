@@ -1,4 +1,5 @@
 name: Term-ANSIColor
+packagename: perlmod-term-ansicolor
 download:
  - link: http://search.cpan.org/~rra/Term-ANSIColor-4.02/ANSIColor.pm
 build:

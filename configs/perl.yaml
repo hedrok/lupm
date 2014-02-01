@@ -32,3 +32,14 @@ build:
 #     dir: src
  - install:
      dir: src
+root-after:
+ - module-permissions:
+     groupadd -f perlmod;
+     sitefolder="/usr/lib/perl${PACKAGE_VERSION:1:1}/site_perl/${PACKAGE_VERSION:1}";
+     folder="/usr/lib/perl${PACKAGE_VERSION:1:1}/${PACKAGE_VERSION:1}";
+     sitefolder="$sitefolder/"`ls $sitefolder`;
+     folder="$folder/"`ls $folder | grep $(uname -m)`;
+     lupm-dir.sh $sitefolder perlmod;
+     touch $folder/perllocal.pod;
+     chgrp -v perlmod $folder/perllocal.pod;
+     chmod -v g+w $folder/perllocal.pod;
