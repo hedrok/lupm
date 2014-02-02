@@ -1,8 +1,14 @@
 name: xz
 download:
  - link: http://tukaani.org/xz/
-pass1:
+build:
  - configure: --prefix=$PREFIX
+              --docdir=$PREFIX/share/doc/xz$PACKAGE_VERSION
  - make: ~
  - check: ~
  - install: ~
+ - postinstall: if [ "z$PREFIX" == "z/usr" ]; then
+                    mv -v /usr/bin/{lzcat,lzma,unlzma,unxz,xz,xzcat} /bin;
+                    mv -v /usr/lib/liblzma.so.* /lib;
+                    ln -svf ../../lib/$(readlink /usr/lib/liblzma.so) /usr/lib/liblzma.so;
+                fi;

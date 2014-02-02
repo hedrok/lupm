@@ -230,3 +230,4 @@ buildPackage('gettext');
 buildPackage('intltool');
 buildPackage('gperf');
 buildPackage('groff');
+buildPackage('xz');

@@ -79,7 +79,7 @@ buildPackage('perl', 'perl', 'chapter5');
 buildPackage('sed', 'sed', 'chapter5');
 buildPackage('tar', 'tar', 'pass1');
 buildPackage('texinfo', 'texinfo', 'pass1');
-buildPackage('xz', 'xz', 'pass1');
+buildPackage('xz', 'xz', 'build');
 # Additional to LFS (needed by my scripts and user package management):
 buildPackage('coreutils-su', 'coreutils-su', 'build');
 buildPackage('perl-module-libyaml', 'perl-module-libyaml', 'build');
