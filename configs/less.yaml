@@ -1,0 +1,8 @@
+name: less
+download:
+ - link: http://www.greenwoodsoftware.com/less/download.html
+build:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+ - make: ~
+ - install: ~
