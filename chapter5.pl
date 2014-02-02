@@ -67,7 +67,7 @@ buildPackage('bzip2', 'bzip2', 'chapter5');
 buildPackage('coreutils', 'coreutils', 'chapter5');
 buildPackage('diffutils', 'diffutils', 'chapter5');
 buildPackage('file', 'file', 'build');
-buildPackage('findutils', 'findutils', 'pass1');
+buildPackage('findutils', 'findutils', 'chapter5');
 buildPackage('gawk', 'gawk', 'chapter5');
 buildPackage('gettext', 'gettext', 'pass1');
 buildPackage('grep', 'grep', 'pass1');

@@ -225,3 +225,4 @@ buildPackage('autoconf');
 buildPackage('automake');
 buildPackage('diffutils');
 buildPackage('gawk');
+buildPackage('findutils');

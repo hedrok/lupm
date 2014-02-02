@@ -1,8 +1,15 @@
 name: findutils
 download:
  - link: http://ftp.gnu.org/gnu/findutils/
-pass1:
+chapter5:
  - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
+build:
+ - configure: --prefix=$PREFIX
+              --libexecdir=$PREFIX/lib/findutils
+              --localstatedir=/var/lib/locate
  - make: ~
  - check: ~
  - install: ~
