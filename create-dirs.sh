@@ -4,7 +4,7 @@ install -dv -m 0750 /root
 install -dv -m 1777 /tmp /var/tmp
 mkdir -pv /usr/{bin,include,lib,sbin,src}
 mkdir -pv /usr/share/{doc,info,locale,man}
-mkdir -v  /usr/share/{misc,terminfo,zoneinfo}
+mkdir -v  /usr/share/{misc,zoneinfo}
 mkdir -pv /usr/share/man/man{1..8}
 mkdir -v /usr/lib/pkgconfig
 ln -sv share/{man,doc,info} /usr
