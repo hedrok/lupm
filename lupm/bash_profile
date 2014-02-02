@@ -4,6 +4,7 @@
 set +h
 
 export PATH=/usr/src/scripts/lupm:/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin
+export MAKEFLAGS="-j 6"
 
 # Make prompt reflect that we are a package user.
 export PROMPT_COMMAND='PS1="package \u:"`pwd`"> "'
