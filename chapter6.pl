@@ -226,3 +226,4 @@ buildPackage('automake');
 buildPackage('diffutils');
 buildPackage('gawk');
 buildPackage('findutils');
+buildPackage('gettext');

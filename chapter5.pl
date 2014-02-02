@@ -69,7 +69,7 @@ buildPackage('diffutils', 'diffutils', 'chapter5');
 buildPackage('file', 'file', 'build');
 buildPackage('findutils', 'findutils', 'chapter5');
 buildPackage('gawk', 'gawk', 'chapter5');
-buildPackage('gettext', 'gettext', 'pass1');
+buildPackage('gettext', 'gettext', 'chapter5');
 buildPackage('grep', 'grep', 'pass1');
 buildPackage('gzip', 'gzip', 'pass1');
 buildPackage('m4', 'm4', 'chapter5');

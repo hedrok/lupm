@@ -1,7 +1,7 @@
 name: gettext
 download:
  - link: http://ftp.gnu.org/gnu/gettext/
-pass1:
+chapter5:
  - configure:
      command: EMACS="no" $PACKAGE_SRCDIR/gettext-tools/configure --prefix=$PREFIX --disable-shared
  - gnulib: make -C gnulib-lib
@@ -9,3 +9,9 @@ pass1:
  - msgmerge: make -C src msgmerge
  - xgettext: make -C src xgettext
  - cinstall: cp -v src/{msgfmt,msgmerge,xgettext} $PREFIX/bin
+build:
+ - configure: --prefix=$PREFIX
+              --docdir=/usr/share/doc/gettext$PACKAGE_VERSION
+ - make: ~
+ - check: ~
+ - install: ~
