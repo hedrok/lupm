@@ -234,3 +234,4 @@ buildPackage('xz');
 buildPackage('grub');
 buildPackage('less');
 buildPackage('gzip');
+buildPackage('iproute2');

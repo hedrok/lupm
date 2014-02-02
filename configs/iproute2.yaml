@@ -1,0 +1,16 @@
+name: iproute2
+download:
+ - link: http://www.kernel.org/pub/linux/utils/net/iproute2/
+build:
+ - preconfigure: sed -i '/^TARGETS/s@arpd@@g' misc/Makefile;
+                 sed -i /ARPD/d Makefile;
+                 sed -i 's/arpd.8//' man/man8/Makefile;
+ - make:
+    params: DESTDIR=
+    dir: src
+ - install:
+    command: make DESTDIR=
+                  MANDIR=$PREFIX/share/man
+                  DOCDIR=$PREFIX/share/doc/iproute2$PACKAGE_VERSION
+                  install
+    dir: src
