@@ -32,8 +32,8 @@ while true ; do
     _4755) arg=755 ; report=1; doit=1 ;;
     _4555) arg=555 ; report=1; doit=1 ;;
     *)
-      if [ -e $arg ]; then
-          group=$(stat -c %G $arg)
+      if [ -e "$arg" ]; then
+          group=$(stat -c %G "$arg")
           if [ "x$group" == "xinstall" ]; then
             echo 1>&2 "$reportmsg; Refused to change for install group"
             exit 0
