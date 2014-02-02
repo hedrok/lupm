@@ -1,8 +1,16 @@
 name: gzip
 download:
  - link: http://ftp.gnu.org/gnu/gzip/
-pass1:
+chapter5:
  - configure: --prefix=$PREFIX
  - make: ~
  - check: ~
  - install: ~
+build:
+ - configure: --prefix=$PREFIX
+              --bindir=/bin
+ - make: ~
+ - check: ~
+ - install: ~
+ - postinstall: mv -v /bin/{gzexe,uncompress,zcmp,zdiff,zegrep} /usr/bin;
+                mv -v /bin/{zfgrep,zforce,zgrep,zless,zmore,znew} /usr/bin;

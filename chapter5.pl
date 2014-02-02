@@ -71,7 +71,7 @@ buildPackage('findutils', 'findutils', 'chapter5');
 buildPackage('gawk', 'gawk', 'chapter5');
 buildPackage('gettext', 'gettext', 'chapter5');
 buildPackage('grep', 'grep', 'pass1');
-buildPackage('gzip', 'gzip', 'pass1');
+buildPackage('gzip', 'gzip', 'chapter5');
 buildPackage('m4', 'm4', 'chapter5');
 buildPackage('make', 'make', 'pass1');
 buildPackage('patch', 'patch', 'pass1');
