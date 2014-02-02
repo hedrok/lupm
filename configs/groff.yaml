@@ -1,0 +1,13 @@
+name: groff
+download:
+ - link: http://ftp.gnu.org/gnu/groff/
+build:
+ - configure:
+    vars: PAGE=A4
+    params: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - preinstall: mkdir -pv /usr/share/doc/groff$PACKAGE_SRCDIR/pdf
+ - install: ~
+ - postinstall: ln -sv eqn /usr/bin/geqn;
+                ln -sv tbl /usr/bin/gtbl;

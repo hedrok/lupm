@@ -229,3 +229,4 @@ buildPackage('findutils');
 buildPackage('gettext');
 buildPackage('intltool');
 buildPackage('gperf');
+buildPackage('groff');
