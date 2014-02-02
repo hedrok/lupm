@@ -449,7 +449,7 @@ sub getMultipleWget { #($name, $link, $re);
 }
 
 sub exportDownloadVariables {
-    my $s = $1;
+    my $s = shift(@_);
     foreach my $packagename (keys %{$s->{'downloads'}}) {
         if (exists($s->{'downloads'}{$packagename}{'list'})) {
             my @values = ();
