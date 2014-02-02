@@ -231,3 +231,4 @@ buildPackage('intltool');
 buildPackage('gperf');
 buildPackage('groff');
 buildPackage('xz');
+buildPackage('grub');
