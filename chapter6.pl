@@ -228,3 +228,4 @@ buildPackage('gawk');
 buildPackage('findutils');
 buildPackage('gettext');
 buildPackage('intltool');
+buildPackage('gperf');
