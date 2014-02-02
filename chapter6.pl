@@ -223,3 +223,5 @@ buildPackage('perl-module-libyaml');
 buildPackage('perl-module-xml-parser');
 buildPackage('autoconf');
 buildPackage('automake');
+buildPackage('diffutils');
+buildPackage('gawk');
