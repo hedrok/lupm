@@ -221,3 +221,4 @@ buildPackage('inetutils');
 buildPackage('perl');
 buildPackage('perl-module-libyaml');
 buildPackage('perl-module-xml-parser');
+buildPackage('autoconf');

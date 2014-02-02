@@ -1,0 +1,8 @@
+name: autoconf
+download:
+ - link: http://ftp.gnu.org/gnu/autoconf/
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
