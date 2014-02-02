@@ -227,3 +227,4 @@ buildPackage('diffutils');
 buildPackage('gawk');
 buildPackage('findutils');
 buildPackage('gettext');
+buildPackage('intltool');

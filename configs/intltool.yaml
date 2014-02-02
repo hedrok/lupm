@@ -1,0 +1,10 @@
+name: intltool
+download:
+ - link: https://launchpad.net/intltool/+download
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
+ - install-doc: install -v -Dm644 $PACKAGE_SRCDIR/doc/I18N-HOWTO \
+                /usr/share/doc/intltool$PACKAGE_VERSION/I18N-HOWTO
