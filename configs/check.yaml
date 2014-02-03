@@ -1,7 +1,7 @@
 name: check
 download:
  - method: sourceforge
-pass1:
+build:
  - configure: --prefix=$PREFIX
  - make: ~
  - check: ~

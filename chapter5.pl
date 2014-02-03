@@ -60,7 +60,7 @@ buildPackage('gcc-pass2', 'gcc', 'pass2');
 buildPackage('tcl', 'tcl', 'pass1');
 buildPackage('expect', 'expect', 'pass1');
 buildPackage('dejagnu', 'dejagnu', 'pass1');
-buildPackage('check', 'check', 'pass1');
+buildPackage('check', 'check', 'build');
 buildPackage('ncurses', 'ncurses', 'chapter5');
 buildPackage('bash', 'bash', 'chapter5');
 buildPackage('bzip2', 'bzip2', 'chapter5');

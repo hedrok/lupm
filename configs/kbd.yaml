@@ -1,0 +1,13 @@
+name: kbd
+download:
+ - link: http://ftp.altlinux.org/pub/people/legion/kbd/
+build:
+ - preconfigure: sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure;
+                 sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in;
+ - configure: --prefix=$PREFIX
+              --disable-vlock
+ - make: ~
+ - check: ~
+ - install: ~
+ - postinstall: mkdir -pv      /usr/share/doc/kbd$PACKAGE_VERSION;
+                cp -R -v $PACKAGE_SRCDIR/docs/doc/* /usr/share/doc/kbd$PACKAGE_VERSION;

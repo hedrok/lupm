@@ -235,3 +235,5 @@ buildPackage('grub');
 buildPackage('less');
 buildPackage('gzip');
 buildPackage('iproute2');
+buildPackage('check');
+buildPackage('kbd');
