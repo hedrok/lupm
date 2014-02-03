@@ -248,3 +248,4 @@ buildPackage('systemd');
 buildPackage('dbus');
 buildPackage('tar');
 buildPackage('texinfo');
+buildPackage('vim');

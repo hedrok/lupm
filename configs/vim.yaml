@@ -1,0 +1,25 @@
+name: vim
+download:
+ - link: ftp://ftp.vim.org/pub/vim/unix/
+build:
+ - sourcedir: ln -svf vim${PACKAGE_VERSION:1:1}${PACKAGE_VERSION:3:1} ~/source/vim$PACKAGE_VERSION
+ - preconfigure: |
+                 str='#define SYS_VIMRC_FILE "/etc/vimrc"'
+                 #'
+                 if [ $(tail -n 1 src/feature.h) != "$str" ]; then
+                    echo "$str" >> src/feature.h;
+                 fi;
+ - configure:
+    params: --prefix=$PREFIX --enable-multibyte;
+    dir: src
+ - make:
+    dir: src
+ - test:
+    vars: MAKEFLAGS=
+    command: make test 2>&1 > test.log
+    dir: src
+ - install:
+    dir: src
+ - postinstall:
+    command: ln -sv ../vim/vim${PACKAGE_VERSION:1:1}${PACKAGE_VERSION:3:1}/doc /usr/share/doc/vim$PACKAGE_VERSION
+    dir: src
