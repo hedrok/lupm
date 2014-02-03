@@ -1,7 +1,7 @@
 name: patch
 download:
  - link: http://ftp.gnu.org/gnu/patch/
-pass1:
+build:
  - configure: --prefix=$PREFIX
  - make: ~
  - check: ~

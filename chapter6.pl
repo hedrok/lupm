@@ -241,3 +241,4 @@ buildPackage('kmod');
 buildPackage('libpipeline');
 buildPackage('make');
 buildPackage('man-db');
+buildPackage('patch');

@@ -74,7 +74,7 @@ buildPackage('grep', 'grep', 'pass1');
 buildPackage('gzip', 'gzip', 'chapter5');
 buildPackage('m4', 'm4', 'chapter5');
 buildPackage('make', 'make', 'build');
-buildPackage('patch', 'patch', 'pass1');
+buildPackage('patch', 'patch', 'build');
 buildPackage('perl', 'perl', 'chapter5');
 buildPackage('sed', 'sed', 'chapter5');
 buildPackage('tar', 'tar', 'pass1');
