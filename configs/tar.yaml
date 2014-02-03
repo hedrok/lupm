@@ -1,9 +1,18 @@
 name: tar
 download:
  - link: http://ftp.gnu.org/gnu/tar/
-pass1:
+chapter5:
  - preconfigure: sed -i -e '/gets is a/d' gnu/stdio.in.h
  - configure: --prefix=$PREFIX
  - make: ~
  - check: ~
  - install: ~
+build:
+ - configure: --prefix=$PREFIX
+              --bindir=/bin
+              --libexecdir=/usr/sbin
+ - make: ~
+ - check: ~
+ - install: ~
+ - install-html: make -C doc install-html docdir=/usr/share/doc/tar$PACKAGE_VERSION
+#- man: perl tarman > /usr/share/man/man1/tar.1

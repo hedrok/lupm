@@ -246,3 +246,4 @@ buildPackage('patch');
 buildPackage('libdbus');
 buildPackage('systemd');
 buildPackage('dbus');
+buildPackage('tar');

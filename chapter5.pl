@@ -77,7 +77,7 @@ buildPackage('make', 'make', 'build');
 buildPackage('patch', 'patch', 'build');
 buildPackage('perl', 'perl', 'chapter5');
 buildPackage('sed', 'sed', 'chapter5');
-buildPackage('tar', 'tar', 'pass1');
+buildPackage('tar', 'tar', 'chapter5');
 buildPackage('texinfo', 'texinfo', 'pass1');
 buildPackage('xz', 'xz', 'build');
 # Additional to LFS (needed by my scripts and user package management):
