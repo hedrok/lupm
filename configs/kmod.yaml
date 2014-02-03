@@ -1,0 +1,18 @@
+name: kmod
+download:
+ - link: http://www.kernel.org/pub/linux/utils/kernel/kmod/
+build:
+ - configure: --prefix=$PREFIX
+              --bindir=/bin
+              --sysconfdir=/etc
+              --disable-manpages
+              --with-rootlibdir=/lib
+              --with-xz
+              --with-zlib
+ - make: ~
+ - check: ~
+ - install: ~
+ - postinstall: for target in depmod insmod modinfo modprobe rmmod; do
+                    ln -sv ../bin/kmod /sbin/$target;
+                done;
+                ln -sv kmod /bin/lsmod;
