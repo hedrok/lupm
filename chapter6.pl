@@ -240,3 +240,4 @@ buildPackage('kbd');
 buildPackage('kmod');
 buildPackage('libpipeline');
 buildPackage('make');
+buildPackage('man-db');

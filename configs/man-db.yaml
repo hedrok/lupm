@@ -1,0 +1,16 @@
+name: man-db
+download:
+ - link: http://download.savannah.gnu.org/releases/man-db/
+build:
+ - configure: --prefix=$PREFIX
+              --libexecdir=$PREFIX/lib
+              --docdir=$PREFIX/share/doc/man-db$PACKAGE_VERSION
+              --sysconfdir=/etc
+              --disable-setuid
+              --with-browser=/usr/bin/lynx
+              --with-vgrind=/usr/bin/vgrind
+              --with-grap=/usr/bin/grap
+
+ - make: ~
+ - check: ~
+ - install: ~
