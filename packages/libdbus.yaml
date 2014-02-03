@@ -1,0 +1,4 @@
+name: libdbus
+username: dbus
+target: libdbus
+configname: dbus

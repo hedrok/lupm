@@ -242,3 +242,5 @@ buildPackage('libpipeline');
 buildPackage('make');
 buildPackage('man-db');
 buildPackage('patch');
+# part of dbus package
+buildPackage('libdbus');

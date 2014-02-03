@@ -1,0 +1,18 @@
+name: dbus
+download:
+ - link: http://dbus.freedesktop.org/releases/dbus/
+libdbus:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+              --localstatedir=/var
+              --libexecdir=/usr/lib/dbus-1.0
+              --disable-static
+ - make:  -C dbus libdbus-1.la
+ - inst: make -C dbus lib_LTLIBRARIES=libdbus-1.la
+              install-libLTLIBRARIES
+              install-dbusincludeHEADERS
+              install-nodist_dbusarchincludeHEADERS;
+         make install-pkgconfigDATA
+ - postinstall: mv -v /usr/lib/libdbus-1.so.* /lib;
+                ln -sfv ../../lib/$(readlink /usr/lib/libdbus-1.so) /usr/lib/libdbus-1.so;
+
