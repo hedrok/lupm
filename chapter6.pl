@@ -238,3 +238,4 @@ buildPackage('iproute2');
 buildPackage('check');
 buildPackage('kbd');
 buildPackage('kmod');
+buildPackage('libpipeline');

@@ -1,0 +1,8 @@
+name: libpipeline
+download:
+ - link: http://download.savannah.gnu.org/releases/libpipeline/
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~
