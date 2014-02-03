@@ -1,7 +1,7 @@
 name: make
 download:
  - link: http://ftp.gnu.org/gnu/make/
-pass1:
+build:
  - configure: --prefix=$PREFIX
  - make: ~
  - check: ~

@@ -239,3 +239,4 @@ buildPackage('check');
 buildPackage('kbd');
 buildPackage('kmod');
 buildPackage('libpipeline');
+buildPackage('make');
