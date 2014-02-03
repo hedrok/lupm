@@ -25,3 +25,18 @@ build:
                 ln -sfv ../lib/systemd/systemd /sbin/init;
                 sed -i "s@0775 root lock@0755 root root@g" /usr/lib/tmpfiles.d/legacy.conf;
                 systemd-machine-id-setup;
+root-after:
+ - permissions: groupadd -f systemdinstall;
+                lupm-dir.sh /lib/systemd/system/ systemdinstall;
+                lupm-dir.sh /lib/systemd/system/sockets.target.wants/ systemdinstall;
+                lupm-dir.sh /lib/systemd/system/dbus.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/local-fs.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/multi-user.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/runlevel1.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/runlevel2.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/runlevel3.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/runlevel4.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/runlevel5.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/sockets.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/sysinit.target.wants systemdinstall;
+                lupm-dir.sh /lib/systemd/system/timers.target.wants systemdinstall;
