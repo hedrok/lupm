@@ -244,3 +244,4 @@ buildPackage('man-db');
 buildPackage('patch');
 # part of dbus package
 buildPackage('libdbus');
+buildPackage('systemd');

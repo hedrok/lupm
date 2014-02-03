@@ -1,0 +1,27 @@
+name: systemd
+download:
+ - link: http://www.freedesktop.org/software/systemd/
+build:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+              --localstatedir=/var
+              --libexecdir=/usr/lib
+              --docdir=/usr/share/doc/systemd$PACKAGE_VERSION
+              --with-rootprefix=
+              --with-rootlibdir=/lib
+              --enable-split-usr
+              --disable-gudev
+              --without-python
+ - make: ~
+ - install: ~
+ - mans: for cat in 1 3 5 7 8 ;
+         do
+            install -v -m644 $PACKAGE_SRCDIR/man/*.${cat} $PREFIX/share/man/man${cat};
+         done
+ - postinstall: mv -v /usr/lib/libnss_myhostname.so.2 /lib;
+                for tool in runlevel reboot shutdown poweroff halt telinit; do
+                    ln -sfv ../bin/systemctl /sbin/${tool};
+                done;
+                ln -sfv ../lib/systemd/systemd /sbin/init;
+                sed -i "s@0775 root lock@0755 root root@g" /usr/lib/tmpfiles.d/legacy.conf;
+                systemd-machine-id-setup;
