@@ -30,3 +30,9 @@ build:
               --with-installed-readline
  - make: ~
  - install: ~
+root-after:
+ - permissions: if [ "z$PREFIX" = "z/usr" ]; then
+                    mkdir -pv /usr/share/bash-completion/completions/;
+                    chown bash /usr/share/bash-completion/completions/;
+                fi;
+                lupm-dir.sh /usr/share/bash-completion/completions/;
