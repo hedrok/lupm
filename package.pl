@@ -716,6 +716,9 @@ if (!(   ($status->{'_prevconfig'}{$target} ~~ $config->{$target})
     $status->{'_prevconfig'}{$target} = $config->{$target};
     YAML::XS::DumpFile("$statusPath", $status);
 }
+if (!exists($config->{$target})) {
+    error("Target '$target' does not exist\n");
+}
 foreach (@{$config->{$target}}) {
     my $key;
     my $value;
