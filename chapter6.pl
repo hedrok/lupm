@@ -250,3 +250,4 @@ buildPackage('tar');
 buildPackage('texinfo');
 buildPackage('vim');
 buildPackage('openssl');
+buildPackage('wget');

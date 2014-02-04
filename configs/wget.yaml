@@ -1,7 +1,11 @@
 name: wget
 download:
  - link: http://ftp.gnu.org/gnu/wget/
-build:
+chapter5:
  - configure: --prefix=$PREFIX --with-ssl=openssl
+ - make: ~
+ - install: ~
+build:
+ - configure: --prefix=$PREFIX --with-ssl=openssl --sysconfdir=/etc
  - make: ~
  - install: ~
