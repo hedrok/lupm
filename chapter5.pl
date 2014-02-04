@@ -85,5 +85,5 @@ buildPackage('coreutils-su', 'coreutils-su', 'build');
 buildPackage('perl-module-libyaml', 'perl-module-libyaml', 'build');
 buildPackage('perl-module-term-ansicolor', 'perl-module-term-ansicolor', 'build');
 buildPackage('zlib', 'zlib', 'chapter5');
-buildPackage('openssl', 'openssl', 'pass1');
+buildPackage('openssl', 'openssl', 'chapter5');
 buildPackage('wget', 'wget', 'build');

@@ -2,13 +2,29 @@ name: openssl
 download:
  - link: http://www.openssl.org/source/
    versionPattern: -\\?[0-9.]\\+[a-z]\\?
-pass1:
+chapter5:
  - configure:
     command: $PACKAGE_SRCDIR/config
     params: --prefix=$PREFIX --openssldir=$PREFIX/etc/ssl --libdir=lib shared zlib-dynamic
     vars: MAKEFLAGS=''
     dir: src
  - make:
+    vars: MAKEFLAGS=''
+    dir: src
+ - install:
+    vars: MAKEFLAGS=''
+    dir: src
+build:
+ - preconfigure: find doc/ -name '*.pod' -exec sed -i 's/^=item \([0-9]\)/=item C<\1>/' {} \;
+ - configure:
+    command: $PACKAGE_SRCDIR/config
+    params: --prefix=$PREFIX --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
+    vars: MAKEFLAGS=''
+    dir: src
+ - make:
+    vars: MAKEFLAGS=''
+    dir: src
+ - test:
     vars: MAKEFLAGS=''
     dir: src
  - install:
