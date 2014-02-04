@@ -1,0 +1,10 @@
+name: chapter5
+root-before:
+ - permissions: chown -R chapter5:chapter5 /tools-build /tools
+ - rmlink: rm /scripts
+build:
+ - move: mkdir -p ~/tools ~/tools-build;
+         mv /tools/* ~/tools;
+         mv /tools-build/* ~/tools-build
+root-after:
+ - clean-tools: rmdir /tools /tools-build

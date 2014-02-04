@@ -251,3 +251,5 @@ buildPackage('texinfo');
 buildPackage('vim');
 buildPackage('openssl');
 buildPackage('wget');
+#move /tools /tools-build
+buildPackage('chapter5');
