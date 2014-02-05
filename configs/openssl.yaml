@@ -30,3 +30,6 @@ build:
  - install:
     vars: MAKEFLAGS=''
     dir: src
+root-after:
+ - certs: groupadd -f sslcertsinstall;
+          lupm-dir.sh /etc/ssl sslcertsinstall;

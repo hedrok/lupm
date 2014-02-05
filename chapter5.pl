@@ -86,4 +86,5 @@ buildPackage('perl-module-libyaml', 'perl-module-libyaml', 'build');
 buildPackage('perl-module-term-ansicolor', 'perl-module-term-ansicolor', 'build');
 buildPackage('zlib', 'zlib', 'chapter5');
 buildPackage('openssl', 'openssl', 'chapter5');
+buildPackage('sslcerts', 'sslcerts', 'build');
 buildPackage('wget', 'wget', 'chapter5');

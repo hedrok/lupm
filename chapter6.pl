@@ -250,6 +250,10 @@ buildPackage('tar');
 buildPackage('texinfo');
 buildPackage('vim');
 buildPackage('openssl');
+buildPackage('sslcerts');
 buildPackage('wget');
 #move /tools /tools-build
 buildPackage('chapter5');
+
+#chapter8
+#buildPackage('linux');
