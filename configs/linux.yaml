@@ -23,8 +23,18 @@ build:
     command: make mrproper;
     dir: src
  - config:
-    command: cp -v .config{,.bak};
-             cp -v ~/kernel-config .config;
+    command: if [ -f ~/kernel-config ]; then
+                 cp -v .config{,.bak};
+                 cp -v ~/kernel-config .config;
+             else
+                 echo "#su to linux user and configure kernel:";
+                 echo "su linux;";
+                 echo "cd ~/source/linux*";
+                 echo "make menuconfig";
+                 echo "#copy .config to ~/kernel-config";
+                 echo "cp .config ~/kernel-config";
+                 echo "#rerun lupm script";
+             fi
     dir: src
  - make:
     dir: src
