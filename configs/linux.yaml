@@ -1,4 +1,8 @@
 name: linux
+installgroups: install,boot
+root-before:
+ - permissions: groupadd -f boot;
+                lupm-dir.sh /boot boot;
 download:
  - link: http://www.kernel.org/
 headers:
@@ -14,3 +18,43 @@ headers:
  - install:
     command: cp -rv dest/include/* $PREFIX/include;
     dir: src
+build:
+ - clean:
+    command: make mrproper;
+    dir: src
+ - config:
+    command: cp -v .config{,.bak};
+             cp -v ~/kernel-config .config;
+    dir: src
+ - make:
+    dir: src
+ - modules-install:
+    command: make modules_install;
+    dir: src
+ - backup-kernel:
+    command: mkdir -p /boot/backup;
+             if [ -f /boot/vmlinuz* ]; then
+                 cp -v /boot/vmlinuz* /boot/backup;
+                 cp -v /boot/System.map* /boot/backup;
+                 cp -v /boot/config* /boot/backup;
+            fi
+    dir: src
+ - install-kernel:
+    command: cp -v arch/x86/boot/bzImage /boot/vmlinuz$PACKAGE_VERSION-lfs-SYSTEMD-LUPM;
+             cp -v System.map /boot/System.map$PACKAGE_VERSION;
+             cp -v .config /boot/config$PACKAGE_VERSION;
+    dir: src
+ - install-documentation:
+    command: install -d /usr/share/doc/linux$PACKAGE_VERSION;
+             cp -r Documentation/* /usr/share/doc/linux$PACKAGE_VERSION;
+    dir: src
+ - module-order: |
+                 install -v -m755 -d /etc/modprobe.d;
+                 cat > /etc/modprobe.d/usb.conf << "EOF"
+                 # Begin /etc/modprobe.d/usb.conf
+                 
+                 install ohci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i ohci_hcd ; true
+                 install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true
+                 
+                 # End /etc/modprobe.d/usb.conf
+                 EOF

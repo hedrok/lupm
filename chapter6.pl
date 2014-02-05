@@ -256,4 +256,4 @@ buildPackage('wget');
 buildPackage('chapter5');
 
 #chapter8
-#buildPackage('linux');
+buildPackage('linux');
