@@ -34,3 +34,7 @@ build:
  - postinstall: mv -v /usr/lib/libdbus-1.so.* /lib;
                 ln -sfv ../../lib/$(readlink /usr/lib/libdbus-1.so) /usr/lib/libdbus-1.so;
                 ln -sv /etc/machine-id /var/lib/dbus;
+root-after:
+ - permissions: groupadd -f dbusinstall;
+                lupm-dir.sh /usr/share/dbus-1/system-services/ dbusinstall;
+                lupm-dir.sh /etc/dbus-1/system.d/ dbusinstall;
