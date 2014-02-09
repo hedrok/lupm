@@ -390,10 +390,11 @@ sub getVersionByLink {
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = join("|", @filetypes);
     print "filetypesRe: $filetypesRe\n";
-    $link =~ /$package(.*)$suffix\.($filetypesRe)/;
+    $link =~ /$package([^\/]*)$suffix\.($filetypesRe)/;
     my $version = $1;
     my $filetype = $2;
     my $packageFilename = "$package$version$suffix.$filetype";
+    print "package: $package, version: $version, suffix: $suffix, filetype: $filetype, result: $packageFilename\n";
 
     return ($packageFilename, $filetype, $link, $version);
 }
