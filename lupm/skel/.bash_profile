@@ -1,1 +1,1 @@
-/usr/src/scripts/lupm/bash_profile
+/usr/src/lupm/lupm/bash_profile

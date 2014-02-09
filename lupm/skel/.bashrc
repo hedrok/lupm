@@ -1,1 +1,1 @@
-/usr/src/scripts/lupm/bashrc
+/usr/src/lupm/lupm/bashrc
