@@ -291,6 +291,7 @@ testFixRelativeLink();
 sub getLinkFolderWget { #{{{
     my $link = shift(@_);
     my $package = shift(@_);
+    my $suffix = shift(@_);
     my $downloaddir = "$packagedir/download";
     system("mkdir -p $downloaddir") == 0
         or error("Couldn't create directory $downloaddir");
@@ -298,7 +299,7 @@ sub getLinkFolderWget { #{{{
     message("Trying to get $link to $tmpfile\n");
     system("wget -O $tmpfile \"$link\"") == 0
         or error("Couldn't download list from '$link' to '$tmpfile'\n");
-    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-\\?[0-9.]\\+\\/\\?\\)[\\"'].*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-\\?[0-9.]\\+$suffix\\/\\?\\)[\\"'].*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
     $flink =~ s/^\s+//;
     $flink =~ s/\s+$//;
     if ($flink eq '') {
@@ -346,6 +347,7 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $prelink = $params->{'prelink'} // "href=[\\\"']";
     my $postlink = $params->{'postlink'} // "[\\\"']";
     my $versionPattern = $params->{'versionPattern'} // '[-_]\\?[0-9.]\\+';
+    my $sortmethod = $params->{'sortmethod'} // '-V';
     my $downloaddir = "$packagedir/download";
     system("mkdir -p $downloaddir") == 0
         or error("Couldn't create directory $downloaddir");
@@ -358,15 +360,15 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $downloadLink = '';
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
-    print "sed -n \"s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort -V | tail -n 1\n";
-    my $version = `sed -n "s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+    print "sed -n \"s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
+    my $version = `sed -n "s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
     $version  =~ s/^\s+//;
     $version  =~ s/\s+$//;
     print "version: $version\n";
     for (@filetypes) {
         my $filetypesRe = $_;
-        print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort -V | tail -n 1\n";
-        $downloadLink = `sed -n "s/^.*$prelink\\([^'\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+        print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
+        $downloadLink = `sed -n "s/^.*$prelink\\([^'\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
         if ($downloadLink) {
             last;
         }
@@ -508,6 +510,15 @@ if ($target ne 'root-before' && $target ne 'root-after') {
             if (exists($_->{'versionPattern'})) {
                 $wgetParams->{'versionPattern'} = $_->{'versionPattern'};
             }
+            if (exists($_->{'prelink'})) {
+                $wgetParams->{'prelink'} = $_->{'prelink'};
+            }
+            if (exists($_->{'postlink'})) {
+                $wgetParams->{'postlink'} = $_->{'postlink'};
+            }
+            if (exists($_->{'sortmethod'})) {
+                $wgetParams->{'sortmethod'} = $_->{'sortmethod'};
+            }
             if (exists($status->{'downloads'}{$name}{'downloaded'}) && ($status->{'downloads'}{$name}{'downloaded'} eq '1') && !$update) {
                 next;
             }
@@ -517,7 +528,8 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                     error("No link provided for download of $name (wget-folder)");
                 }
                 my $n = $_->{'wget-folder-name'} // $name;
-                $wgetParams->{'link'} = getLinkFolderWget($link, $n);
+                my $suffix = $_->{'wget-folder-suffix'} // '';
+                $wgetParams->{'link'} = getLinkFolderWget($link, $n, $suffix);
                 if (!$wgetParams->{'link'}) {
                     error("Couldn't get last version from folder $link, $name");
                 }
@@ -525,9 +537,10 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                 $method = 'wget';
             }
             if ($method eq 'sourceforge') {
-                $wgetParams->{'link'} = getLinkSourceForge($name);
+                my $n = $_->{'sourceforge-name'} // $name;
+                $wgetParams->{'link'} = getLinkSourceForge($n);
                 if (!$wgetParams->{'link'}) {
-                    error("Couldn't get last version from sourceforge $link, $name");
+                    error("Couldn't get last version from sourceforge $link, $n");
                 }
                 $wgetParams->{'posturl'} = '\\/download';
                 $wgetParams->{'prelink'} = '<link>';
