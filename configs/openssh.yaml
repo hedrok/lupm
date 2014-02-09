@@ -1,0 +1,25 @@
+name: openssh
+download:
+ - link: http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/
+   versionPattern: -[0-9.]\\+p[0-9]
+root-before:
+- config-server: install -v -m700 -d /var/lib/sshd;
+                 chown   -v root:sys /var/lib/sshd;
+                 groupadd -g 50 sshd;
+                 useradd -c 'sshd PrivSep' -d /var/lib/sshd -g sshd -s /bin/false -u 50 sshd;
+build:
+ - configure: --prefix=$PREFIX
+              --libexecdir=$PREFIX/lib/openssh
+              --sysconfdir=/etc/ssh
+              --datadir=$PREFIX/share/sshd
+              --with-md5-passwords
+              --with-privsep-path=/var/lib/sshd
+ - make: ~
+#- tests: make tests
+ - install: ~
+ - postinstall:
+    command: install -v -m755 contrib/ssh-copy-id $PREFIX/bin;
+             install -v -m644 contrib/ssh-copy-id.1 $PREFIX/share/man/man1;
+             install -v -m755 -d /usr/share/doc/openssh$PACKAGE_VERSION;
+             install -v -m644 INSTALL LICENCE OVERVIEW README* /usr/share/doc/openssh$PACKAGE_VERSION;
+    dir: src

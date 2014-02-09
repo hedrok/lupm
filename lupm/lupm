@@ -145,6 +145,8 @@ sub buildPackage {
 #        or error ("Could not chown home directory");
 
     if (exists($packageconfig->{'root-before'})) {
+        system("mkdir -p $builddir/$packageName/targets") == 0
+            or error ("Could not create $builddir/$packageName/targets directory");
         print("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $configpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml\n");
         system("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $configpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml") == 0
             or error("Failed to build package $packageName: root-before");
@@ -157,6 +159,8 @@ sub buildPackage {
         or error("Failed to build package $packageName: $target");
 
     if (exists($packageconfig->{'root-after'})) {
+        system("mkdir -p $builddir/$packageName/targets/root-after") == 0
+            or error ("Could not create $builddir/$packageName/targets/root-after directory");
         print("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $configpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml\n");
         system("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $configpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml") == 0
             or error("Failed to build package $packageName: root-after");
