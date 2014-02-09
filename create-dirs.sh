@@ -6,6 +6,7 @@ mkdir -pv /usr/{bin,include,lib,sbin,src}
 mkdir -pv /usr/share/{doc,info,locale,man}
 mkdir -v  /usr/share/{misc,zoneinfo}
 mkdir -pv /usr/share/man/man{1..8}
+mkdir -pv /usr/share/man/mann
 mkdir -v /usr/lib/pkgconfig
 ln -sv share/{man,doc,info} /usr
 case $(uname -m) in
