@@ -1,0 +1,8 @@
+name: alsa-plugins
+installgroups: install,alsainstall
+download:
+ - link: http://alsa.cybermirror.org/plugins/
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - install: ~

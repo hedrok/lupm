@@ -12,3 +12,6 @@ build:
     dir: src
  - install:
     dir: src
+root-after:
+ - permissions: groupadd -f alsainstall;
+                lupm-dir.sh $PREFIX/lib/alsa-lib/ alsainstall;
