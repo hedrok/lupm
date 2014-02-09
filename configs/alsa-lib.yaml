@@ -15,3 +15,4 @@ build:
 root-after:
  - permissions: groupadd -f alsainstall;
                 lupm-dir.sh $PREFIX/lib/alsa-lib/ alsainstall;
+                lupm-dir.sh $PREFIX/share/alsa/ alsainstall;

@@ -1,0 +1,17 @@
+name: alsa-utils
+installgroups: install,alsainstall,systemdinstall,udevinstall,udevrulesinstall
+download:
+ - link: http://alsa.cybermirror.org/utils/
+build:
+ - configure:
+    params: --prefix=$PREFIX
+            --disable-alsaconf
+            --disable-xmlto
+    dir: src
+ - make:
+    dir: src
+ - install:
+    dir: src
+root-after:
+ - state: touch /var/lib/alsa/asound.state;
+          alsactl store;
