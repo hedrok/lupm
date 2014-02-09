@@ -1,8 +1,7 @@
 name: acl
+installgroups: install,sysheaders
 download:
  - link: http://download.savannah.gnu.org/releases/acl
-root-before:
- - permissions: lupm-dir.sh /usr/include/sys
 build:
  - configure:
     command: ./configure --prefix=$PREFIX --libexecdir=$PREFIX/lib --sysconfdir=/etc
@@ -19,5 +18,3 @@ build:
                 chmod -v 755 /usr/lib/libacl.so;
                 mv -v /usr/lib/libacl.so.* /lib;
                 ln -sfv ../../lib/libacl.so.1 /usr/lib/libacl.so;
-root-after:
- - permissions: chown glibc:glibc /usr/include/sys && chmod 755 /usr/include/sys;
