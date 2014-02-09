@@ -1,7 +1,21 @@
 name: dejagnu
+requires: expect
 download:
  - link: http://ftp.gnu.org/gnu/dejagnu/
-pass1:
+chapter5:
  - configure: --prefix=$PREFIX
  - install: ~
  - check: ~
+build:
+ - configure: --prefix=$PREFIX
+ - make-doc:
+     command: makeinfo --html --no-split -o doc/dejagnu.html doc/dejagnu.texi;
+              makeinfo --plaintext       -o doc/dejagnu.txt  doc/dejagnu.texi;
+     dir: src
+ - check: ~
+ - install: ~
+ - install-doc:
+     command: install -v -dm755 /usr/share/doc/dejagnu$PACKAGE_VERSION;
+              install -v -m644  doc/dejagnu.{html,txt}
+                                /usr/share/doc/dejagnu$PACKAGE_VERSION;
+     dir: src

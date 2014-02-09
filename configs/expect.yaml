@@ -1,7 +1,9 @@
 name: expect
+requires: tcl
 download:
  - method: sourceforge
-pass1:
+   versionPattern: '[0-9]\.[0-9.]\\+'
+chapter5:
  - preconfigure: cp -uv configure{,.orig};
                  sed 's:/usr/local/bin:/bin:' configure.orig > configure;
  - configure: --prefix=$PREFIX
@@ -10,3 +12,12 @@ pass1:
  - make: ~
  - test: ~
  - install: ~
+build:
+ - configure: --prefix=$PREFIX
+              --with-tcl=$PREFIX/lib
+              --with-tclinclude=$PREFIX/include
+              --enable-shared
+ - make: ~
+ - test: ~
+ - install: ~
+ - postinstall: ln -svf expect$PACKAGE_VERSION/libexpect$PACKAGE_VERSION.so $PREFIX/lib

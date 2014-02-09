@@ -2,7 +2,8 @@ name: tcl
 download:
  - method: sourceforge
    suffix: -src
-pass1:
+   versionPattern: '[0-9]\.[0-9.]\\+'
+chapter5:
  - conf: $PACKAGE_SRCDIR/unix/configure --prefix=$PREFIX
  - make: ~
  - test:
@@ -12,3 +13,22 @@ pass1:
                 make install-private-headers;
                 rm $PREFIX/bin/tclsh;
                 ln -sv `ls $PREFIX/bin/tclsh* | sed -n 's/\(tclsh[0-9.]\+\)$/\1/p' | sort -V | tail -n 1` $PREFIX/bin/tclsh;
+build:
+ - conf: $PACKAGE_SRCDIR/unix/configure --prefix=$PREFIX
+                                        --without-tzdata
+                                        --mandir=$PREFIX/share/man
+                                        $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+ - make: ~
+ - hm: sed -e "s@^\(TCL_SRC_DIR='\).*@\1/usr/include'@"
+           -e "/TCL_B/s@='\(-L\)\?.*unix@='\1/usr/lib@"
+           -i tclConfig.sh
+ #couldn't open socket: Name or service not known
+ #- test: ~
+ - install: ~
+ - postinstall: make install-private-headers;
+                ln -v -sf tclsh${PACKAGE_VERSION:0:3} $PREFIX/bin/tclsh;
+                chmod -v 755 $PREFIX/lib/libtcl${PACKAGE_VERSION:0:3}.so;
+ - install-doc: wget http://downloads.sourceforge.net/tcl/tcl$PACKAGE_VERSION-html.tar.gz;
+                tar -xf tcl$PACKAGE_VERSION-html.tar.gz --strip-components=1;
+                mkdir -v -p /usr/share/doc/tcl$PACKAGE_VERSION;
+                cp -v -r  html/* /usr/share/doc/tcl$PACKAGE_VERSION;
