@@ -1,0 +1,12 @@
+# Begin /boot/grub/grub.cfg
+set default=0
+set timeout=5
+
+insmod ext2
+set root=(hd0,2)
+
+menuentry "GNU/Linux, LFS lupm (based on SYSTEMD-20140117)" {
+	linux /vmlinuz-lfs root=/dev/sda1 ro
+}
+
+# End /boot/grub/grub.cfg
