@@ -1,0 +1,17 @@
+name: serf
+requires: apr-util,openssl,scons
+download:
+ - link: https://serf.googlecode.com/
+build:
+ - preconfigure: sed -i "/Append/s:RPATH=libdir,::"  SConstruct;
+                 sed -i "/Default/s:lib_static,::"   SConstruct;
+                 sed -i "/Alias/s:install_static,::" SConstruct;
+ - build:
+    command: scons PREFIX=$PREFIX
+    dir: src
+# - tst:
+#    command: scons check
+#    dir: src
+ - inst:
+    command: scons PREFIX=$PREFIX install
+    dir: src

@@ -1,0 +1,17 @@
+name: subversion
+requires: apr-util,sqlite,openssl,serf
+download:
+ - link: http://archive.apache.org/dist/subversion/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --with-apache-libexecdir=$(/usr/bin/apxs -q libexecdir)
+ - fix-parallel: sed -i 's#Makefile.PL.in$#& libsvn_swig_perl#' Makefile.in
+ - make: ~
+ #- check: ~
+ - install: ~
+ - install-doc:
+     command: install -v -m755 -d /usr/share/doc/subversion$PACKAGE_VERSION
+              cp      -v -R       doc/* \
+                                  /usr/share/doc/subversion$PACKAGE_VERSION
+     dir: src

@@ -27,3 +27,5 @@ root-after:
  - start: pwconv;
           grpconv;
  - root-pwd: passwd
+ - setuid: chown -v root /bin/su;
+           chmod -v u+s /bin/su;

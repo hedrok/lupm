@@ -1,0 +1,11 @@
+name: wireless_tools
+download:
+ - link: http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html
+   versionPattern: .[0-9.]\+
+build:
+ - make:
+    command: make
+    dir: src
+ - install:
+    command: make PREFIX=$PREFIX install
+    dir: src

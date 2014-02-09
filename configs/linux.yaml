@@ -44,15 +44,15 @@ build:
  - backup-kernel:
     command: mkdir -p /boot/backup;
              if [ -f /boot/vmlinuz* ]; then
-                 cp -v /boot/vmlinuz* /boot/backup;
-                 cp -v /boot/System.map* /boot/backup;
-                 cp -v /boot/config* /boot/backup;
+                 cp -v /boot/vmlinuz-lfs-SYSTEMD-LUPM /boot/backup/;
+                 cp -v /boot/System.map /boot/backup/;
+                 cp -v /boot/config /boot/backup/;
             fi
     dir: src
  - install-kernel:
-    command: cp -v arch/x86/boot/bzImage /boot/vmlinuz$PACKAGE_VERSION-lfs-SYSTEMD-LUPM;
-             cp -v System.map /boot/System.map$PACKAGE_VERSION;
-             cp -v .config /boot/config$PACKAGE_VERSION;
+    command: cp -v arch/x86/boot/bzImage /boot/vmlinuz-lfs-SYSTEMD-LUPM;
+             cp -v System.map /boot/System.map;
+             cp -v .config /boot/config;
     dir: src
  - install-documentation:
     command: install -d /usr/share/doc/linux$PACKAGE_VERSION;

@@ -1,0 +1,12 @@
+name: libevent
+download:
+ - link: http://libevent.org/
+   suffix: -stable
+build:
+ - preconfigure: cd ~/source/;
+                 ln -svf libevent$PACKAGE_VERSION-stable libevent$PACKAGE_VERSION;
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+# - check: ~
+ - install: ~

@@ -1,0 +1,14 @@
+name: asciidoc
+download:
+ - method: sourceforge
+build:
+ - configure:
+    params: --prefix=$PREFIX --sysconfdir=/etc
+    dir: src
+ - make:
+    dir: src
+ - install:
+    dir: src
+ - docs:
+    command: make docs
+    dir: src

@@ -1,0 +1,15 @@
+name: sqlite-autoconf
+packagename: sqlite
+download:
+ - link: https://sqlite.org/download.html
+   prelink: ",'"
+   postlink: "');"
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3=1
+              -DSQLITE_ENABLE_COLUMN_METADATA=1
+              -DSQLITE_ENABLE_UNLOCK_NOTIFY=1
+              -DSQLITE_SECURE_DELETE=1"
+ - make: ~
+ - install: ~

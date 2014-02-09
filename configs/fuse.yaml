@@ -1,0 +1,19 @@
+name: fuse
+installgroups: install,udevrulesinstall
+download:
+ - method: sourceforge
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 INIT_D_PATH=/tmp/init.d
+    - make: ~
+    - install: ~
+    - postinstall: rm -rf  /tmp/init.d
+    - install-doc:
+        command: install -v -m755 -d $PREFIX/share/doc/fuse$PACKAGE_VERSION;
+                 install -v -m644    doc/{how-fuse-works,kernel.txt}
+                                     $PREFIX/share/doc/fuse$PACKAGE_VERSION;
+        dir: src
+root-after:
+    - permissions: chown -v root /usr/bin/fusermount;
+                   chmod -v u+s /usr/bin/fusermount;

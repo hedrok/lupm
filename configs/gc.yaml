@@ -1,0 +1,20 @@
+name: gc
+download:
+ - link: http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
+requires: libatomic_ops
+build:
+# - preconfigure: sed -i 's#AM_CONFIG_HEADER#AC_CONFIG_HEADERS#' configure.ac;
+#                 sed -i 's#AM_CONFIG_HEADER#AC_CONFIG_HEADERS#' libatomic_ops/configure.ac;
+#                 sed -i 's#pkgdata#doc#' doc/doc.am;
+#                 autoreconf -fi;
+ - configure: --prefix=$PREFIX
+              --enable-cplusplus
+              --disable-static
+              --docdir=/usr/share/doc/gc$PACKAGE_VERSION
+ - make: ~
+ - check: ~
+ - install: ~
+ - postinstall:
+    command: install -v -m644 doc/gc.man /usr/share/man/man3/gc_malloc.3;
+             ln -sfv gc_malloc.3 /usr/share/man/man3/gc.3;
+    dir: src

@@ -1,0 +1,15 @@
+name: pciutils
+download:
+ - link: http://www.kernel.org/pub/software/utils/pciutils/
+build:
+ - make:
+    command: make PREFIX=$PREFIX
+    dir: src
+ - install:
+    command: make PREFIX=$PREFIX install
+    dir: src
+ - static:
+    command: install -v -m 755 -d /usr/include/pci;
+             install -v -m 644 lib/libpci.a /usr/lib;
+             install -v -m 644 lib/*.h /usr/include/pci;
+    dir: src

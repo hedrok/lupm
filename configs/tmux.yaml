@@ -1,0 +1,8 @@
+name: tmux
+download:
+ - method: sourceforge
+requires: libevent
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - install: ~

@@ -1,0 +1,10 @@
+name: libnl
+download:
+ - link: http://www.carisma.slowglass.com/~tgr/libnl/files/
+build:
+ - configure: --prefix=$PREFIX
+              --sysconfdir=/etc
+              --disable-static
+ - make: ~
+ - check: ~
+ - install: ~

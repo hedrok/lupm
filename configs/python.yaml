@@ -1,0 +1,30 @@
+name: Python
+packagename: python
+requirements: expat,openssl,libffi
+download:
+   - link: http://www.python.org/download/
+build:
+   - configure:
+      params: --prefix=$PREFIX
+              --enable-shared
+              --with-system-expat
+              --with-system-ffi
+      dir: src
+   - make:
+      dir: src
+   #- test:
+      #dir: src
+   - install:
+      dir: src
+   - postinstall:
+      command: make install;
+               chmod -v 755 /usr/lib/libpython${PACKAGE_VERSION:1:3}m.so;
+               chmod -v 755 /usr/lib/libpython${PACKAGE_VERSION:1:1}.so;
+      dir: src
+   - install-doc: wget http://docs.python.org/ftp/python/doc/${PACKAGE_VERSION:1}/python$PACKAGE_VERSION-docs-html.tar.bz2;
+                  install -v -dm755 /usr/share/doc/python$PACKAGE_VERSION/html;
+                  tar --strip-components=1
+                      --no-same-owner
+                      --no-same-permissions
+                      -C /usr/share/doc/python$PACKAGE_VERSION/html
+                      -xvf python$PACKAGE_VERSION-docs-html.tar.bz2;

@@ -1,0 +1,10 @@
+name: libffi
+requirements: dejagnu
+download:
+   - link: ftp://sourceware.org/pub/libffi/
+build:
+   - configure: --prefix=$PREFIX
+                --disable-static
+   - make: ~
+   - check: ~
+   - install: ~

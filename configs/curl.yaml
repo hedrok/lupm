@@ -1,0 +1,18 @@
+name: curl
+# Python is required for tests
+requirements: sslcerts,openssl,python
+download:
+   - link: http://curl.haxx.se/download/
+build:
+   - configure: --prefix=$PREFIX
+                --disable-static
+                --enable-threaded-resolver
+                --with-ca-path=/etc/ssl/certs
+   - make: ~
+   #- test: ~
+   - install: ~
+   - install-doc:
+      dir: src
+      command: find docs \( -name "Makefile*" -o -name "*.1" -o -name "*.3" \) -exec rm {} \; ;
+               install -v -d -m755 /usr/share/doc/curl$PACKAGE_VERSION;
+               cp -v -R docs/*     /usr/share/doc/curl$PACKAGE_VERSION;

@@ -1,0 +1,10 @@
+name: scons
+requires: python-2
+installgroups: install,pythonmodinstall
+download:
+    - method: sourceforge
+build:
+    - all: python $PACKAGE_SRCDIR/setup.py install --prefix=$PREFIX
+                                                   --standard-lib
+                                                   --optimize=1
+                                                   --install-data=$PREFIX/share

@@ -1,0 +1,22 @@
+name: git
+installgroups: install,perlmod
+requirements: curl,expat,openssl,python,pcre,svn,asciidoc,xmlto
+download:
+   - link: http://code.google.com/p/git-core/downloads/list
+build:
+   - configure:
+        params: --prefix=$PREFIX
+                --libexecdir=$PREFIX/lib
+                --with-gitconfig=/etc/gitconfig
+        dir: src
+   - make:
+        dir: src
+        command: make NO_GETTEXT=1
+   - test:
+        dir: src
+        command: make NO_GETTEXT=1 test
+   - install:
+        dir: src
+        command: make NO_GETTEXT=1 install
+   - install-man: wget -c http://git-core.googlecode.com/files/git-manpages$PACKAGE_VERSION.tar.gz;
+                  tar -xf git-manpages$PACKAGE_VERSION.tar.gz -C /usr/share/man --no-overwrite-dir;

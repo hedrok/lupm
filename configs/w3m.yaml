@@ -1,0 +1,22 @@
+name: w3m
+download:
+ - method: sourceforge
+requires: gc
+build:
+ - preconfigure: sed -i 's/file_handle/file_foo/' istream.{c,h};
+                 if [ "z$PACKAGE_VERSION" == "z-0.5.3" ]; then
+                     wget http://www.linuxfromscratch.org/patches/blfs/svn/w3m-0.5.3-bdwgc72-1.patch;
+                     patch -Np1 -i w3m-0.5.3-bdwgc72-1.patch;
+                 fi;
+ - configure: --prefix=$PREFIX
+              --sysconfdir=$PREFIX/etc
+              --libexecdir=$PREFIX/lib
+ - make: ~
+ - install: ~
+ - postinstall:
+     command: install -v -m644 -D doc/keymap.default /etc/w3m/keymap;
+              install -v -m644    doc/menu.default /etc/w3m/menu;
+              install -v -m755 -d /usr/share/doc/w3m$PACKAGE_VERSION;
+              install -v -m644    doc/{HISTORY,READ*,keymap.*,menu.*,*.html}
+                                  /usr/share/doc/w3m$PACKAGE_VERSION;
+     dir: src

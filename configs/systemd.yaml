@@ -40,3 +40,5 @@ root-after:
                 lupm-dir.sh /lib/systemd/system/sockets.target.wants systemdinstall;
                 lupm-dir.sh /lib/systemd/system/sysinit.target.wants systemdinstall;
                 lupm-dir.sh /lib/systemd/system/timers.target.wants systemdinstall;
+                groupadd -f udevrulesinstall;
+                lupm-dir.sh /etc/udev/rules.d udevrulesinstall;

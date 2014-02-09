@@ -1,0 +1,14 @@
+name: apr-util
+requires: apr
+installgroups: install,apr
+download:
+ - link: http://archive.apache.org/dist/apr/
+build:
+ - configure: --prefix=$PREFIX
+              --with-apr=$PREFIX
+              --with-gdbm=$PREFIX
+              --with-openssl=$PREFIX
+              --with-crypto
+ - make: ~
+ - test: ~
+ - install: ~

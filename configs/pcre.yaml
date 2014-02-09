@@ -1,0 +1,17 @@
+name: pcre
+download:
+   - method: sourceforge
+build:
+   - configure: --prefix=$PREFIX
+                --docdir=$PREFIX/share/doc/pcre$PACKAGE_VERSION
+                --enable-utf
+                --enable-unicode-properties
+                --enable-pcre16
+                --enable-pcre32
+                --enable-pcregrep-libz
+                --enable-pcregrep-libbz2
+                --enable-pcretest-libreadline
+                --disable-static
+   - make: ~
+   #- check: ~
+   - install: ~
