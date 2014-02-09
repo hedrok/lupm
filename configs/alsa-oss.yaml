@@ -1,0 +1,8 @@
+name: alsa-oss
+download:
+ - link: http://alsa.cybermirror.org/oss-lib/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - install: ~
