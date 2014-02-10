@@ -1,0 +1,11 @@
+name: tiff
+download:
+ - link: ftp://ftp.remotesensing.org/libtiff/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+# One test failes
+#- precheck: ln -svf $PACKAGE_SRCDIR/test/images test/images
+# - check: ~
+ - install: ~

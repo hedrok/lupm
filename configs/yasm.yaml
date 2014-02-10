@@ -1,0 +1,9 @@
+name: yasm
+download:
+ - link: http://www.tortall.net/projects/yasm/releases/
+build:
+ - preconfigure: sed -i 's#) ytasm.*#)#' Makefile.in
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

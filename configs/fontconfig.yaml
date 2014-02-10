@@ -1,0 +1,28 @@
+name: fontconfig
+download:
+ - link: http://www.freedesktop.org/software/fontconfig/release/
+root-before:
+ - cache: mkdir -pv /var/cache/fontconfig;
+          chown fontconfig:fontconfig /var/cache/fontconfig;
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --sysconfdir=/etc
+              --localstatedir=/var
+              --docdir=$PREFIX/share/doc/fontconfig$PACKAGE_VERSION
+              --disable-docs
+ - make: ~
+ - check: ~
+ - install: ~
+ - install-doc: 
+    command: install -v -dm755
+                 $PREFIX/share/doc/fontconfig$PACKAGE_VERSION/fontconfig-devel;
+             install -v -m644 fc-*/*.1          $PREFIX/share/man/man1;
+             install -v -m644 doc/*.3           $PREFIX/share/man/man3;
+             install -v -m644 doc/fonts-conf.5  $PREFIX/share/man/man5;
+             install -v -m644 doc/fontconfig-devel/*
+                              $PREFIX/share/doc/fontconfig$PACKAGE_VERSION/fontconfig-devel;
+             install -v -m644 doc/*.{pdf,sgml,txt,html}
+                              $PREFIX/share/doc/fontconfig$PACKAGE_VERSION;
+    dir: src
+

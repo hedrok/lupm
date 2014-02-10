@@ -1,0 +1,11 @@
+name: lcms2
+description: 'Little CMS 2 (Color Management System)'
+download:
+ - method: sourceforge
+   sourceforge-name: lcms
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - check: ~
+ - install: ~

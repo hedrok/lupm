@@ -1,0 +1,13 @@
+name: nasm
+download:
+    - link: http://www.nasm.us/pub/nasm/releasebuilds/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src

@@ -1,0 +1,26 @@
+name: ffmpeg
+download:
+ - link: http://ffmpeg.org/releases/
+build:
+ - preconfigure: sed -i 's/-lflite"/-lflite -lasound"/' configure;
+ - configure: --prefix=$PREFIX
+               --enable-gpl
+               --enable-version3
+               --disable-static
+               --enable-shared 
+               --disable-debug
+               --enable-libspeex
+               --enable-libtheora
+               --enable-libvorbis
+               --enable-libvpx
+               --enable-libxvid
+               --enable-libfreetype
+               --enable-libmp3lame
+               --enable-libopenjpeg
+#               --enable-openssl
+#               --enable-libfaac
+#               --enable-nonfree
+#               --enable-x11grab
+#               --enable-libpulse
+ - make: ~
+ - install: ~

@@ -1,0 +1,10 @@
+name: openjpeg
+packagename: openjpeg1
+download:
+ - link: http://openjpeg.googlecode.com/
+   versionPattern: -1[0-9.]\\+
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - install: ~

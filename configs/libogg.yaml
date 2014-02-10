@@ -1,0 +1,10 @@
+name: libogg
+download:
+ - link: http://downloads.xiph.org/releases/ogg/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --docdir=$PREFIX/share/doc/libogg$PACKAGE_VERSION
+ - make: ~
+ - check: ~
+ - install: ~

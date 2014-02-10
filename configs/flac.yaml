@@ -1,0 +1,11 @@
+name: flac
+download:
+ - link: ftp://downloads.xiph.org/pub/xiph/releases/flac/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --disable-thorough-tests
+              --enable-sse
+ - make: ~
+ - check: ~
+ - install: ~

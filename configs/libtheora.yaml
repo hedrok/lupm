@@ -1,0 +1,12 @@
+name: libtheora
+download:
+ - link: http://downloads.xiph.org/releases/theora/
+build:
+ - preconfigure: if [ "z$PACKAGE_VERSION" == "z-1.1.1" ]; then
+                    sed -i 's/png_\(sizeof\)/\1/g' examples/png2theora.c;
+                 fi;
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - check: ~
+ - install: ~

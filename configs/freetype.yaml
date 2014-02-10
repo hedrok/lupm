@@ -1,0 +1,8 @@
+name: freetype
+download:
+ - method: sourceforge
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - install: ~

@@ -1,0 +1,15 @@
+name: MPlayer
+packagename: mplayer
+requires: yasm,directfb,ffmpeg
+download:
+ - link: http://www.mplayerhq.hu/MPlayer/releases/
+build:
+ - configure:
+    params: --prefix=$PREFIX
+            --confdir=/etc/mplayer
+            --enable-dynamic-plugins
+    dir: src
+ - make:
+    dir: src
+ - install:
+    dir: src

@@ -1,0 +1,10 @@
+name: speex
+download:
+ - link: http://downloads.us.xiph.org/releases/speex/
+   versionPattern: -[0-9.]\\+\(rc[0-9]\)\?
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --docdir=$PREFIX/share/doc/speex$PACKAGE_VERSION
+ - make: ~
+ - install: ~

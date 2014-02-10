@@ -1,0 +1,7 @@
+name: which
+download:
+ - link: ftp://ftp.gnu.org/gnu/which/
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - install: ~

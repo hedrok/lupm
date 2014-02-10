@@ -1,0 +1,10 @@
+name: libvpx
+download:
+ - link: http://webm.googlecode.com/
+   versionPattern: -v[0-9.]\\+
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --enable-shared
+ - make: ~
+ - install: ~

@@ -1,0 +1,13 @@
+name: libjpeg-turbo
+download:
+ - method: sourceforge
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --mandir=$PREFIX/share/man
+              --with-jpeg8
+ - make: ~
+ - test: ~
+ - install:
+    command: docsdir=$PREFIX/share/doc/libjpeg-turbo$PACKAGE_VERSION;
+             make docdir=$docsdir exampledir=$docsdir install;

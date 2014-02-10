@@ -1,0 +1,8 @@
+name: flux
+download:
+ - link: http://www.directfb.org/index.php?path=Main%2FDownloads
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - install: ~

@@ -1,0 +1,11 @@
+name: libvorbis
+download:
+ - link: http://downloads.xiph.org/releases/vorbis/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+# - check:
+#    command: make LIBS=-lm check
+ - install: ~
+ - install-doc: install -v -m644 $PACKAGE_SRCDIR/doc/Vorbis* $PREFIX/share/doc/libvorbis$PACKAGE_VERSION

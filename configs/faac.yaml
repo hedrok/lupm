@@ -1,0 +1,18 @@
+name: faac
+download:
+ - method: sourceforge
+build:
+ - preconfigure: |
+                 if [ "z$PACKAGE_VERSION" == "z-1.28" ]; then
+                    wget -c http://www.linuxfromscratch.org/patches/blfs/svn/faac-1.28-glibc_fixes-1.patch;
+                    patch -Np1 -i faac-1.28-glibc_fixes-1.patch;
+                    sed -i -e '/obj-type/d' -e '/Long Term/d' frontend/main.c;
+                 fi;
+ - configure:
+    params:  --prefix=$PREFIX
+             --disable-static
+    dir: src
+ - make:
+    dir: src
+ - install:
+    dir: src

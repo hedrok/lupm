@@ -1,0 +1,11 @@
+name: libpng
+download:
+ - method: sourceforge
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - check: ~
+ - install: ~
+ - install-doc: mkdir -pv $PREFIX/share/doc/libpng$PACKAGE_VERSION;
+                cp -v $PACKAGE_SRCDIR/README $PACKAGE_SRCDIR/libpng-manual.txt $PREFIX/share/doc/libpng$PACKAGE_VERSION;

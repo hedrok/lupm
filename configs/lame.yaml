@@ -1,0 +1,13 @@
+name: lame
+download:
+ - method: sourceforge
+   versionPattern: '-[0-9]\.[0-9.]\\+'
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --enable-mp3rtp
+              --enable-nasm
+ - make: ~
+ - test: ~
+ - install:
+    command: make pkghtmldir=/usr/share/doc/lame$PACKAGE_VERSION install

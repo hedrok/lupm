@@ -1,0 +1,27 @@
+name: xvidcore
+download:
+ - link: http://www.xvid.org/Downloads.43.0.html
+build:
+ - preconfigure: ln -svf xvidcore $PACKAGE_SRCDIR
+ - configure: 
+    command: ./configure
+    params: --prefix=$PREFIX
+    dir: $PACKAGE_SRCDIR/build/generic
+ - make:
+    dir: $PACKAGE_SRCDIR/build/generic
+ - preinstall:
+    command: sed -i '/libdir.*STATIC_LIB/ s/^/#/' Makefile
+    dir: $PACKAGE_SRCDIR/build/generic
+ - install:
+    dir: $PACKAGE_SRCDIR/build/generic
+ - links: name=$(cd $PREFIX/lib && ls libxvidcore* | sort -V);
+          namemajor=$(echo $name | sed 's/\.[0-9]\+$//');
+          chmod -v 755 $PREFIX/lib/$name;
+          ln -v -sf $name $PREFIX/lib/$namemajor;
+          ln -v -sf $namemajor $PREFIX/lib/libxvidcore.so;
+ - install-doc:
+    command: 
+             install -v -m755 -d $PREFIX/share/doc/xvidcore$PACKAGE_VERSION/examples;
+             install -v -m644 ../../doc/* /usr/share/doc/xvidcore$PACKAGE_VERSION;
+             install -v -m644 ../../examples/* $PREFIX/share/doc/xvidcore$PACKAGE_VERSION/examples;
+    dir: $PACKAGE_SRCDIR/build/generic
