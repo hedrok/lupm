@@ -291,6 +291,7 @@ testFixRelativeLink();
 sub getLinkFolderWget { #{{{
     my $link = shift(@_);
     my $package = shift(@_);
+    my $foldername = shift(@_);
     my $suffix = shift(@_);
     my $downloaddir = "$packagedir/download";
     system("mkdir -p $downloaddir") == 0
@@ -299,12 +300,12 @@ sub getLinkFolderWget { #{{{
     message("Trying to get $link to $tmpfile\n");
     system("wget -O $tmpfile \"$link\"") == 0
         or error("Couldn't download list from '$link' to '$tmpfile'\n");
-    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$package-\\?[0-9.]\\+$suffix\\/\\?\\)[\\"'].*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
+    my $flink =`sed -n "s/^.*href=[\\"']\\([^'\\"]*$foldername-\\?[0-9.]\\+$suffix\\/\\?\\)[\\"'].*\$/\\1/pi" $tmpfile | sort -V | tail -n 1`;
     $flink =~ s/^\s+//;
     $flink =~ s/\s+$//;
     if ($flink eq '') {
-        print "tryed to run `sed -n \"s/^.*href=[\\\"']\\([^'\\\"]*$package-\\?[0-9.]\\+\\/\\?\\)[\\\"'].*\$/\\1/pi\" $tmpfile | sort -V | tail -n 1`\n";
-        error("Couldn't get version of $package (folder method).\n");
+        print "tryed to run `sed -n \"s/^.*href=[\\\"']\\([^'\\\"]*$foldername-\\?[0-9.]\\+\\/\\?\\)[\\\"'].*\$/\\1/pi\" $tmpfile | sort -V | tail -n 1`\n";
+        error("Couldn't get version of $package (foldername: $foldername, folder method).\n");
     }
     $flink = fixRelativeLink($link, $flink);
     message("got link: $link, flink: $flink");
@@ -530,7 +531,7 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                 }
                 my $n = $_->{'wget-folder-name'} // $name;
                 my $suffix = $_->{'wget-folder-suffix'} // '';
-                $wgetParams->{'link'} = getLinkFolderWget($link, $n, $suffix);
+                $wgetParams->{'link'} = getLinkFolderWget($link, $name, $n, $suffix);
                 if (!$wgetParams->{'link'}) {
                     error("Couldn't get last version from folder $link, $name");
                 }
@@ -686,16 +687,15 @@ sub processStage {
     system("mkdir -p $logdir") == 0
         or error("Couldn't create directory $logdir");
 
-    my $dir = '';
-    if ($paramValues{'dir'} eq 'src') {
+    my $dir = $paramValues{'dir'};
+    if ($dir eq 'src') {
         $dir = $srcdir;
-    } elsif ($paramValues{'dir'} eq 'build') {
+    } elsif ($dir eq 'build') {
         $dir = $builddir;
         system("mkdir -p $builddir") == 0
             or error("Couldn't create directory $builddir");
     }
-    chdir($dir);
-    $command = "$paramValues{'vars'} $paramValues{'command'} $paramValues{'params'}";
+    $command = "cd $dir && $paramValues{'vars'} $paramValues{'command'} $paramValues{'params'}";
     if (!ref($conf) && $conf) {
         $command .= " $conf";
     }
