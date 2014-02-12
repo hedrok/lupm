@@ -46,6 +46,7 @@
 #   wget-multiple: tough one. Really needed for bash patches only right now. It needs not only download all patches,
 #                  it should write list of all patches to $status->{'downloads'}{'name'} On update it should
 #                  check whether there is some changes in file set that match regular expression.
+#   git: just clone git repo from link
 #
 # Planned methods are: git, svn, fixed
 #
@@ -314,6 +315,19 @@ sub getLinkFolderWget { #{{{
 sub getSupportedArchiveFiletypes {
     return ('tar.xz', 'src.tar.xz', 'tar.bz2', 'src.tar.bz2', 'tar.gz', 'src.tar.gz', 'zip');
 }
+sub getGit {
+    my $link = shift(@_);
+    my $srcdir = shift(@_);
+    system("mkdir -p $srcdir") == 0
+        or error("Couldn't create directory $srcdir");
+    message("Trying to clone $link to $srcdir\n");
+    system("cd $srcdir; git clone \"$link\"") == 0
+        or error("Couldn't clone from '$link' (git)\n");
+    my $dir = $link;
+    $dir =~ s/.*\///;
+    $dir =~ s/\.git$//;
+    return $dir;
+}
 sub getLinkSourceForge { #{{{
 #                http://sourceforge.net/api/project/name/tcl/json
 #                Get from that link project id, use it to find lates package:
@@ -502,7 +516,7 @@ if ($target ne 'root-before' && $target ne 'root-after') {
             my $posturl = '';
             my $archivename = undef;
             my $filetype = undef;
-            my $srcdir = undef;
+            my $srcdir = "$packagedir/source";
             my $version = undef;
             my $wgetParams = {
                 'link' => $link,
@@ -573,7 +587,6 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                     system("wget \"$link\" -c -O \"$archivename\"") == 0
                         or error("Couldn't download $link (package: $name).\n");
                 }
-                $srcdir = "$packagedir/source";
                 status("Downloaded $archivename");
                 extract($archivename, $filetype, $srcdir);
                 status("Extracted $archivename");
@@ -599,6 +612,13 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                 $status->{'downloads'}{$name}{'downloaded'} = '1';
                 $status->{'downloads'}{$name}{'list'} = $list;
                 status("Downloaded multiple $name");
+            } elsif ($method eq 'git') {
+                if (!$link) {
+                    error("No link provided for download of $name (wget)");
+                }
+                my $dirname = getGit($link, $srcdir);
+                $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$dirname";
+                $status->{'downloads'}{$name}{'downloaded'} = '1';
             } else {
                 error("Unsupported download method '$method'");
             }
