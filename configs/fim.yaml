@@ -1,0 +1,15 @@
+name: fim
+download:
+ - link: http://download.savannah.nongnu.org/releases/fbi-improved/
+   versionPattern: -[0-9.]\\+\(-rc[0-9]\)\?
+build:
+ - configure:
+    params: --prefix=$PREFIX
+    dir: src
+ - make:
+    command: MAKEFLAGS= make
+    dir: src
+ - check:
+    dir: src
+ - install:
+    dir: src
