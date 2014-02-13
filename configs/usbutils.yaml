@@ -1,0 +1,12 @@
+name: usbutils
+requires: libusb
+download:
+ - link: ftp://ftp.kernel.org/pub/linux/utils/usb/usbutils/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-zlib
+              --datadir=/usr/share/misc
+ - make: ~
+ - check: ~
+ - install: ~
+ - postinstall: mv -v /usr/sbin/update-usbids.sh /usr/sbin/update-usbids
