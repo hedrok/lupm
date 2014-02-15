@@ -313,7 +313,7 @@ sub getLinkFolderWget { #{{{
     return $flink;
 } #}}}
 sub getSupportedArchiveFiletypes {
-    return ('tar.xz', 'src.tar.xz', 'tar.bz2', 'src.tar.bz2', 'tar.gz', 'src.tar.gz', 'zip');
+    return ('tar.xz', 'src.tar.xz', 'tar.bz2', 'src.tar.bz2', 'tar.gz', 'tgz', 'src.tar.gz', 'zip');
 }
 sub getGit {
     my $link = shift(@_);
@@ -421,7 +421,7 @@ sub extract { #($archivename, $filetype, $srcdir) #{{{
     system("mkdir -p '$srcdir'") == 0
         or error("Couldn't create directory '$srcdir'");
     for ($filetype) {
-        if (/tar\.(bz2|xz|gz)$/) {
+        if (/tar\.(bz2|xz|gz)$/ || /tgz/) {
             system("tar -C '$srcdir' -xvf '$archivename'") == 0
                 or error("Couldn't extract $archivename");
             last;
