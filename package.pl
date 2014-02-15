@@ -324,6 +324,7 @@ sub getGit {
     system("cd $srcdir; git clone \"$link\"") == 0
         or error("Couldn't clone from '$link' (git)\n");
     my $dir = $link;
+    $dir =~ s/\/$//;
     $dir =~ s/.*\///;
     $dir =~ s/\.git$//;
     return $dir;
