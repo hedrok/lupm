@@ -19,6 +19,9 @@ libdbus:
 root-before:
  - permissions: mkdir -pv /etc/dbus-1;
                 chown dbus:dbus /etc/dbus-1;
+ - groups: groupadd -g 18 messagebus;
+           useradd -c "D-Bus Message Daemon User" -d /var/run/dbus
+                   -u 18 -g messagebus -s /bin/false messagebus;
 build:
  - configure: --prefix=$PREFIX
               --sysconfdir=/etc
@@ -36,5 +39,6 @@ build:
                 ln -sv /etc/machine-id /var/lib/dbus;
 root-after:
  - permissions: groupadd -f dbusinstall;
-                lupm-dir.sh /usr/share/dbus-1/system-services/ dbusinstall;
                 lupm-dir.sh /etc/dbus-1/system.d/ dbusinstall;
+                lupm-dir.sh /usr/share/dbus-1/system-services/ dbusinstall;
+                lupm-dir.sh /usr/share/dbus-1/services/ dbusinstall;
