@@ -1,0 +1,14 @@
+name: cmake
+requires: curl,libarchive,expat
+download:
+ - link: http://www.cmake.org/files/
+   method: wget-folder
+   wget-folder-name: 'v'
+build:
+ - configure: --prefix=$PREFIX
+              --system-libs
+              --mandir=/share/man
+              --docdir=/share/doc/cmake$PACKAGE_VERSION
+ - make: ~
+ - test: ~
+ - install: ~

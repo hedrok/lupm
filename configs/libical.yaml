@@ -1,0 +1,12 @@
+name: libical
+requires: cmake
+download:
+ - method: sourceforge
+   sourceforge-name: freeassociation
+build:
+ - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX
+                -DCMAKE_BUILD_TYPE=Release
+                $PACKAGE_SRCDIR
+ - make: ~
+ - test: ~
+ - install: ~

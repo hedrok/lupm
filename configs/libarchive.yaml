@@ -1,0 +1,9 @@
+name: libarchive
+download:
+ - link: http://www.libarchive.org/downloads/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - check: ~
+ - install: ~

@@ -1,0 +1,7 @@
+name: linux-firmware
+download:
+    - method: git
+      link: https://www.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/
+build:
+    - install:
+        dir: src

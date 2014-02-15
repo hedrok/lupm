@@ -1,0 +1,37 @@
+name: bluez
+installgroups: install,dbusinstall,udevrulesinstall,systemdinstall
+requires: libical
+download:
+ - link: http://www.kernel.org/pub/linux/bluetooth/
+build:
+ - configure:
+    dir: src
+    params: --prefix=$PREFIX
+            --sysconfdir=/etc
+            --localstatedir=/var
+            --libexecdir=/lib
+            --enable-bccmd
+            --enable-dfutool
+            --enable-dund
+            --enable-hid2hci
+            --enable-hidd
+            --enable-pand
+            --enable-tools
+            --enable-wiimote
+            --enable-cups
+ - make:
+    dir: src
+ - check:
+    dir: src
+ - install:
+    dir: src
+# - config:
+#    command: for CONFFILE in audio input network serial ; do
+#                install -v -m644 ${CONFFILE}/${CONFFILE}.conf /etc/bluetooth/${CONFFILE}.conf;
+#             done;
+#             unset CONFFILE;
+#    dir: src
+ - install-doc:
+    dir: src
+    command: install -v -m755 -d $PREFIX/share/doc/bluez$PACKAGE_VERSION;
+             install -v -m644 doc/*.txt $PREFIX/share/doc/bluez$PACKAGE_VERSION;

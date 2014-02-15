@@ -1,0 +1,13 @@
+name: glib
+installgroups: install,gdbinstall
+download:
+ - link: ftp://ftp.gnome.org/pub/gnome/sources/glib/
+   method: wget-folder
+   wget-folder-name: ''
+build:
+#- t: touch -t 201306082300 gtk-doc.make
+ - configure: --prefix=$PREFIX
+              --with-pcre=system
+ - make: ~
+#- check: ~
+ - install: ~
