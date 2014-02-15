@@ -10,15 +10,6 @@ build:
             --sysconfdir=/etc
             --localstatedir=/var
             --libexecdir=/lib
-            --enable-bccmd
-            --enable-dfutool
-            --enable-dund
-            --enable-hid2hci
-            --enable-hidd
-            --enable-pand
-            --enable-tools
-            --enable-wiimote
-            --enable-cups
  - make:
     dir: src
  - check:
