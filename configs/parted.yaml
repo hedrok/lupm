@@ -1,0 +1,20 @@
+name: parted
+requires: lvm2
+download:
+    - link: http://ftp.gnu.org/gnu/parted/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - make-doc: make -C doc html;
+                mkdir -p doc;
+                makeinfo --html      -o doc/html       $PACKAGE_SRCDIR/doc/parted.texi;
+                makeinfo --plaintext -o doc/parted.txt $PACKAGE_SRCDIR/doc/parted.texi;
+    - check: ~
+    - install: ~
+    - install-doc: install -v -m755 -d $PREFIX/share/doc/parted$PACKAGE_VERSION/html;
+                   install -v -m644    doc/html/*
+                                       $PREFIX/share/doc/parted$PACKAGE_VERSION/html;
+                   install -v -m644    doc/parted.{txt,html} $PACKAGE_SRCDIR/doc/{FAT,API}
+                                       $PREFIX/share/doc/parted$PACKAGE_VERSION;
+

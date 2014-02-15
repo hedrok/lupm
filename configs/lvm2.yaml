@@ -1,0 +1,17 @@
+name: LVM2
+packagename: lvm2
+description: Partitions on multiple hard disks, growing or shrinking of partitions
+installgroups: install,udevrulesinstall
+download:
+    - link: ftp://sources.redhat.com/pub/lvm2/
+build:
+    - configure: --prefix=$PREFIX
+                 --exec-prefix=
+                 --with-confdir=/etc
+                 --enable-applib
+                 --enable-cmdlib
+                 --enable-pkgconfig
+                 --enable-udev_sync
+    - make: ~
+    #- check: ~
+    - install: ~
