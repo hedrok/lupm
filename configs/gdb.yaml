@@ -7,3 +7,7 @@ build:
  - make: ~
 #- chck: make -k check
  - inst: make -C gdb install
+root-after:
+    - permissions: groupadd -f gdbinstall;
+                   mkdir -p $PREFIX/share/gdb/auto-load;
+                   lupm-dir.sh $PREFIX/share/gdb/auto-load gdbinstall;
