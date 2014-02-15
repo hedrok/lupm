@@ -1,0 +1,17 @@
+name: gnutls
+requires: nettle,libtasn1
+download:
+ - link: ftp://ftp.gnutls.org/gcrypt/gnutls/
+   method: wget-folder
+   wget-folder-name: 'v'
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+              --with-default-trust-store-file=/etc/ssl/ca-bundle.crt
+ - make: ~
+ - precheck: for f in $(ls $PACKAGE_SRCDIR/tests/pkcs12-decode/*.p12); do
+                ln -svf $f tests/pkcs12-decode/;
+             done;
+ - check: ~
+ - install: ~
+ - install-doc: make -C doc/reference install-data-local

@@ -1,0 +1,9 @@
+name: iptables
+download:
+ - link: ftp://ftp.netfilter.org/pub/iptables/
+build:
+ - configure: --prefix=$PREFIX
+              --with-xtlibdir=/lib/xtables
+              --enable-libipq
+ - make: ~
+ - install: ~

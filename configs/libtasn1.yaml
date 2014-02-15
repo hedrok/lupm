@@ -1,0 +1,10 @@
+name: libtasn1
+download:
+ - link: ftp://ftp.gnu.org/gnu/libtasn1/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-static
+ - make: ~
+ - check: ~
+ - install: ~
+ - install-doc: make -C doc/reference install-data-local;

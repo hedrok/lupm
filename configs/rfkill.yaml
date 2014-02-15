@@ -1,0 +1,10 @@
+name: rfkill
+download:
+ - link: http://kernel.org/pub/software/network/rfkill/
+build:
+ - make:
+    command: make PREFIX=/usr
+    dir: src
+ - install:
+    command: make PREFIX=/usr install
+    dir: src

@@ -1,0 +1,12 @@
+name: nettle
+download:
+ - link: ftp://ftp.gnu.org/gnu/nettle/
+build:
+ - configure: --prefix=$PREFIX
+ - make: ~
+ - check: ~
+ - disable-static: sed -i '/^install-here/ s/install-static//' Makefile
+ - install: ~
+ - postinstall: chmod -v 755 /usr/lib/libhogweed.so.[0-9].[0-9] /usr/lib/libnettle.so.[0-9].[0-9];
+ - install-doc: install -v -m755 -d /usr/share/doc/nettle$PACKAGE_VERSION;
+                install -v -m644 $PACKAGE_SRCDIR/nettle.html /usr/share/doc/nettle$PACKAGE_VERSION;
