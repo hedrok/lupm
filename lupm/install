@@ -25,8 +25,18 @@ fi
 #kill unused -c parameter if we get it
 if [ z"$1" = z"-c" ]; then shift 1 ; fi
 
+installdir=0
+if [ z"$1" = z"-m" -a z"$3" = z"-d" ]; then
+    installdir=1
+fi
+case "$1" in
+    -d*)
+        installdir=1;
+        ;;
+esac
+
 	#********** test if we create directories ********************
-if [ \( z"$1" = z"-d" \) -o \( z"$1" = z"-m" -a z"$3" = z"-d" \) ]; then  
+if [ "$installdir" = "1" ]; then
   locdirs=""
   notify=0
   havedir=0
