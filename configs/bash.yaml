@@ -34,5 +34,7 @@ root-after:
  - permissions: if [ "z$PREFIX" = "z/usr" ]; then
                     mkdir -pv /usr/share/bash-completion/completions/;
                     chown bash /usr/share/bash-completion/completions/;
+                    lupm-dir.sh /usr/share/bash-completion/completions/;
+                    # Some packages put complition files here
+                    ln -svf /usr/share/bash-completion/completions/ /etc/bash_completion.d/;
                 fi;
-                lupm-dir.sh /usr/share/bash-completion/completions/;
