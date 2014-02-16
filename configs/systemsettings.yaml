@@ -1,0 +1,10 @@
+name: systemsettings
+grub-install: 
+    - conf: |
+            file=/usr/src/lupm/systemconfig/grub.cfg
+            if [ -f $file ]; then
+                cp -v $file /boot/grub/grub.cfg;
+            else
+                echo "No $file. See $file-example"
+                exit 1;
+            fi;

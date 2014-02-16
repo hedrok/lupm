@@ -1,0 +1,8 @@
+name: grub-install
+username: systemsettings
+configname: systemsettings
+target: grub-install
+root-before:
+    - grub-install: usermod -a -G boot systemsettings;
+                    grub-install $GRUBINSTALLDRIVE;
+                    lupm-dir.sh /boot/grub boot;
