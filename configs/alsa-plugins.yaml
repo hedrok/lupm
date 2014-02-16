@@ -1,8 +1,10 @@
 name: alsa-plugins
+description: The ALSA Plugins package contains plugins
+             for various audio libraries and sound servers
 installgroups: install,alsainstall
 download:
- - link: http://alsa.cybermirror.org/plugins/
+    - link: http://alsa.cybermirror.org/plugins/
 build:
- - configure: --prefix=$PREFIX
- - make: ~
- - install: ~
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

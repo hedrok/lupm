@@ -1,20 +1,21 @@
 name: acl
+description: Access Control Lists which are used to define more fine-grained discretionary access rights for files and directories
 installgroups: install,sysheaders
 download:
- - link: http://download.savannah.gnu.org/releases/acl
+    - link: http://download.savannah.gnu.org/releases/acl
 build:
- - configure:
-    command: ./configure --prefix=$PREFIX --libexecdir=$PREFIX/lib --sysconfdir=/etc
-    dir: src
- - make:
-    dir: src
-#- tst:
-#command: make -k tests root-tests
-#dir: src
- - install:
-    command: make install-dev install-lib
-    dir: src
- - postinstall: |
-                chmod -v 755 /usr/lib/libacl.so;
-                mv -v /usr/lib/libacl.so.* /lib;
-                ln -sfv ../../lib/libacl.so.1 /usr/lib/libacl.so;
+    - configure:
+        params: --prefix=$PREFIX
+                --libexecdir=$PREFIX/lib
+                --sysconfdir=/etc
+        dir: src
+    - make:
+        dir: src
+#TODO
+#    - tst:
+#        command: make -k tests root-tests
+#        dir: src
+    - install:
+        command: make install-dev install-lib
+        dir: src
+    - postinstall: chmod -v 755 $PREFIX/lib/libacl.so;

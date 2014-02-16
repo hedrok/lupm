@@ -1,8 +1,9 @@
 name: alsa-oss
+description: ALSA OSS compatibility library
 download:
- - link: http://alsa.cybermirror.org/oss-lib/
+    - link: http://alsa.cybermirror.org/oss-lib/
 build:
- - configure: --prefix=$PREFIX
-              --disable-static
- - make: ~
- - install: ~
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
