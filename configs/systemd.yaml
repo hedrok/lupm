@@ -45,3 +45,4 @@ root-after:
                 groupadd -f udevrulesinstall;
                 lupm-dir.sh /etc/udev/rules.d udevrulesinstall;
                 lupm-dir.sh /lib/udev/rules.d udevrulesinstall;
+                groupadd -f systemd-journal;
