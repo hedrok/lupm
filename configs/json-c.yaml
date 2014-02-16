@@ -1,0 +1,23 @@
+name: json-c
+installgroups: install,udevrulesinstall,dbusinstall
+download:
+ - link: https://github.com/json-c/json-c.git
+   method: git
+build:
+ - autogen:
+    dir: src
+    command: ./autogen.sh
+ - configure:
+    params: --prefix=$PREFIX
+            --disable-static
+    vars: MAKEFLAGS=
+    dir: src
+ - make:
+    vars: MAKEFLAGS=
+    dir: src
+ - check:
+    vars: MAKEFLAGS=
+    dir: src
+ - install:
+    vars: MAKEFLAGS=
+    dir: src

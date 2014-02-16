@@ -1,0 +1,9 @@
+name: sbc
+download:
+    - link: http://www.kernel.org/pub/linux/bluetooth/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
+

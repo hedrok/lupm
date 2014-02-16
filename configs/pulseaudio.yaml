@@ -1,0 +1,20 @@
+name: pulseaudio
+requires: json-c,bluez,sbc
+download:
+    - link: http://freedesktop.org/software/pulseaudio/releases/
+root-before:
+    - group: groupadd -g 58 pulse;
+             groupadd -g 59 pulse-access;
+             useradd -c "Pulseaudio User" -d /var/run/pulse -g pulse
+                     -s /bin/false -u 58 pulse;
+             usermod -a -G audio pulse;
+build:
+    - configure: --prefix=$PREFIX
+                 --sysconfdir=/etc
+                 --localstatedir=/var
+                 --libexecdir=$PREFIX/lib
+                 --with-module-dir=$PREFIX/lib/pulse/modules
+    - make: ~
+    - check: ~
+    - install: ~
+
