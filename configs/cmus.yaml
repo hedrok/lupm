@@ -1,0 +1,14 @@
+name: cmus
+requires: libmad,ffmpeg,pulseaudio
+download:
+    - method: sourceforge
+      versionPattern: -v[0-9.]\\+
+build:
+    - configure:
+        dir: src
+        params: prefix=$PREFIX
+    - make:
+        dir: src
+    - install:
+        dir: src
+

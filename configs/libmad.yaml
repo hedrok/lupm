@@ -1,0 +1,29 @@
+name: libmad
+download:
+    - link: ftp://ftp.mars.org/pub/mpeg/
+      versionPattern: -[0-9.]\\+[a-z]\?
+build:
+    - preconfigure: if [ z"$PACKAGE_VERSION" = "z-0.15.1b" ]; then
+                        wget -c http://www.linuxfromscratch.org/patches/blfs/svn/libmad-0.15.1b-fixes-1.patch;
+                        patch -Np1 -i libmad-0.15.1b-fixes-1.patch;
+                        sed "s@AM_CONFIG_HEADER@AC_CONFIG_HEADERS@g" -i configure.ac;
+                        touch NEWS AUTHORS ChangeLog;
+                    fi ;
+    - configure: --prefix=$PREFIX
+                 --disable-static 
+    - make: ~
+    - install: ~
+    - postinstall: |
+                   cat > /usr/lib/pkgconfig/mad.pc << "EOF"
+                   prefix=$PREFIX
+                   exec_prefix=${prefix}
+                   libdir=${exec_prefix}/lib
+                   includedir=${prefix}/include
+
+                   Name: mad
+                   Description: MPEG audio decoder
+                   Requires:
+                   Version: $PACKAGE_VERSION
+                   Libs: -L${libdir} -lmad
+                   Cflags: -I${includedir}
+                   EOF
