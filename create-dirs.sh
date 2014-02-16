@@ -24,7 +24,7 @@ ln -sv /tools/lib/libstdc++.so{,.6} /usr/lib
 sed 's/tools/usr/' /tools/lib/libstdc++.la > /usr/lib/libstdc++.la
 ln -sv bash /bin/sh
 
-touch /etc/mtab
+ln -sf /proc/self/mounts /etc/mtab
 
 cat > /etc/passwd << "EOF"
 root:x:0:0:root:/root:/bin/bash
