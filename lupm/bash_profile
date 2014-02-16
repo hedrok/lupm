@@ -7,12 +7,10 @@ export PATH=/usr/src/lupm/lupm:/bin:/usr/bin:/sbin:/usr/sbin;
 if [ -e /tools ]; then
     export PATH=$PATH:/tools/bin;
 fi;
-alias ls="ls --color";
-alias grep="grep --color";
 export MAKEFLAGS="-j 6";
 
 # Make prompt reflect that we are a package user.
-export PROMPT_COMMAND='PS1="\u:\w> "';
+#export PROMPT_COMMAND='PS1="\u:\w> "';
 
 # Go to the home directory whenever we su to a package user.
 cd
