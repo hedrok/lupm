@@ -1,14 +1,15 @@
 name: asciidoc
+description: Text document format for documentation
 download:
- - method: sourceforge
+    - method: sourceforge
 build:
- - configure:
-    params: --prefix=$PREFIX --sysconfdir=/etc
-    dir: src
- - make:
-    dir: src
- - install:
-    dir: src
- - docs:
-    command: make docs
-    dir: src
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src
+    - docs:
+        command: make docs
+        dir: src

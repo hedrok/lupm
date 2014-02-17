@@ -1,8 +1,9 @@
 name: autoconf
+description: Scripts to automatically configure source code.
 download:
- - link: http://ftp.gnu.org/gnu/autoconf/
+    - link: http://ftp.gnu.org/gnu/autoconf/
 build:
- - configure: --prefix=$PREFIX
- - make: ~
- - check: ~
- - install: ~
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~

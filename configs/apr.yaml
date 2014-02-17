@@ -1,16 +1,17 @@
 name: apr
+description: Apache Portable Runtime
 download:
- - link: http://archive.apache.org/dist/apr/
+    - link: http://archive.apache.org/dist/apr/
 build:
- - configure:
-    params: --prefix=$PREFIX
-            --disable-static
-            --with-installbuilddir=/usr/share/apr-1/build
-    dir: src
- - make:
-    dir: src
- - test:
-    dir: src
- - install:
-    dir: src
- - postinstall: lupm-dir.sh /usr/include/apr-1 apr
+    - configure:
+        params: --prefix=$PREFIX
+                --disable-static
+                --with-installbuilddir=$PREFIX/share/apr-1/build
+        dir: src
+    - make:
+        dir: src
+    - test:
+        dir: src
+    - install:
+        dir: src
+    - postinstall: lupm-dir.sh $PREFIX/include/apr-1 apr

@@ -1,10 +1,11 @@
 name: automake
+desciprion: Programs for generating Makefiles for use with Autoconf
 installgroups: install,tty
 download:
- - link: http://ftp.gnu.org/gnu/automake/
+    - link: http://ftp.gnu.org/gnu/automake/
 build:
- - configure: --prefix=$PREFIX
-              --docdir=/usr/share/doc/automake$PACKAGE_VERSION
- - make: ~
+    - configure: --prefix=$PREFIX
+                 --docdir=$PREFIX/share/doc/automake$PACKAGE_VERSION
+    - make: ~
  - check: ~
- - install: ~
+    - install: ~
