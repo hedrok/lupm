@@ -26,17 +26,15 @@ build:
  - configure: --prefix=$PREFIX
               --sysconfdir=/etc
               --localstatedir=/var
-              --libexecdir=/usr/lib/dbus-1.0
+              --libexecdir=$PREFIX/lib/dbus-1.0
               --disable-static
               --enable-systemd
-              --docdir=/usr/share/doc/dbus$PACKAGE_VERSION
+              --docdir=$PREFIX/share/doc/dbus$PACKAGE_VERSION
               --with-console-auth-dir=/run/console/
               --with-systemdsystemunitdir=/lib/systemd/system
  - make: ~
  - install: ~
- - postinstall: mv -v /usr/lib/libdbus-1.so.* /lib;
-                ln -sfv ../../lib/$(readlink /usr/lib/libdbus-1.so) /usr/lib/libdbus-1.so;
-                ln -sv /etc/machine-id /var/lib/dbus;
+ - postinstall: ln -sv /etc/machine-id /var/lib/dbus;
 root-after:
  - permissions: groupadd -f dbusinstall;
                 lupm-dir.sh /etc/dbus-1/system.d/ dbusinstall;
