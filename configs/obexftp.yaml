@@ -1,0 +1,17 @@
+name: obexftp
+desciprion: Object Exchange Protocol FTP
+requires: openobex
+download:
+    - sourceforge-name: openobex
+      method: sourceforge
+      suffix: -Source
+build:
+    - link: ln -svf $PACKAGE_SRCDIR{-Source,}
+    - preconfigure: sed -i 's/set ( REQUIRES    "bluetooth openobex" )/set ( REQUIRES    "bluez openobex" )/' CMakeLists.txt
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX
+                   -DCMAKE_INSTALL_LIBDIR=lib
+                   -DCMAKE_INCLUDE_DIR=include
+                   -DCMAKE_BUILD_TYPE=Debug
+                   $PACKAGE_SRCDIR
+    - make: ~
+    - install: ~

@@ -1,0 +1,14 @@
+name: openobex
+desciprion: Object Exchange Protocol (files via bluetooth)
+requires: cmake,libusb,bluez
+download:
+    - method: sourceforge
+      suffix: -Source
+build:
+    - createlink: ln -svf ~/source/openobex$PACKAGE_VERSION{-Source,}
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX
+                   -DCMAKE_INSTALL_LIBDIR=lib
+                   -DCMAKE_BUILD_TYPE=Debug
+                   $PACKAGE_SRCDIR
+    - make: ~
+    - install: ~

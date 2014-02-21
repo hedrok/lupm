@@ -1,0 +1,11 @@
+name: obexfs
+desciprion: Object Exchange Protocol Fuse filesystem
+requires: openobex
+download:
+    - sourceforge-name: openobex
+      method: sourceforge
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~
