@@ -9,7 +9,10 @@ build:
     params: --prefix=$PREFIX
             --sysconfdir=/etc
             --localstatedir=/var
-            --libexecdir=/lib
+            --libexecdir=$PREFIX/lib
+            --enable-shared
+            --disable-static
+            --enable-library
  - make:
     dir: src
  - check:
