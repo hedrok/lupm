@@ -1,25 +1,47 @@
 name: vim
 download:
- - link: ftp://ftp.vim.org/pub/vim/unix/
+    - link: ftp://ftp.vim.org/pub/vim/unix/
 build:
- - sourcedir: ln -svf vim${PACKAGE_VERSION:1:1}${PACKAGE_VERSION:3:1} ~/source/vim$PACKAGE_VERSION
- - preconfigure: |
-                 str='#define SYS_VIMRC_FILE "/etc/vimrc"'
-                 #'
-                 if [ $(tail -n 1 src/feature.h) != "$str" ]; then
-                    echo "$str" >> src/feature.h;
+    - sourcedir: ln -svf vim${PACKAGE_VERSION:1:1}${PACKAGE_VERSION:3:1} ~/source/vim$PACKAGE_VERSION
+    - preconfigure: |
+                    str='#define SYS_VIMRC_FILE "/etc/vimrc"'
+                    #'
+                    if [ $(tail -n 1 src/feature.h) != "$str" ]; then
+                       echo "$str" >> src/feature.h;
+                    fi;
+    - configure:
+        command: |
+                 VIM_EXTRA_FEATURES=''
+                 if pkg-config python; then
+                    VIM_EXTRA_FEATURES="$VIM_EXTRA_FEATURES --enable-pythoninterp=dynamic";
                  fi;
- - configure:
-    params: --prefix=$PREFIX --enable-multibyte;
-    dir: src
- - make:
-    dir: src
- - test:
-    vars: MAKEFLAGS=
-    command: make test 2>&1 > test.log
-    dir: src
- - install:
-    dir: src
- - postinstall:
-    command: ln -sv ../vim/vim${PACKAGE_VERSION:1:1}${PACKAGE_VERSION:3:1}/doc /usr/share/doc/vim$PACKAGE_VERSION
-    dir: src
+                 if pkg-config python3; then
+                    VIM_EXTRA_FEATURES="$VIM_EXTRA_FEATURES --enable-python3interp=dynamic";
+                 fi;
+                 if pkg-config perl; then
+                    VIM_EXTRA_FEATURES="$VIM_EXTRA_FEATURES --enable-perl=dynamic";
+                 fi;
+                 if pkg-config lua; then
+                    VIM_EXTRA_FEATURES="$VIM_EXTRA_FEATURES --enable-luainterp=dynamic";
+                 fi;
+                 if pkg-config ruby; then
+                    VIM_EXTRA_FEATURES="$VIM_EXTRA_FEATURES --enable-rubyinterp=dynamic";
+                 fi;
+                 $PACKAGE_SRCDIR/configure --prefix=$PREFIX 
+                                           --enable-multibyte
+                                           --enable-gui=no
+                                           $VIM_EXTRA_FEATURES
+        dir: src
+    - make:
+        dir: src
+    - test:
+        vars: MAKEFLAGS=
+        command: make test 2>&1 > test.log
+        dir: src
+    - install:
+        dir: src
+    - postinstall:
+        command: |
+                 rm -v /usr/share/doc/vim$PACKAGE_VERSION;
+                 ln -sv ../vim/vim${PACKAGE_VERSION:1:1}${PACKAGE_VERSION:3:1}/doc /usr/share/doc/vim$PACKAGE_VERSION;
+        dir: src
