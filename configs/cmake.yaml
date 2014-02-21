@@ -12,3 +12,7 @@ build:
  - make: ~
  - test: ~
  - install: ~
+root-after:
+    - cmake-lib: mkdir -p /usr/lib/cmake;
+                 chown cmake /usr/lib/cmake;
+                 lupm-dir.sh /usr/lib/cmake;
