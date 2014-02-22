@@ -1,40 +1,39 @@
 name: bash
+description: Bourne-Again SHell
 download:
- - link: http://ftp.gnu.org/gnu/bash/
- - name: patches
-   method: wget-multiple
-   link:
-       eval: return "http://ftp.gnu.org/gnu/bash/bash" . $status->{'downloads'}{'bash'}{'version'} . "-patches/"
-   re: <a href=\"\(bash[0-9]\+-[0-9]\+\)\">
-chapter5:
- - preconfigure: for i in $PATCHES_FILENAMES; do
-                     patch -Np0 -i $i;
-                 done
- - configure: --prefix=$PREFIX
-              --without-bash-malloc
- - make: ~
- - tests: make tests
- - install: ~
- - postinstall: rm -f $PREFIX/bin/sh;
-                ln -sv bash $PREFIX/bin/sh;
+    - link: http://ftp.gnu.org/gnu/bash/
+    - name: patches
+      method: wget-multiple
+      link:
+        eval: return "http://ftp.gnu.org/gnu/bash/bash" . $status->{'downloads'}{'bash'}{'version'} . "-patches/"
+      re: <a href=\"\(bash[0-9]\+-[0-9]\+\)\">
 root-before:
- - permissions: chown -h bash:bash /bin/bash /bin/sh
+    - permissions: |
+                   lnk=$(readlink /bin/sh);
+                   if [ "z$lnk" == "/tools/bash" ]; then
+                       chown -h bash:bash /bin/bash /bin/sh
+                   fi
 build:
- - preconfigure: for i in $PATCHES_FILENAMES; do
-                     patch -Np0 -i $i;
-                 done
- - configure: --prefix=$PREFIX
-              --bindir=/bin
-              --htmldir=/usr/share/doc/bash$PACKAGE_VERSION
-              --without-bash-malloc
-              --with-installed-readline
- - make: ~
- - install: ~
+    - preconfigure: for i in $PATCHES_FILENAMES; do
+                        patch -Np0 -i $i;
+                    done
+    - configure: --prefix=$PREFIX
+                 --htmldir=$PREFIX/share/doc/bash$PACKAGE_VERSION
+                 --without-bash-malloc
+                 `if [ "z$PREFIX" != 'z/tools' ]; then echo '--with-installed-readline'; fi`
+    - make: ~
+    - tests: make tests
+    - install: ~
+    - postinstall: |
+                   lnk=$(readlink /bin/sh);
+                   if [ "z$lnk" == "/tools/bash" ]; then
+                       rm -v $PREFIX/bin/sh;
+                       ln -sv bash $PREFIX/bin/sh;
+                   fi;
+                   mkdir -pv $PREFIX/share/bash-completion/completions/;
+                   # Some packages put completion files here
+                   if [ ! -e $PREFIX/etc/bash_completion.d ]; then
+                       ln -svf $PREFIX/share/bash-completion/completions/ $PREFIX/etc/bash_completion.d;
+                   fi;
 root-after:
- - permissions: if [ "z$PREFIX" = "z/usr" ]; then
-                    mkdir -pv /usr/share/bash-completion/completions/;
-                    chown bash /usr/share/bash-completion/completions/;
-                    lupm-dir.sh /usr/share/bash-completion/completions/;
-                    # Some packages put complition files here
-                    ln -svf /usr/share/bash-completion/completions/ /etc/bash_completion.d/;
-                fi;
+    - permissions: lupm-dir.sh $PREFIX/share/bash-completion/completions/;
