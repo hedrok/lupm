@@ -11,7 +11,7 @@
 #   username: name of package user (defaults to name field value)
 #   installgroups: install
 #   description: ~
-#   envvars: PREFIX=/usr
+#   envvars: ~
 #   target: build
 #   configname: ~
 #   root-before: ~
@@ -101,7 +101,7 @@ sub buildPackage {
     my $packageName = $packageconfigname;
     my $installgroups = 'install';
     my $description = '';
-    my $envvars = 'PREFIX=/usr';
+    my $envvars = '';
     my $target = 'build';
     my $root_before = '';
     my $root_after = '';

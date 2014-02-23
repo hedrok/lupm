@@ -2,7 +2,7 @@ name: binutils
 description: A linker, an assembler, and other tools for handling object files
 installgroups: install,tty
 download:
-    - link: http://ftp.gnu.org/gnu/binutils
+    - link: http://ftp.gnu.org/gnu/binutils/
 pass1:
     - configure: --prefix=$PREFIX
                  --with-sysroot=$LFS
@@ -42,7 +42,12 @@ build:
         dir: src
     - configure: --prefix=$PREFIX
                  --enable-shared
-    - make: tooldir=/usr
+    - make: tooldir=$PREFIX
     - check: ~
     - install:
-        command: make tooldir=/usr install
+        command: make tooldir=$PREFIX install
+cross-build:
+    - configure: --prefix=$PREFIX
+                 --target=$TARGET
+    - make: ~
+    - install: ~

@@ -183,7 +183,9 @@ foreach (@vars) {
     my @v = split /=/;
     $envvars->{$v[0]} = join('=', @v[1..$#v]);
 }
-
+if (!exists $envvars->{'PREFIX'}) {
+    $envvars->{'PREFIX'} = '/usr';
+}
 if (!$packagedir) {
     $packagedir = getcwd();
 }
