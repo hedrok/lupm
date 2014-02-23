@@ -158,7 +158,7 @@ my $update = '';
 my $clean = '';
 my $fullclean = '';
 my $target = '';
-my $prefix = '';
+my $envvars = '';
 my $packageDownloadDir = '';
 my $statusFilename = $defaultStatusName;
 GetOptions(
@@ -168,7 +168,7 @@ GetOptions(
     'clean|l' => \$clean,
     'fullclean|f' => \$fullclean,
     'target|t=s' => \$target,
-    'prefix|p=s' => \$prefix,
+    'envvars|e=s' => \$envvars,
     'sources|s=s' => \$packageDownloadDir,
     'statusfilename=s' => \$statusFilename
 ) or die("usage\n");
@@ -177,9 +177,13 @@ GetOptions(
 if (!(-d $packageDownloadDir)) {
     error("No sources directory provided: '$packageDownloadDir'");
 }
-if (!(-d $prefix)) {
-    error("Prefix directory doesn't exist: '$prefix'");
+my @vars = split /\s+/, $envvars;
+$envvars = {};
+foreach (@vars) {
+    my @v = split /=/;
+    $envvars->{$v[0]} = join('=', @v[1..$#v]);
 }
+
 if (!$packagedir) {
     $packagedir = getcwd();
 }
@@ -476,15 +480,15 @@ sub exportDownloadVariables {
             foreach (@{$s->{'downloads'}{$packagename}{'list'}}) {
                 push(@values, "$_->{'path'}");
             }
-            $ENV{"\U${packagename}_FILENAMES"} = join(' ', @values);
+            $envvars->{"\U${packagename}_FILENAMES"} = join(' ', @values);
         } else {
             my $varname = "\U${packagename}_SRC_DIR";
-            $ENV{$varname} = $s->{'downloads'}{$packagename}{'srcdir'};
+            $envvars->{$varname} = $s->{'downloads'}{$packagename}{'srcdir'};
             my $varnamearch = "\U${packagename}_SRC_ARCHIVE";
-            $ENV{$varnamearch} = $s->{'downloads'}{$packagename}{'archive'};
+            $envvars->{$varnamearch} = $s->{'downloads'}{$packagename}{'archive'};
             if ($packagename eq $config->{'name'}) {
-                $ENV{'PACKAGE_SRCDIR'} = $s->{'downloads'}{$packagename}{'srcdir'};
-                $ENV{'PACKAGE_VERSION'} = $s->{'downloads'}{$packagename}{'version'};
+                $envvars->{'PACKAGE_SRCDIR'} = $s->{'downloads'}{$packagename}{'srcdir'};
+                $envvars->{'PACKAGE_VERSION'} = $s->{'downloads'}{$packagename}{'version'};
             }
         }
     }
@@ -647,7 +651,6 @@ if ($target eq "root-after") {
 } else {
     exportDownloadVariables($status);
 }
-$ENV{'PREFIX'} = $prefix;
 
 my $stageDefaultParams = {
     'autoconf' => {
@@ -727,6 +730,9 @@ sub processStage {
     print SCRIPT "#!/bin/bash\n";
     print SCRIPT "set -e\n";
     print SCRIPT "{ time {\n";
+    foreach my $var (keys %{$envvars}) {
+        print SCRIPT "export $var=$envvars->{$var}\n";
+    }
     print SCRIPT "$command\n";
     print SCRIPT "}; } 2>&1 | tee $logfile\n";
     print SCRIPT "exit \${PIPESTATUS[0]}\n";

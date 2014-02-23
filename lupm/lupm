@@ -11,7 +11,7 @@
 #   username: name of package user (defaults to name field value)
 #   installgroups: install
 #   description: ~
-#   prefix: /usr
+#   envvars: PREFIX=/usr
 #   target: build
 #   configname: ~
 #   root-before: ~
@@ -101,7 +101,7 @@ sub buildPackage {
     my $packageName = $packageconfigname;
     my $installgroups = 'install';
     my $description = '';
-    my $prefix = '/usr';
+    my $envvars = 'PREFIX=/usr';
     my $target = 'build';
     my $root_before = '';
     my $root_after = '';
@@ -115,8 +115,8 @@ sub buildPackage {
     if (exists($packageconfig->{'description'})) {
         $description = $packageconfig->{'description'};
     }
-    if (exists($packageconfig->{'prefix'})) {
-        $prefix = $packageconfig->{'prefix'};
+    if (exists($packageconfig->{'envvars'})) {
+        $envvars = $packageconfig->{'envvars'};
     }
     if (exists($packageconfig->{'target'})) {
         $target = $packageconfig->{'target'};
@@ -137,7 +137,6 @@ sub buildPackage {
         error ("Could not create user $packageName: " + ($? & 127));
     }
 
-    $ENV{'PREFIX'} = $prefix;
 #should be done in useradd
 #    system("mkdir -vp $builddir/$packageName") == 0
 #        or error ("Could not create user home directory $builddir/$packageName");
@@ -147,22 +146,22 @@ sub buildPackage {
     if (exists($packageconfig->{'root-before'})) {
         system("mkdir -p $builddir/$packageName/targets") == 0
             or error ("Could not create $builddir/$packageName/targets directory");
-        print("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $packageconfpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml\n");
-        system("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $packageconfpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml") == 0
+        print("$scriptdir/package.pl -e \"$envvars\" -d $builddir/$packageName -c $packageconfpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml\n");
+        system("$scriptdir/package.pl -e \"$envvars\" -d $builddir/$packageName -c $packageconfpath -t root-before -s $builddir/downloads --statusfilename=root-before.yaml") == 0
             or error("Failed to build package $packageName: root-before");
         system("chown -R $packageName:$packageName $builddir/$packageName/targets") == 0
             or error ("Could not chown $builddir/$packageName/targets directory");
     }
 
-    print("su - -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $configpath -t $target -s $builddir/downloads' $packageName\n");
-    system("su - -c '$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $configpath -t $target -s $builddir/downloads' $packageName") == 0
+    print("su - -c '$scriptdir/package.pl -e \"$envvars\" -d $builddir/$packageName -c $configpath -t $target -s $builddir/downloads' $packageName\n");
+    system("su - -c '$scriptdir/package.pl -e \"$envvars\" -d $builddir/$packageName -c $configpath -t $target -s $builddir/downloads' $packageName") == 0
         or error("Failed to build package $packageName: $target");
 
     if (exists($packageconfig->{'root-after'})) {
         system("mkdir -p $builddir/$packageName/targets/root-after") == 0
             or error ("Could not create $builddir/$packageName/targets/root-after directory");
-        print("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $packageconfpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml\n");
-        system("$scriptdir/package.pl -p $prefix -d $builddir/$packageName -c $packageconfpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml") == 0
+        print("$scriptdir/package.pl -e \"$envvars\" -d $builddir/$packageName -c $packageconfpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml\n");
+        system("$scriptdir/package.pl -e \"$envvars\" -d $builddir/$packageName -c $packageconfpath -t root-after -s $builddir/downloads --statusfilename=root-after.yaml") == 0
             or error("Failed to build package $packageName: root-after");
         system("chown -R $packageName:$packageName $builddir/$packageName/targets/root-after") == 0
             or error ("Could not chown $builddir/$packageName/targets/root-after directory");
