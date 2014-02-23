@@ -484,9 +484,11 @@ sub exportDownloadVariables {
             }
             $envvars->{"\U${packagename}_FILENAMES"} = join(' ', @values);
         } else {
-            my $varname = "\U${packagename}_SRC_DIR";
+            my $p = "\U${packagename}";
+            $p =~ s/-/_/g;
+            my $varname = "${p}_SRC_DIR";
             $envvars->{$varname} = $s->{'downloads'}{$packagename}{'srcdir'};
-            my $varnamearch = "\U${packagename}_SRC_ARCHIVE";
+            my $varnamearch = "${p}_SRC_ARCHIVE";
             $envvars->{$varnamearch} = $s->{'downloads'}{$packagename}{'archive'};
             if ($packagename eq $config->{'name'}) {
                 $envvars->{'PACKAGE_SRCDIR'} = $s->{'downloads'}{$packagename}{'srcdir'};
