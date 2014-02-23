@@ -49,5 +49,7 @@ build:
 cross-build:
     - configure: --prefix=$PREFIX
                  --target=$TARGET
+                 --infodir=`pwd`/info-tmp
+                 --localedir=`pwd`/locale-tmp
     - make: ~
     - install: ~
