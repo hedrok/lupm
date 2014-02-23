@@ -1,0 +1,11 @@
+name: xapian-core
+description: Search engine
+download:
+    - link: http://xapian.org/download
+      versionPattern: -[0-9]\\+.[0-9]*[02468].[0-9.]\\+
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~

@@ -1,0 +1,17 @@
+name: pth
+description: The Pth package contains a very portable POSIX/ANSI-C based library for Unix platforms which
+             provides non-preemptive priority-based scheduling for multiple threads of
+             execution (multithreading) inside event-driven applications
+download:
+    - link: http://ftp.gnu.org/gnu/pth/
+build:
+    - preconfigure: "sed -i 's#$(LOBJS): Makefile#$(LOBJS): pth_p.h Makefile#' Makefile.in"
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --mandir=$PREFIX/share/man
+    - make: ~
+    - test: ~
+    - install: ~
+    - install-doc: install -v -m755 -d $PREFIX/share/doc/pth$PACKAGE_VERSION;
+                   install -v -m644    $PACKAGE_SRCDIR/{README,PORTING,SUPPORT,TESTS}
+                                       $PREFIX/share/doc/pth$PACKAGE_VERSION;

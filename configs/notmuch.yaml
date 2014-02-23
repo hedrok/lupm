@@ -1,0 +1,16 @@
+name: notmuch
+description: notmuch mail indexer
+requires: xapian,gmime
+download:
+    - link: http://notmuchmail.org/releases/
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    # TODO: not working in build dir
+    #- check:
+    #    dir: src
+    - install:
+        dir: src

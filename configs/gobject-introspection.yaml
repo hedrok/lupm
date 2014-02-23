@@ -1,0 +1,16 @@
+name: gobject-introspection
+description: The GObject Introspection is used to describe the program APIs and collect them in a uniform, machine readable format
+requires: glib,cairo
+download:
+    - link: ftp://ftp.gnome.org/pub/gnome/sources/gobject-introspection/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    #- check: ~
+    - install: ~
+root-after:
+    - permissions: lupm-dir.sh /usr/share/gir-1.0/;
+                   lupm-dir.sh /usr/lib/girepository-1.0/;

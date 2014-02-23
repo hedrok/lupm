@@ -1,0 +1,12 @@
+name: libgpg-error
+description: defines common error values for all GnuPG components
+download:
+    - link: ftp://ftp.gnupg.org/gcrypt/libgpg-error/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~
+    - install-doc: install -v -m644 -D $PACKAGE_SRCDIR/README
+                                       $PREFIX/share/doc/libgpg-error$PACKAGE_VERSION/README

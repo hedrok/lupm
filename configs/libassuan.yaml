@@ -1,0 +1,10 @@
+name: libassuan
+description: The libassuan package contains an inter process communication library used by some of the other GnuPG related packages
+requires: libgpg-error
+download:
+    - link: ftp://ftp.gnupg.org/gcrypt/libassuan/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~

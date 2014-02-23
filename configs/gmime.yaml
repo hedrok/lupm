@@ -1,0 +1,14 @@
+name: gmime
+description: Utilities for Multipurpose Internet Mail Extension (MIME)
+requires: glib,libgpg-error,gobject-introspection,vala,gpgme
+download:
+    - link: ftp://ftp.gnome.org/pub/gnome/sources/gmime/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --enable-smime
+    - make: ~
+    - check: ~
+    - install: ~

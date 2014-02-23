@@ -1,0 +1,15 @@
+name: vala
+description: Vala is a new programming language that aims to bring modern programming language features to GNOME developers
+requires: glib,dbus
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/vala/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    # TODO: seems using src dir
+    #- check: ~
+    - install: ~
+root-after:
+    - permissions: lupm-dir.sh $PREFIX/share/vala/vapi;

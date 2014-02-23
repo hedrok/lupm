@@ -1,0 +1,13 @@
+name: pinentry
+description: The PIN-Entry package contains a collection of simple PIN 
+             or pass-phrase entry dialogs which utilize the Assuan protocol
+download:
+    - link: ftp://ftp.gnupg.org/gcrypt/pinentry/
+build:
+    - configure: --prefix=$PREFIX
+                 --enable-pinentry-curses
+                 --enable-fallback-curses
+                 --disable-pinentry-gtk2
+                 --disable-pinentry-qt
+    - make: ~
+    - install: ~

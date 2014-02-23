@@ -1,0 +1,15 @@
+name: talloc
+description: Talloc provides a hierarchical, reference counted memory pool system with destructors
+installgroups: install,pythonmodinstall
+download:
+    - link: http://samba.org/ftp/talloc/
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - check:
+        dir: src
+    - install:
+        dir: src

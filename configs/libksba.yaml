@@ -1,0 +1,12 @@
+name: libksba
+description: The Libksba package contains a library used to make X.509 
+             certificates as well as making the CMS (Cryptographic 
+             Message Syntax) easily accessible by other applications
+requires: libgpg-error
+download:
+    - link: ftp://ftp.gnupg.org/gcrypt/libksba/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~

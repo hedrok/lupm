@@ -1,0 +1,12 @@
+name: libgcrypt
+description: The libgcrypt package contains a general purpose crypto library based on the code used in GnuPG
+requires: libgpg-error,libcap,pth
+download:
+    - link: ftp://ftp.gnupg.org/gcrypt/libgcrypt/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --with-capabilities
+    - make: ~
+    - check: ~
+    - install: ~

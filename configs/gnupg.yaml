@@ -1,0 +1,13 @@
+name: gnupg
+description: The GnuPG 2 package is GNUs tool for secure communication and data storage
+requires: pth,libassuan,libgcrypt,libksba,pinentry
+download:
+    - link: ftp://ftp.gnupg.org/gcrypt/gnupg/
+build:
+    - configure: --prefix=$PREFIX
+                 --libexecdir=$PREFIX/lib/gnupg2
+                 --docdir=$PREFIX/share/doc/gnupg$PACKAGE_VERSION
+    - make: ~
+    - check: ~
+    - install: ~
+    - postinstall: ln -svf $PREFIX/bin/gpg{2,}

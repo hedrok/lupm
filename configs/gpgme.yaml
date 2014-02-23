@@ -1,0 +1,11 @@
+name: gpgme
+description: The GPGME package is a C language library that allows to add support for cryptography to a program
+requires: libassuan,gnupg
+download:
+ - link: ftp://ftp.gnupg.org/gcrypt/gpgme/
+build:
+ - configure: --prefix=$PREFIX
+              --disable-fd-passing
+ - make: ~
+ - check: ~
+ - install: ~
