@@ -1,31 +1,26 @@
 name: bluez
+description: Bluetooth stack
 installgroups: install,dbusinstall,udevrulesinstall,systemdinstall
 requires: libical
 download:
- - link: http://www.kernel.org/pub/linux/bluetooth/
+    - link: http://www.kernel.org/pub/linux/bluetooth/
 build:
- - configure:
-    dir: src
-    params: --prefix=$PREFIX
-            --sysconfdir=/etc
-            --localstatedir=/var
-            --libexecdir=$PREFIX/lib
-            --enable-shared
-            --disable-static
-            --enable-library
- - make:
-    dir: src
- - check:
-    dir: src
- - install:
-    dir: src
-# - config:
-#    command: for CONFFILE in audio input network serial ; do
-#                install -v -m644 ${CONFFILE}/${CONFFILE}.conf /etc/bluetooth/${CONFFILE}.conf;
-#             done;
-#             unset CONFFILE;
-#    dir: src
- - install-doc:
-    dir: src
-    command: install -v -m755 -d $PREFIX/share/doc/bluez$PACKAGE_VERSION;
-             install -v -m644 doc/*.txt $PREFIX/share/doc/bluez$PACKAGE_VERSION;
+    - configure:
+        dir: src
+        params: --prefix=$PREFIX
+                --sysconfdir=/etc
+                --localstatedir=/var
+                --libexecdir=$PREFIX/lib
+                --enable-shared
+                --disable-static
+                --enable-library
+    - make:
+        dir: src
+    - check:
+        dir: src
+    - install:
+        dir: src
+    - install-doc:
+        dir: src
+        command: install -v -m755 -d $PREFIX/share/doc/bluez$PACKAGE_VERSION;
+                 install -v -m644 doc/*.txt $PREFIX/share/doc/bluez$PACKAGE_VERSION;

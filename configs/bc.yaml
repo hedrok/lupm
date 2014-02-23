@@ -1,10 +1,11 @@
 name: bc
+description: Arbitrary precision numeric processing language
 download:
- - link: http://alpha.gnu.org/gnu/bc/
+    - link: http://alpha.gnu.org/gnu/bc/
 build:
- - configure: --prefix=$PREFIX
-              --with-readline
-              --infodir=/usr/share/info
-              --mandir=/usr/share/man
- - make: ~
- - install: ~
+    - configure: --prefix=$PREFIX
+                 --with-readline
+                 --infodir=/usr/share/info
+                 --mandir=/usr/share/man
+    - make: ~
+    - install: ~
