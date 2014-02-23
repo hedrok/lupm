@@ -1,7 +1,8 @@
 name: ctags
+description: Tagging source code
 download:
- - method: sourceforge
+    - method: sourceforge
 build:
- - configure: --prefix=$PREFIX
- - make: ~
- - install: ~
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

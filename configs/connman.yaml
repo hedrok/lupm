@@ -1,14 +1,13 @@
 name: connman
+description: Connection Manager
 requires: iptables,gnutls
 installgroups: install,dbusinstall,systemdinstall
 download:
- - link: http://www.kernel.org/pub/linux/network/connman/
+    - link: http://www.kernel.org/pub/linux/network/connman/
 build:
- - configure: --prefix=$PREFIX
-              --sysconfdir=/etc
-              --localstatedir=/var
- - make: ~
- - check: ~
- - test: ~
- - install: ~
- - postinstall: install -m755 client/connmanctl /usr/bin
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - test: ~
+    - install: ~
+    - postinstall: install -m755 client/connmanctl /usr/bin

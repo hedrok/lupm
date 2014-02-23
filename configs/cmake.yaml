@@ -1,18 +1,18 @@
 name: cmake
+description: A modern toolset used for generating Makefiles
 requires: curl,libarchive,expat
 download:
- - link: http://www.cmake.org/files/
-   method: wget-folder
-   wget-folder-name: 'v'
+    - link: http://www.cmake.org/files/
+      method: wget-folder
+      wget-folder-name: 'v'
 build:
- - configure: --prefix=$PREFIX
-              --system-libs
-              --mandir=/share/man
-              --docdir=/share/doc/cmake$PACKAGE_VERSION
- - make: ~
- - test: ~
- - install: ~
+    - configure: --prefix=$PREFIX
+                 --system-libs
+                 --mandir=/share/man
+                 --docdir=/share/doc/cmake$PACKAGE_VERSION
+    - make: ~
+    - test: ~
+    - install: ~
+    - postinstall: mkdir -p $PREFIX/lib/cmake;
 root-after:
-    - cmake-lib: mkdir -p /usr/lib/cmake;
-                 chown cmake /usr/lib/cmake;
-                 lupm-dir.sh /usr/lib/cmake;
+    - cmake-lib: lupm-dir.sh $PREFIX/lib/cmake;

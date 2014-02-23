@@ -1,4 +1,5 @@
 name: cmus
+description: Console MUSic player
 requires: libmad,ffmpeg,pulseaudio
 download:
     - method: sourceforge
@@ -11,4 +12,3 @@ build:
         dir: src
     - install:
         dir: src
-

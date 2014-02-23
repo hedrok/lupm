@@ -1,10 +1,11 @@
 name: chapter5
+description: LFS Chapter5 tools
 root-before:
- - permissions: chown -R chapter5:chapter5 /tools-build /tools
- - rmlink: rm /scripts
+    - permissions: chown -Rv chapter5:chapter5 /tools-build /tools
+    - rmlink: rm -v /scripts
 build:
- - move: mkdir -p ~/tools ~/tools-build;
-         mv /tools/* ~/tools;
-         mv /tools-build/* ~/tools-build
+    - move: mkdir -pv ~/tools ~/tools-build;
+            mv -v /tools/* ~/tools;
+            mv -v /tools-build/* ~/tools-build
 root-after:
- - clean-tools: rmdir /tools /tools-build
+    - clean-tools: rmdir /tools /tools-build
