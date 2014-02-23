@@ -1,0 +1,11 @@
+name: fbida
+description: view images in framebuffer
+requires: libexif
+envvars: prefix=/usr
+download:
+    - link: http://www.kraxel.org/releases/fbida/
+build:
+    - make:
+        dir: src
+    - install:
+        dir: src

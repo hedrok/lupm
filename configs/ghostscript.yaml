@@ -1,0 +1,21 @@
+name: ghostscript
+description: Versatile processor for PostScript data with the ability to render PostScript to different targets
+envvars: MAKEFLAGS=-j1
+download:
+    - link: http://downloads.ghostscript.com/public/
+    - name: ghostscript-fonts-std
+      method: sourceforge
+      sourceforge-name: gs-fonts
+    - name: gnu-gs-fonts-other
+      method: sourceforge
+      sourceforge-name: gs-fonts
+build:
+    - preconfigure: rm -rf expat freetype lcms2 jpeg libpng zlib;
+    - configure: --prefix=$PREFIX
+                 --disable-compile-inits
+                 --enable-dynamic
+                 --with-system-libtiff 
+    - make: ~
+    - install: ~
+    - install-fonts: tar -xvf $GHOSTSCRIPT_FONTS_STD_SRC_ARCHIVE -C /usr/share/ghostscript;
+                     tar -xvf $GNU_GS_FONTS_OTHER_SRC_ARCHIVE -C /usr/share/ghostscript;

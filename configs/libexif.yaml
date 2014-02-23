@@ -1,0 +1,11 @@
+name: libexif
+description: A library for parsing, editing, and saving EXIF data
+download:
+    - method: sourceforge
+build:
+    - configure: --prefix=$PREFIX
+                 --with-doc-dir=$PREFIX/share/doc/libexif$PACKAGE_VERSION
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~
