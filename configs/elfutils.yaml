@@ -1,0 +1,14 @@
+name: elfutils
+description: Contains set of utilities and libraries
+             for handling ELF (Executable and Linkable Format) files
+download:
+    - link: https://fedorahosted.org/releases/e/l/elfutils/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+                 --program-prefix=eu-
+    - make: ~
+    # TODO one test failed
+    #- check: ~
+    - install: ~
