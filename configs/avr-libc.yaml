@@ -1,0 +1,12 @@
+name: avr-libc
+description: libc for AVR
+installgroups: avrinstall
+envvars: PREFIX=/opt/avr-toolchain
+download:
+    - link: http://download.savannah.gnu.org/releases/avr-libc/
+build:
+    - configure: --prefix=$PREFIX
+                 --build=`../config.guess`
+                 --host=avr
+    - make: ~
+    - install: ~

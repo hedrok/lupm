@@ -1,8 +1,13 @@
 name: avr-binutils
-installgroups: install,avrinstall
+installgroups: avrinstall
 description: Linker, assembler and other tools for AVR
 target: cross-build
 configname: binutils
-root-before: 
-    - permissions: mkdir /usr/avr;
-                   lupm-dir.sh /usr/avr avrinstall;
+envvars: PREFIX=/opt/avr-toolchain
+         TARGET=avr
+root-before:
+    - permissions: lupm-create-hierarchy.sh $PREFIX avrinstall;
+                   mkdir -pv $PREFIX/avr/{bin,lib,include};
+                   lupm-dir.sh $PREFIX/avr/bin avrinstall;
+                   lupm-dir.sh $PREFIX/avr/lib avrinstall;
+                   lupm-dir.sh $PREFIX/avr/include avrinstall;

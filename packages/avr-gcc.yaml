@@ -1,0 +1,7 @@
+name: avr-gcc
+installgroups: avrinstall
+description: GCC for AVR
+target: cross-build
+configname: gcc
+envvars: PREFIX=/opt/avr-toolchain
+         TARGET=avr

@@ -1,158 +1,166 @@
 name: gcc
+description: GNU Compiler Collection
 installgroups: install,tty
 download:
- - link: http://ftp.gnu.org/gnu/gcc
-   method: wget-folder
- - name: mpfr
-   link: http://www.mpfr.org/mpfr-current/
- - name: mpc
-   link: http://www.multiprecision.org/index.php?prog=mpc&page=download
- - name: gmp
-   link: http://gmplib.org/
+    - link: http://ftp.gnu.org/gnu/gcc/
+      method: wget-folder
+    - name: mpfr
+      link: http://www.mpfr.org/mpfr-current/
+    - name: mpc
+      link: http://www.multiprecision.org/index.php?prog=mpc&page=download
+    - name: gmp
+      link: http://gmplib.org/
 root-before:
- - permissions: chown --no-dereference gcc:gcc /usr/lib/libgcc_s.so{,.1};
-                chown --no-dereference gcc:gcc /usr/lib/libstdc++.so{,.6};
-                chown --no-dereference gcc:gcc /usr/lib/libstdc++.la;
+    - permissions: chown --no-dereference gcc:gcc /usr/lib/libgcc_s.so{,.1};
+                   chown --no-dereference gcc:gcc /usr/lib/libstdc++.so{,.6};
+                   chown --no-dereference gcc:gcc /usr/lib/libstdc++.la;
 pass1:
- - preconfigure: for file in $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h);
-                 do
-                      cp -uv $file{,.orig};
-                      sed -e 's@/lib\(64\)\?\(32\)\?/ld@$PREFIX&@g'
-                          -e 's@/usr@$PREFIX@g' $file.orig > $file;
-                      echo '#undef STANDARD_STARTFILE_PREFIX_1' >> $file;
-                      echo '#undef STANDARD_STARTFILE_PREFIX_2' >> $file;
-                      echo '#define STANDARD_STARTFILE_PREFIX_1 "$PREFIX/lib/"' >> $file;
-                      echo '#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file;
-                      touch $file.orig;
-                 done;
-                 sed -i '/k prot/agcc_cv_libc_provides_ssp=yes' gcc/configure;
-                 sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure;
-                 ln -svf $MPFR_SRC_DIR mpfr;
-                 ln -svf $GMP_SRC_DIR gmp;
-                 ln -svf $MPC_SRC_DIR mpc;
- - configure:
-     --target=$LFS_TGT
-     --prefix=$PREFIX
-     --with-sysroot=$LFS
-     --with-newlib
-     --without-headers
-     --with-local-prefix=$PREFIX
-     --with-native-system-header-dir=$PREFIX/include
-     --disable-nls
-     --disable-shared
-     --disable-multilib
-     --disable-decimal-float
-     --disable-threads
-     --disable-libmudflap
-     --disable-libssp
-     --disable-libgomp
-     --disable-libquadmath
-     --enable-languages=c
-     --with-mpfr-include=$PACKAGE_SRCDIR/mpfr/src
-     --with-mpfr-lib=$(pwd)/mpfr/src/.libs
- - make: ~
- - preinstall: case $(uname -m) in
-                  x86_64) mkdir -pv $PREFIX/lib && ln -svf lib $PREFIX/lib64 ;;
-               esac
- - install: ~
- - postinstall: ln -sv libgcc.a `$LFS_TGT-gcc -print-libgcc-file-name | sed 's/libgcc/&_eh/'`
+    - preconfigure: for file in $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h);
+                    do
+                         cp -uv $file{,.orig};
+                         sed -e 's@/lib\(64\)\?\(32\)\?/ld@$PREFIX&@g'
+                             -e 's@/usr@$PREFIX@g' $file.orig > $file;
+                         echo '#undef STANDARD_STARTFILE_PREFIX_1' >> $file;
+                         echo '#undef STANDARD_STARTFILE_PREFIX_2' >> $file;
+                         echo '#define STANDARD_STARTFILE_PREFIX_1 "$PREFIX/lib/"' >> $file;
+                         echo '#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file;
+                         touch $file.orig;
+                    done;
+                    sed -i '/k prot/agcc_cv_libc_provides_ssp=yes' gcc/configure;
+                    sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure;
+                    ln -svf $MPFR_SRC_DIR mpfr;
+                    ln -svf $GMP_SRC_DIR gmp;
+                    ln -svf $MPC_SRC_DIR mpc;
+    - configure:
+        --target=$LFS_TGT
+        --prefix=$PREFIX
+        --with-sysroot=$LFS
+        --with-newlib
+        --without-headers
+        --with-local-prefix=$PREFIX
+        --with-native-system-header-dir=$PREFIX/include
+        --disable-nls
+        --disable-shared
+        --disable-multilib
+        --disable-decimal-float
+        --disable-threads
+        --disable-libmudflap
+        --disable-libssp
+        --disable-libgomp
+        --disable-libquadmath
+        --enable-languages=c
+        --with-mpfr-include=$PACKAGE_SRCDIR/mpfr/src
+        --with-mpfr-lib=$(pwd)/mpfr/src/.libs
+    - make: ~
+    - preinstall: case $(uname -m) in
+                     x86_64) mkdir -pv $PREFIX/lib && ln -svf lib $PREFIX/lib64 ;;
+                  esac
+    - install: ~
+    - postinstall: ln -sv libgcc.a `$LFS_TGT-gcc -print-libgcc-file-name | sed 's/libgcc/&_eh/'`
 pass2:
- - limits:
-      command: cat gcc/limitx.h gcc/glimits.h gcc/limity.h
-               > `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
-      dir: src
- - fomit-frame:
-      command: cp -v gcc/Makefile.in{,.tmp};
-                sed 's/^T_CFLAGS =$/& -fomit-frame-pointer/' gcc/Makefile.in.tmp
-                > gcc/Makefile.in
-      dir: src
- - preconfigure: for file in $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h);
-                 do
-                      cp -uv $file{,.orig};
-                      sed -e 's@/lib\(64\)\?\(32\)\?/ld@$PREFIX&@g'
-                          -e 's@/usr@$PREFIX@g' $file.orig > $file;
-                      echo '#undef STANDARD_STARTFILE_PREFIX_1' >> $file;
-                      echo '#undef STANDARD_STARTFILE_PREFIX_2' >> $file;
-                      echo '#define STANDARD_STARTFILE_PREFIX_1 "$PREFIX/lib/"' >> $file;
-                      echo '#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file;
-                      touch $file.orig;
-                 done;
-                 sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure;
-                 ln -svf $MPFR_SRC_DIR mpfr;
-                 ln -svf $GMP_SRC_DIR gmp;
-                 ln -svf $MPC_SRC_DIR mpc;
- - configure:
-     --prefix=$PREFIX
-     --with-local-prefix=$PREFIX
-     --with-native-system-header-dir=$PREFIX/include
-     --enable-clocale=gnu
-     --enable-shared
-     --enable-threads=posix
-     --enable-__cxa_atexit
-     --enable-languages=c,c++
-     --disable-libstdcxx-pch
-     --disable-multilib
-     --disable-bootstrap
-     --disable-libgomp
-     --with-mpfr-include=$PACKAGE_SRCDIR/mpfr/src
-     --with-mpfr-lib=$(pwd)/mpfr/src/.libs
- - make: ~
- - install: ~
- - postinstall: ln -sv gcc $PREFIX/bin/cc
- - checks: "echo 'main(){}' > dummy.c;
-           cc dummy.c;
-           readelf -l a.out | grep ': $PREFIX';
-           rm dummy.c a.out;"
+    - limits:
+         command: cat gcc/limitx.h gcc/glimits.h gcc/limity.h
+                  > `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+         dir: src
+    - fomit-frame:
+         command: cp -v gcc/Makefile.in{,.tmp};
+                   sed 's/^T_CFLAGS =$/& -fomit-frame-pointer/' gcc/Makefile.in.tmp
+                   > gcc/Makefile.in
+         dir: src
+    - preconfigure: for file in $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h);
+                    do
+                         cp -uv $file{,.orig};
+                         sed -e 's@/lib\(64\)\?\(32\)\?/ld@$PREFIX&@g'
+                             -e 's@/usr@$PREFIX@g' $file.orig > $file;
+                         echo '#undef STANDARD_STARTFILE_PREFIX_1' >> $file;
+                         echo '#undef STANDARD_STARTFILE_PREFIX_2' >> $file;
+                         echo '#define STANDARD_STARTFILE_PREFIX_1 "$PREFIX/lib/"' >> $file;
+                         echo '#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file;
+                         touch $file.orig;
+                    done;
+                    sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure;
+                    ln -svf $MPFR_SRC_DIR mpfr;
+                    ln -svf $GMP_SRC_DIR gmp;
+                    ln -svf $MPC_SRC_DIR mpc;
+    - configure:
+        --prefix=$PREFIX
+        --with-local-prefix=$PREFIX
+        --with-native-system-header-dir=$PREFIX/include
+        --enable-clocale=gnu
+        --enable-shared
+        --enable-threads=posix
+        --enable-__cxa_atexit
+        --enable-languages=c,c++
+        --disable-libstdcxx-pch
+        --disable-multilib
+        --disable-bootstrap
+        --disable-libgomp
+        --with-mpfr-include=$PACKAGE_SRCDIR/mpfr/src
+        --with-mpfr-lib=$(pwd)/mpfr/src/.libs
+    - make: ~
+    - install: ~
+    - postinstall: ln -sv gcc $PREFIX/bin/cc
+    - checks: "echo 'main(){}' > dummy.c;
+              cc dummy.c;
+              readelf -l a.out | grep ': $PREFIX';
+              rm dummy.c a.out;"
 build:
- - fomit-frame:
-      command: |
-               case `uname -m` in
-                    i?86) sed -i 's/^T_CFLAGS =$/& -fomit-frame-pointer/' gcc/Makefile.in ;;
-               esac
-      dir: src
- - test-fix:
-      command: sed -i -e /autogen/d -e /check.sh/d fixincludes/Makefile.in;
-               mv -v libmudflap/testsuite/libmudflap.c++/pass41-frag.cxx{,.disable}
-      dir: src
- - configure:
-     --prefix=$PREFIX
-     --libexecdir=$PREFIX/lib
-     --enable-shared
-     --enable-threads=posix
-     --enable-__cxa_atexit
-     --enable-clocale=gnu
-     --enable-languages=c,c++
-     --disable-multilib
-     --disable-bootstrap
-     --with-system-zlib
- - make: ~
- - precheck: ulimit -s 32768
- - check: ~
- - install: ~
- - postinstall: ln -sv $PREFIX/bin/cpp /lib;
-                ln -sv gcc $PREFIX/bin/cc;
- - compile: |
-            echo 'main(){}' > dummy.c
-            cc dummy.c -v -Wl,--verbose &> dummy.log
- - checks: |
-           readelf -l a.out | grep ': /lib\(64\)\?/ld-linux[^/ ]\+.so.[^/ ]\+'
-           #[Requesting program interpreter: /lib/ld-linux.so.2]
-           grep -o '/usr/lib.*/crt1.*succeeded' dummy.log
-           grep -o '/usr/lib.*/crti.*succeeded' dummy.log
-           grep -o '/usr/lib.*/crtn.*succeeded' dummy.log
-           #/usr/lib/crt1.o succeeded
-           #/usr/lib/crti.o succeeded
-           #/usr/lib/crtn.o succeeded
-           grep '^ /usr/include' dummy.log
-           # /usr/include
-           sed 's|; |\n|g' dummy.log | grep 'SEARCH.*("/usr/lib")'
-           sed 's|; |\n|g' dummy.log | grep 'SEARCH.*("/lib")'
-           #SEARCH_DIR("/usr/lib")
-           #SEARCH_DIR("/lib");
-           grep "open /lib\(64\)\?/libc.so.6 " dummy.log
-           #allowing for a lib64 directory on 64-bit hosts
-           #attempt to open /lib/libc.so.6 succeeded
-           grep "found ld-linux[^/ ]\+.so.[^/ ] at /lib\(64\)\?/ld-linux[^/ ]\+.so.[^/ ]\+" dummy.log
-           #(allowing for platform-specific differences in dynamic linker name and a lib64 directory on 64-bit hosts):
-           #found ld-linux.so.2 at /lib/ld-linux.so.2
- - cleanup: rm -v dummy.c a.out dummy.log
+    - fomit-frame:
+         command: |
+                  case `uname -m` in
+                       i?86) sed -i 's/^T_CFLAGS =$/& -fomit-frame-pointer/' gcc/Makefile.in ;;
+                  esac
+         dir: src
+    - test-fix:
+         command: sed -i -e /autogen/d -e /check.sh/d fixincludes/Makefile.in;
+                  mv -v libmudflap/testsuite/libmudflap.c++/pass41-frag.cxx{,.disable}
+         dir: src
+    - configure:
+        --prefix=$PREFIX
+        --libexecdir=$PREFIX/lib
+        --enable-shared
+        --enable-threads=posix
+        --enable-__cxa_atexit
+        --enable-clocale=gnu
+        --enable-languages=c,c++
+        --disable-multilib
+        --disable-bootstrap
+        --with-system-zlib
+    - make: ~
+    - precheck: ulimit -s 32768
+    - check: ~
+    - install: ~
+    - postinstall: ln -sv $PREFIX/bin/cpp /lib;
+                   ln -sv gcc $PREFIX/bin/cc;
+    - compile: |
+               echo 'main(){}' > dummy.c
+               cc dummy.c -v -Wl,--verbose &> dummy.log
+    - checks: |
+              readelf -l a.out | grep ': /lib\(64\)\?/ld-linux[^/ ]\+.so.[^/ ]\+'
+              #[Requesting program interpreter: /lib/ld-linux.so.2]
+              grep -o '/usr/lib.*/crt1.*succeeded' dummy.log
+              grep -o '/usr/lib.*/crti.*succeeded' dummy.log
+              grep -o '/usr/lib.*/crtn.*succeeded' dummy.log
+              #/usr/lib/crt1.o succeeded
+              #/usr/lib/crti.o succeeded
+              #/usr/lib/crtn.o succeeded
+              grep '^ /usr/include' dummy.log
+              # /usr/include
+              sed 's|; |\n|g' dummy.log | grep 'SEARCH.*("/usr/lib")'
+              sed 's|; |\n|g' dummy.log | grep 'SEARCH.*("/lib")'
+              #SEARCH_DIR("/usr/lib")
+              #SEARCH_DIR("/lib");
+              grep "open /lib\(64\)\?/libc.so.6 " dummy.log
+              #allowing for a lib64 directory on 64-bit hosts
+              #attempt to open /lib/libc.so.6 succeeded
+              grep "found ld-linux[^/ ]\+.so.[^/ ] at /lib\(64\)\?/ld-linux[^/ ]\+.so.[^/ ]\+" dummy.log
+              #(allowing for platform-specific differences in dynamic linker name and a lib64 directory on 64-bit hosts):
+              #found ld-linux.so.2 at /lib/ld-linux.so.2
+    - cleanup: rm -v dummy.c a.out dummy.log
+cross-build:
+    - configure: --prefix=$PREFIX
+                 --target=$TARGET
+                 --enable-languages=c,c++
+                 --libexecdir=$PREFIX/lib
+    - make: ~
+    - install: ~

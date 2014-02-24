@@ -1,0 +1,8 @@
+name: avrdude
+description: An utility to download/upload/manipulate the ROM and EEPROM contents of AVR microcontrollers
+download:
+    - link: http://download.savannah.gnu.org/releases/avrdude/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
