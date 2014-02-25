@@ -1,0 +1,17 @@
+name: libxcb
+installgroups: install,xorginstall
+description: provides an interface to the X Window System protocol,
+             which replaces the current Xlib interface
+download:
+    - link: http://xcb.freedesktop.org/dist/
+build:
+    - preconfigure: sed -e "s/pthread-stubs//" -i configure.ac;
+                    autoreconf -fi;
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --docdir='${datadir}'/doc/libxcb$PACKAGE_VERSION
+                 --enable-xinput
+                 --enable-xkb
+    - make: ~
+    - check: ~
+    - install: ~

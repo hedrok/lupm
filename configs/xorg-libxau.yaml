@@ -1,0 +1,11 @@
+name: libXau
+installgroups: install,xorginstall
+description: Contains a library implementing the X11 Authorization Protocol
+download:
+    - link: ftp://ftp.x.org/pub/individual/lib/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~

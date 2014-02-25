@@ -1,0 +1,8 @@
+name: util-macros
+description: m4 macros used by all of the Xorg packages
+download:
+    - link: ftp://ftp.x.org/pub/individual/util/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - install: ~

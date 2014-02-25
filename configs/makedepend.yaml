@@ -1,0 +1,10 @@
+name: makedepend
+description: Xorg. Contains a C-preprocessor like utility to determine build-time dependencies
+download:
+    - link: ftp://ftp.x.org/pub/individual/util/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~

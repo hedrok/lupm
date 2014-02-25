@@ -1,0 +1,11 @@
+name: xcb-proto
+installgroups: install,xorginstall,pythonmodinstall
+description: Provides the XML-XCB protocol descriptions that
+             libxcb uses to generate the majority of its code and API
+download:
+    - link: http://xcb.freedesktop.org/dist/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - check: ~
+    - install: ~

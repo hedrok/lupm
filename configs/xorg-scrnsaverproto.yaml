@@ -1,0 +1,8 @@
+name: xorg-scrnsaverproto
+installgroups: install,xorginstall
+description: Xorg protocol header part
+download:
+    - link: ftp://ftp.x.org/pub/individual/proto/
+build:
+    - configure: --prefix=$PREFIX
+    - install: ~
