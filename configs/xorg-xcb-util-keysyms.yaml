@@ -1,0 +1,11 @@
+name: xcb-util-keysyms
+installgroups: install,xorginstall
+description: A library for handling standard X key constants and conversion to/from keycodes
+download:
+    - link: http://xcb.freedesktop.org/dist/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~

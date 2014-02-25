@@ -1,0 +1,10 @@
+name: libXt
+installgroups: install,xorginstall
+description: Xorg library part
+download:
+    - link: ftp://ftp.x.org/pub/individual/lib/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

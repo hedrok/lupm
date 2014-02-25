@@ -1,0 +1,11 @@
+name: libXfont
+installgroups: install,xorginstall
+description: Xorg library part
+download:
+    - link: ftp://ftp.x.org/pub/individual/lib/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --disable-devel-docs
+    - make: ~
+    - install: ~

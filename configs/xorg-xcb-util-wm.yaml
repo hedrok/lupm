@@ -1,0 +1,11 @@
+name: xcb-util-wm
+installgroups: install,xorginstall
+description: Libraries which provide client and window-manager helpers for EWMH and ICCCM
+download:
+    - link: http://xcb.freedesktop.org/dist/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~

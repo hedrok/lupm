@@ -1,0 +1,11 @@
+name: libXft
+installgroups: install,xorginstall
+description: Xorg library part
+download:
+    - link: ftp://ftp.x.org/pub/individual/lib/
+build:
+    - preconfigure: sed -i 's#<freetype/#<freetype2/#' src/xftglyphs.c
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

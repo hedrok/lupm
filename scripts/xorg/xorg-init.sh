@@ -1,7 +1,6 @@
 #!/bin/sh
 groupadd xorginstall;
-for d in extensions fonts dri; do
-    mkdir -pv /usr/include/X11/$d/;
-    lupm-dir.sh /usr/include/X11/$d/ xorginstall;
+for d in X11/extensions X11/fonts X11/dri xcb X11; do
+    mkdir -pv /usr/include/$d/;
+    lupm-dir.sh /usr/include/$d/ xorginstall;
 done;
-lupm-dir.sh /usr/include/X11/ xorginstall;

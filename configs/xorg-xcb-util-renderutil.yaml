@@ -1,0 +1,10 @@
+name: xcb-util-renderutil
+installgroups: install,xorginstall
+description: Provides additional extensions to the XCB library
+download:
+    - link: http://xcb.freedesktop.org/dist/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
