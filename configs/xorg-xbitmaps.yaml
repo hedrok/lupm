@@ -1,0 +1,8 @@
+name: xbitmaps
+installgroups: install,xorginstall
+description: Contains bitmap images used by multiple applications built in Xorg chapter
+download:
+    - link: ftp://ftp.x.org/pub/individual/data/
+build:
+    - configure: --prefix=$PREFIX
+    - install: ~
