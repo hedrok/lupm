@@ -1,4 +1,4 @@
-name: xorg-xf86dgaproto
+name: xf86dgaproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

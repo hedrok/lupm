@@ -1,0 +1,16 @@
+name: libxml2
+installgroups: install,pythonmodinstall
+description: Libraries and utilities used for parsing XML files
+download:
+    - link: ftp://xmlsoft.org/libxml2/
+    - name: xmlts
+      link: http://www.w3.org/XML/Test/
+      versionPattern: '[0-9]\\+'
+build:
+    - preconfigure: tar -xvf $XMLTS_SRC_ARCHIVE
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --with-history
+    - make: ~
+    - check: ~
+    - install: ~

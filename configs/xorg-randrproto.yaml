@@ -1,4 +1,4 @@
-name: xorg-randrproto
+name: randrproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

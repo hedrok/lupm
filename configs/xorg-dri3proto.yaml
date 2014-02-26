@@ -1,4 +1,4 @@
-name: xf86bigfontproto
+name: dri3proto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

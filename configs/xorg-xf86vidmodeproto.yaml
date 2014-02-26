@@ -1,4 +1,4 @@
-name: xorg-xf86vidmodeproto
+name: xf86vidmodeproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

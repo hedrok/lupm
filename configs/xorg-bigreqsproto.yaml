@@ -1,4 +1,4 @@
-name: xorg-bigreqsproto
+name: bigreqsproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

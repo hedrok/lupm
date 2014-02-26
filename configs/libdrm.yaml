@@ -1,0 +1,15 @@
+name: libdrm
+description: Provides core library routines for the X Window System to directly
+             interface with video hardware using the Linux kernel
+             Direct Rendering Manager (DRM)
+download:
+    - link: http://dri.freedesktop.org/libdrm/
+build:
+    - preconfigure: sed -e "/pthread-stubs/d" -i configure.ac;
+                    autoreconf -fi;
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --enable-udev
+    - make: ~
+    - check: ~
+    - install: ~

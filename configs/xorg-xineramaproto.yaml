@@ -1,4 +1,4 @@
-name: xorg-xineramaproto
+name: xineramaproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

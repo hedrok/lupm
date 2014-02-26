@@ -1,4 +1,4 @@
-name: xorg-xcmiscproto
+name: xcmiscproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

@@ -1,4 +1,4 @@
-name: xorg-renderproto
+name: renderproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

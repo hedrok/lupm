@@ -1,4 +1,4 @@
-name: xorg-damageproto
+name: damageproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

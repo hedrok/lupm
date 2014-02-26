@@ -1,4 +1,4 @@
-name: xorg-inputproto
+name: inputproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

@@ -1,4 +1,4 @@
-name: xorg-fontsproto
+name: fontsproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

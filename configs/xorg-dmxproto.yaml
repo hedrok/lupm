@@ -1,4 +1,4 @@
-name: xorg-dmxproto
+name: dmxproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

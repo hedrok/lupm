@@ -1,4 +1,4 @@
-name: xorg-xproto
+name: xproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

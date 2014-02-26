@@ -1,4 +1,4 @@
-name: xf86bigfontproto
+name: presentproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

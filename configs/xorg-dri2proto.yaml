@@ -1,4 +1,4 @@
-name: xorg-dri2proto
+name: dri2proto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

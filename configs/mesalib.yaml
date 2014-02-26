@@ -1,0 +1,30 @@
+name: MesaLib
+username: mesalib
+installgroups: install,xorginstall
+description: An OpenGL compatible 3D graphics library
+requires: expat,libdrm,libxml2,makedepend,elfutils,llvm
+download:
+    - link: ftp://ftp.freedesktop.org/pub/mesa/
+      method: wget-folder
+      wget-folder-name: ''
+      versionPattern: -[0-9.]\\+\(-rc[0-9]\)\?
+build:
+    - link: ln -svf ~/source/Mesa$PACKAGE_VERSION $PACKAGE_SRCDIR;
+    - preconfigure: autoreconf -fi;
+    - configure: --prefix=$PREFIX
+                 --enable-texture-float
+                 --enable-gles1
+                 --enable-gles2
+                 --enable-openvg
+                 --enable-osmesa
+                 --enable-xa
+                 --enable-gbm
+                 --enable-gallium-egl
+                 --enable-gallium-gbm
+                 --enable-glx-tls
+                 --with-egl-platforms="drm,x11"
+                 --with-gallium-drivers="nouveau,svga,swrast"
+    - make: ~
+    - install: ~
+    - install-doc: install -v -dm755 $PREFIX/share/doc/MesaLib$PACKAGE_VERSION;
+                   cp -rfv $PACKAGE_SRCDIR/docs/* $PREFIX/share/doc/MesaLib$PACKAGE_VERSION;

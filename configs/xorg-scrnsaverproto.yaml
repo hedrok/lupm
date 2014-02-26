@@ -1,4 +1,4 @@
-name: xorg-scrnsaverproto
+name: scrnsaverproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:

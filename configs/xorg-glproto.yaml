@@ -1,4 +1,4 @@
-name: xorg-glproto
+name: glproto
 installgroups: install,xorginstall
 description: Xorg protocol header part
 download:
