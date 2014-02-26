@@ -1,0 +1,8 @@
+name: xcursor-themes
+installgroups: install,xorginstall
+description: Contains the redglass and whiteglass animated cursor themes
+download:
+    - link: ftp://ftp.x.org/pub/individual/data/
+build:
+    - configure: --prefix=$PREFIX
+    - install: ~
