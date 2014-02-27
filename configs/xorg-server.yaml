@@ -19,5 +19,5 @@ root-after:
                        lupm-dir.sh $PREFIX/lib/xorg/modules/$d xorginstall;
                    done;
                    lupm-dir.sh $PREFIX/include/xorg;
-#    - setuid: chown root $PREFIX/bin/Xorg;
-#              chmod u+s $PREFIX/bin/Xorg;
+    - setuid: chown root $PREFIX/bin/Xorg;
+              chmod u+s $PREFIX/bin/Xorg;
