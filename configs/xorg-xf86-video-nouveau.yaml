@@ -1,0 +1,10 @@
+name: xf86-video-nouveau
+installgroups: install,xorginstall
+description: Contains the X.Org Video Driver for NVidia Cards
+download:
+    - link: ftp://ftp.x.org/pub/individual/driver/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
