@@ -28,3 +28,5 @@ build:
     - install: ~
     - install-doc: install -v -dm755 $PREFIX/share/doc/MesaLib$PACKAGE_VERSION;
                    cp -rfv $PACKAGE_SRCDIR/docs/* $PREFIX/share/doc/MesaLib$PACKAGE_VERSION;
+root-after:
+    - dirs: lupm-dir.sh $PREFIX/lib/dri/ xorginstall;

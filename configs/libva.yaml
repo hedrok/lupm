@@ -1,0 +1,12 @@
+name: libva
+installgroups: install,xorginstall
+description: Contains a library which provides access to hardware accelerated video processing
+download:
+    - link: http://www.freedesktop.org/software/vaapi/releases/libva/
+build:
+    - preconfigure: sed -i 's@,libva.syms@,$(top_srcdir)/va/libva.syms@' va/Makefile.am;
+                    autoreconf -fi;
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
