@@ -1,0 +1,11 @@
+name: xinit
+installgroups: install,xorginstall
+description: Contains a usable script to start the xserver
+download:
+    - link: ftp://ftp.x.org/pub/individual/app/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --with-xinitdir=/etc/X11/app-defaults 
+    - make: ~
+    - install: ~

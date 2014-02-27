@@ -1,0 +1,10 @@
+name: xclock
+installgroups: install,xorginstall
+description: A simple clock application which is used in the default xinit configuration
+download:
+    - link: ftp://ftp.x.org/pub/individual/app/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

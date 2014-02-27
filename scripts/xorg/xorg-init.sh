@@ -12,6 +12,7 @@ for d in \
          share/X11 \
          share/X11/app-defaults \
          share/fonts/X11 \
+         etc/X11/app-defaults \
          ; do
     mkdir -pv $PREFIX/$d/;
     lupm-dir.sh $PREFIX/$d/ xorginstall;

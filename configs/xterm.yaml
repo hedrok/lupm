@@ -1,0 +1,11 @@
+name: xterm
+installgroups: install,xorginstall
+description: X Terminal emulator
+download:
+    - link: ftp://invisible-island.net/xterm/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --with-app-defaults=/etc/X11/app-defaults
+    - make: ~
+    - install: ~

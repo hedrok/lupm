@@ -1,0 +1,10 @@
+name: twm
+installgroups: install,xorginstall
+description: Minimal window manager
+download:
+    - link: http://xorg.freedesktop.org/releases/individual/app/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
