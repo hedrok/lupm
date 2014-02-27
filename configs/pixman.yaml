@@ -1,0 +1,12 @@
+name: pixman
+installgroups: install
+description: Contains a library that provides low-level pixel manipulation
+             features such as image compositing and trapezoid rasterization
+download:
+    - link: http://cairographics.org/releases/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~
