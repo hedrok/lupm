@@ -1,0 +1,11 @@
+name: xkeyboard-config
+installgroups: install,xorginstall
+description: Contains the keyboard configuration database for the X Window System
+download:
+    - link: ftp://ftp.x.org/pub/individual/data/xkeyboard-config/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --with-xkb-rules-symlink=xorg
+    - make: ~
+    - install: ~
