@@ -2,6 +2,7 @@ name: xorg-server
 installgroups: install,xorginstall
 requires: pixman,openssl,xorg-fonts,xkeyboard-config
 description: The core of the X Window system
+envvars: MODULE_DIRS=input
 download:
     - link: ftp://ftp.x.org/pub/individual/xserver/
 build:
@@ -13,6 +14,13 @@ build:
     - make: ~
     - check: ~
     - install: ~
-#root-after:
+    - dirs: for d in $MODULE_DIRS; do
+                mkdir -pv $PREFIX/lib/xorg/modules/$d;
+            done
+root-after:
+    - permissions: for d in $MODULE_DIRS; do
+                       lupm-dir.sh $PREFIX/lib/xorg/modules/$d xorginstall;
+                   done;
+                   lupm-dir.sh $PREFIX/include/xorg;
 #    - setuid: chown root $PREFIX/bin/Xorg;
 #              chmod u+s $PREFIX/bin/Xorg;

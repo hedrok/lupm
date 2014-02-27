@@ -1,0 +1,10 @@
+name: xf86-input-evdev
+installgroups: install,xorginstall
+description: Contains Generic Linux input driver for the Xorg X server, It handles keyboard, mouse, touchpads and wacom devices
+download:
+    - link: ftp://ftp.x.org/pub/individual/driver/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
