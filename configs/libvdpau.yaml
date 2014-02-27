@@ -1,0 +1,11 @@
+name: libvdpau
+installgroups: install
+description: Video Decode and Presentation API for Unix
+download:
+    - link: http://people.freedesktop.org/~aplattner/vdpau/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~
