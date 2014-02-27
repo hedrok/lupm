@@ -1,0 +1,12 @@
+name: xf86-video-intel
+installgroups: install,xorginstall
+description: Contains the X.Org Video Driver for Intel
+download:
+    - link: ftp://ftp.x.org/pub/individual/driver/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --enable-kms-only
+                 --with-default-accel=sna
+    - make: ~
+    - install: ~
