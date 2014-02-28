@@ -1,0 +1,14 @@
+name: pango
+requires: cairo,harfbuzz,xorg-libs,gobject-introspection
+description: A library for laying out and rendering of text, 
+             with an emphasis on internationalization
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/pango/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    # TODO: two of tests don't pass in non-source directory
+    #- check: ~
+    - install: ~

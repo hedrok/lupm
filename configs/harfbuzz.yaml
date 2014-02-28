@@ -1,0 +1,10 @@
+name: harfbuzz
+requires: glib,icu,freetype
+description: Package contains an OpenType text shaping engine
+download:
+    - link: http://www.freedesktop.org/software/harfbuzz/release/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~

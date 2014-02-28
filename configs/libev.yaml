@@ -1,0 +1,13 @@
+name: libev
+description: A full-featured and high-performance event loop that is loosely modelled after libevent
+download:
+    - link: http://dist.schmorp.de/libev/
+build:
+    #TODO why configure is generated wrong?
+    - preconfigure: sed -i 's/ event.h//' Makefile.am;
+                    autoreconf -fi;
+                    sed -i 's/fi ac_config_headers/fi; ac_config_headers/' configure;
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~

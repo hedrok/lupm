@@ -1,0 +1,19 @@
+name: cairo
+requires: pixman,libpng,glib,fontconfig
+description: A 2D graphics library with support for multiple output devices
+download:
+    - link: http://cairographics.org/releases/
+build:
+    - configure: 
+        dir: src
+        params: --prefix=$PREFIX
+                --disable-static
+    - make:
+        dir: src
+    # Requires all kinds of fonts,
+    # special X server and states
+    # that 0 fails is highly improbable
+    #- check:
+    #    dir: src
+    - install:
+        dir: src

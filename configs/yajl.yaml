@@ -1,0 +1,12 @@
+name: yajl
+requires: cmake
+description: Yet Another JSON Library
+download:
+    - link: git://github.com/lloyd/yajl
+      method: git
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX
+                   $PACKAGE_SRCDIR
+    - make: ~
+    - install: ~
+
