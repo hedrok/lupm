@@ -1,0 +1,17 @@
+name: dwm
+description: dynamic window manager
+download:
+    - link: http://git.suckless.org/dwm
+      method: git
+build:
+    - preconfigure: |
+                    sed -i 's@/usr/X11R6/include@/usr/include/X11@' config.mk
+                    sed -i 's@/usr/X11R6/lib@/usr/lib@' config.mk
+                    sed -i 's@/usr/local@/usr@' config.mk
+                    sed -i 's@^XINERAMALIBS@#XINERAMALIBS@' config.mk
+                    sed -i 's@^XINERAMAFLAGS@#XINERAMAFLAGS@' config.mk
+    - make:
+        dir: src
+    - install:
+        dir: src
+

@@ -1,0 +1,11 @@
+name: st
+description: Simple Terminal
+download:
+    - link: http://st.suckless.org/
+build:
+    - preconfigure: sed -i 's@/usr/local@/usr@' config.mk
+    - make:
+        dir: src
+    - install:
+        dir: src
+

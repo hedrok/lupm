@@ -1,0 +1,11 @@
+name: dmenu
+description: Dynamic menu
+download:
+    - link: http://tools.suckless.org/dmenu/
+build:
+    - preconfigure: sed -i 's@/usr/local@/usr@' config.mk
+    - make:
+        dir: src
+    - install:
+        dir: src
+
