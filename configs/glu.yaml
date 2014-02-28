@@ -1,0 +1,11 @@
+name: glu
+description: adding some higher-level functionality not provided by OpenGL
+installgroups: install,xorginstall
+requires: mesalib
+download:
+    - link: ftp://ftp.freedesktop.org/pub/mesa/glu/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
