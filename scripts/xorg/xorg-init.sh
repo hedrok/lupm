@@ -34,5 +34,3 @@ for f in \
     chmod -v 664 $dir/{fonts.dir,fonts.alias,fonts.scale};
     chgrp -v xorginstall $dir/{fonts.dir,fonts.alias,fonts.scale};
 done;
-#forbid installing locale files
-mkdir -pv $PREFIX/share/X11/locale;
