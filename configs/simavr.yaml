@@ -1,0 +1,15 @@
+name: simavr
+description: small, mean and lean hackable AVR simulator
+requires: elfutils,glu
+envvars: MAKEFLAGS='-j1'
+download:
+    - link: https://git.gitorious.org/simavr/simavr.git
+      method: git
+build:
+    - preconfigure: |
+                    sed -i 's#LINUX_AVR_ROOTS := /usr/lib/avr /usr/avr /opt/cross/avr/avr#LINUX_AVR_ROOTS := /opt/avr-toolchain/avr#' Makefile.common;
+                    sed -i 's#/usr/local#/usr#' simavr/Makefile;
+    - make:
+        dir: src
+    - install:
+        dir: src
