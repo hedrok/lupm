@@ -1,0 +1,16 @@
+name: cxxtest
+installgroups: install,pythonmodinstall
+description: Unit testing framework for C++
+download:
+    - method: sourceforge
+build:
+    - python-module-build:
+        dir: src
+        command: cd python;
+                 python setup.py build;
+    - python-module-install:
+        dir: src
+        command: cd python;
+                 python setup.py install;
+    - install-headers: cp -rv $PACKAGE_SRCDIR/cxxtest $PREFIX/include;
+    - install-script: cp -v $PACKAGE_SRCDIR/bin/cxxtestgen $PREFIX/bin;
