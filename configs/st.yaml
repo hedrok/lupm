@@ -3,9 +3,10 @@ description: Simple Terminal
 download:
     - link: http://st.suckless.org/
 build:
-    - preconfigure: sed -i 's@/usr/local@/usr@' config.mk
+    - preconfigure: sed -i "s@/usr/local@$PREFIX@" config.mk
     - make:
         dir: src
     - install:
         dir: src
-
+root-after:
+    - terminfo: mv -v /usr/src/st/.terminfo/s/* $PREFIX/share/terminfo/s/
