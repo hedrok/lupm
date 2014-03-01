@@ -1,0 +1,10 @@
+name: psftools
+description: PC Screen Font tools
+download:
+    - link: http://www.seasip.info/Unix/PSF/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~

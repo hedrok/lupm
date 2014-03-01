@@ -1,0 +1,17 @@
+name: terminus-font
+installgroups: fontinstall
+description: Terminus Font
+download:
+    - method: sourceforge
+build:
+    - preconfigure: chmod +x configure;
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src
+    - fontdir:
+        command: make fontdir
+        dir: src

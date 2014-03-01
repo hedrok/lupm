@@ -1,6 +1,7 @@
 #!/bin/sh
 PREFIX=/usr
-groupadd xorginstall;
+groupadd -f xorginstall;
+groupadd -f fontinstall;
 for d in \
          include/X11/extensions \
          include/X11/fonts \
@@ -34,3 +35,4 @@ for f in \
     chmod -v 664 $dir/{fonts.dir,fonts.alias,fonts.scale};
     chgrp -v xorginstall $dir/{fonts.dir,fonts.alias,fonts.scale};
 done;
+lupm-dir.sh $PREFIX/share/fonts fontinstall;
