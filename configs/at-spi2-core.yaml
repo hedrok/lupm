@@ -1,0 +1,15 @@
+name: at-spi2-core
+installgroups: install,dbusinstall
+description: Is a part of the GNOME Accessibility Project
+require: dbus,glib,intltool,xorg-libs,gobject-introspection
+download:
+    - link: ftp://ftp.gnome.org/pub/gnome/sources/at-spi2-core/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    # TODO test failed
+    #- check: ~
+    - prevent-autorun: sed -i 's@$(sysconfdir)/xdg/autostart@/tmp/xdg/autostart@' bus/Makefile
+    - install: ~

@@ -1,0 +1,12 @@
+name: gtk
+description: Contains the libraries used for creating graphical user interfaces for applications
+require: at-spi2-atk,gdk-pixbuf,pango
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/gtk+/
+      method: wget-folder
+      wget-folder-name: ''
+      versionPattern: '+-[0-9.]\\+'
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

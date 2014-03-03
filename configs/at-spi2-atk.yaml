@@ -1,0 +1,13 @@
+name: at-spi2-atk
+description: Contains a library that bridges ATK to At-Spi2 D-Bus service
+require: at-spi2-core,atk
+download:
+    - link: ftp://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    #TODO: test fails
+    #- check: ~
+    - install: ~

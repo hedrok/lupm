@@ -1,0 +1,19 @@
+name: boost
+description: Provides a set of free peer-reviewed portable C++ source libraries
+requires: python2,icu
+download:
+    - method: wget-folder
+      link: http://www.boost.org/users/download/
+      wget-folder-name: 'boost\\/'
+      versionPattern: _[0-9_]\\+
+      posturl: '\\/download'
+build:
+    - config:
+        command: ./bootstrap.sh --prefix=$PREFIX
+        dir: src
+    - build:
+        command: ./b2 stage threading=multi link=shared
+        dir: src
+    - inst:
+        command: ./b2 install threading=multi link=shared
+        dir: src

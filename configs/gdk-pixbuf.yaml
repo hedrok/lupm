@@ -1,0 +1,12 @@
+name: gdk-pixbuf
+description: A toolkit for image loading and pixel buffer manipulation
+require: glib,libjpeg-turbo,libpng,libtiff,xorg-libs,gobject-introspection
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+                 --with-x11
+    - make: ~
+    - install: ~

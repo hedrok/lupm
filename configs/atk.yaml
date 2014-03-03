@@ -1,0 +1,11 @@
+name: atk
+description: Provides the set of accessibility interfaces that are implemented by other toolkits and applications
+require: glib,gobject-introspection
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/atk/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

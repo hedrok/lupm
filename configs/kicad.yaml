@@ -1,0 +1,15 @@
+name: kicad
+description: Schematics editor, PCB design
+requires: boost,cmake,wxwidgets,mesalib,zlib
+download:
+    - link: http://github.com/KiCAD/kicad-source-mirror.git
+      method: git
+build:
+    - link: ln -svf ~/source/kicad-source-mirror $PACKAGE_SRCDIR
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX
+                   -DKICAD_SKIP_BOOST=ON
+                   $PACKAGE_SRCDIR
+    - make: ~
+    - preinstall: sed -i '/\/resources\/linux\/mime\/icons/d' cmake_install.cmake;
+                  sed -i '/\/resources\/linux\/mime\/applications/d' cmake_install.cmake;
+    - install: ~
