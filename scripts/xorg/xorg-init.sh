@@ -36,3 +36,11 @@ for f in \
     chgrp -v xorginstall $dir/{fonts.dir,fonts.alias,fonts.scale};
 done;
 lupm-dir.sh $PREFIX/share/fonts fontinstall;
+
+for f in \
+         share/icons \
+         share/icons/hicolor \
+         ; do
+    mkdir -p $PREFIX/$f/;
+    lupm-dir.sh $PREFIX/$f;
+done;
