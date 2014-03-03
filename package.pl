@@ -530,7 +530,8 @@ if ($target ne 'root-before' && $target ne 'root-after') {
             my $wgetParams = {
                 'link' => $link,
                 'package' => $name,
-                'suffix' => ($_->{'suffix'} // '')
+                'suffix' => ($_->{'suffix'} // ''),
+                'posturl' => ($_->{'posturl'} // '')
             };
             if (exists($_->{'versionPattern'})) {
                 $wgetParams->{'versionPattern'} = $_->{'versionPattern'};
