@@ -1,0 +1,12 @@
+name: getmail
+installgroups: install,pythonmodinstall
+description: A mail retriever
+download:
+    - link: http://pyropus.ca/software/getmail/
+build:
+    - build:
+        dir: src
+        command: python setup.py build
+    - install:
+        dir: src
+        command: python setup.py install
