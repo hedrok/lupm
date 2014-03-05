@@ -1,0 +1,10 @@
+name: task
+description: An open-source cross platform command-line task management tool
+requires: cmake
+download:
+    - link: http://taskwarrior.org/download/
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX
+                   $PACKAGE_SRCDIR
+    - make: ~
+    - install: ~
