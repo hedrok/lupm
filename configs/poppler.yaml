@@ -1,0 +1,12 @@
+name: poppler
+description: Contains a PDF rendering library and command line
+             tools used to manipulate PDF files
+download:
+    - link: http://poppler.freedesktop.org/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --enable-libcurl
+                 --enable-xpdf-headers
+    - make: ~
+    - install: ~

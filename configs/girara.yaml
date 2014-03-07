@@ -1,0 +1,13 @@
+name: girara
+description: User interface libraray for vim-like interface of graphic applications
+download:
+    - link: git://pwmt.org/girara.git
+      method: git
+build:
+    - remove-po:
+        dir: src
+        command: echo -e "all:\n\ninstall:\n" > po/Makefile
+    - make:
+        dir: src
+    - install:
+        dir: src

@@ -1,0 +1,8 @@
+name: poppler-data
+description: Encoding data for poppler
+download:
+    - link: http://poppler.freedesktop.org/
+build:
+    - inst: 
+        command: make prefix=$PREFIX install
+        dir: src

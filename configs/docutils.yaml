@@ -1,0 +1,14 @@
+name: docutils
+installgroups: install,pythonmodinstall
+description: An open-source text processing system for processing plaintext
+             documentation into useful formats, such as HTML, LaTeX,
+             man-pages, open-document or XML
+download:
+    - method: sourceforge
+build:
+    - build:
+        dir: src
+        command: python setup.py build
+    - install:
+        dir: src
+        command: python setup.py install

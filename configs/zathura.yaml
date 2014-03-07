@@ -1,0 +1,15 @@
+name: zathura
+installgroups: install,dbusinstall
+description: Keyboard-oriented document viewer
+requires: gtk3,glib,girara,sqlite3,check,intltool,python-docutils
+download:
+    - link: git://pwmt.org/zathura.git
+      method: git
+build:
+    - remove-po:
+        dir: src
+        command: echo -e "all:\n\ninstall:\n" > po/Makefile
+    - make:
+        dir: src
+    - install:
+        dir: src

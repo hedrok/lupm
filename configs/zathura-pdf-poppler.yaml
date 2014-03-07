@@ -1,0 +1,9 @@
+name: zathura-pdf-poppler
+requires: zathura,poppler
+download:
+    - link: http://pwmt.org/projects/zathura/plugins/zathura-pdf-poppler/
+build:
+    - make:
+        dir: src
+    - install:
+        dir: src
