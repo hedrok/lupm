@@ -40,3 +40,5 @@ root-after:
                 lupm-dir.sh /etc/dbus-1/system.d/ dbusinstall;
                 lupm-dir.sh /usr/share/dbus-1/system-services/ dbusinstall;
                 lupm-dir.sh /usr/share/dbus-1/services/ dbusinstall;
+                lupm-dir.sh /usr/share/dbus-1/services/ dbusinstall;
+                lupm-dir.sh /usr/share/dbus-1/interfaces/ dbusinstall;
