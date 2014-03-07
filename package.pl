@@ -22,7 +22,7 @@
 #    link: http://gmplib.org/
 #  - name: tcl
 #    method: sourceforge
-#    suffix = '-src'
+#    suffix: -src
 #  - name: bash-patches
 #    method: wget-multiple
 #    link:
