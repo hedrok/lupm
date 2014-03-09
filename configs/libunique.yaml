@@ -1,0 +1,12 @@
+name: libunique
+description: Contains a library for writing single instance applications
+requires: gtk
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/libunique/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

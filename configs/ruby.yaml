@@ -1,0 +1,11 @@
+name: ruby
+description: Ruby language
+download:
+    - link: ftp://ftp.ruby-lang.org/pub/ruby/
+build:
+    - configure: --prefix=$PREFIX
+                 --docdir=/usr/share/doc/ruby$PACKAGE_VERSION
+                 --enable-shared
+    - make: ~
+    - test: ~
+    - install: ~

@@ -1,0 +1,13 @@
+name: libsoup
+description: HTTP client/server library for GNOME
+requires: glib-networking,libxml2,sqlite
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/libsoup/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    # TODO: check requires a lot of dependencies...
+    - install: ~

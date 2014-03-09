@@ -1,0 +1,14 @@
+name: glib-networking
+description: HTTP client/server library for GNOME
+requires: gnutls,gsettings-desktop-schemas,p11-kit
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/glib-networking/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --libexecdir=$PREFIX/lib/glib-networking
+                 --with-ca-certificates=/etc/ssl/ca-bundle.crt
+    - make: ~
+    - install: ~

@@ -1,0 +1,18 @@
+name: webkitgtk
+description: The port of the portable web rendering engine WebKit to the GTK+ 3 platform
+requires: gperf,gst-plugins-base,gtk,icu,libsecret,libsoup,libwebp,mesalib,ruby,sqlite,udev,which,libxslt
+download:
+    - link: http://webkitgtk.org/releases/
+build:
+#    - preconfigure: mkdir -pv $PREFIX/include/webkit2;
+#                    cp -v Source/WebKit2/UIProcess/API/gtk/*.h $PREFIX/include/webkit2;
+    - configure:
+        params: --prefix=$PREFIX
+                --libexecdir=/usr/lib/webkitgtk3
+                --enable-introspection
+                --disable-geolocation
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src

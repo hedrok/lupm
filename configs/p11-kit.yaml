@@ -1,0 +1,11 @@
+name: p11-kit
+description: Provides a way to load and enumerate PKCS 11
+requires: libtasn,libffi
+download:
+    - link: http://p11-glue.freedesktop.org/releases/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~

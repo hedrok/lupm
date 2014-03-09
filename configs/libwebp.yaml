@@ -1,0 +1,11 @@
+name: libwebp
+description: Contains a library and support programs to encode
+             and decode images in WebP format
+requires: libjpeg-turbo,libpng,tiff
+download:
+    - link: https://webp.googlecode.com/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

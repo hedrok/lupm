@@ -1,0 +1,12 @@
+name: jumanji
+description: Keyboard-oriented web browser
+requires: webkitgtk,libsoup,libunique
+download:
+    - link: git://pwmt.org/jumanji.git
+      method: git
+build:
+    - preconfigure: git checkout develop || git checkout -b develop remotes/origin/develop;
+    - make:
+        dir: src
+    - install:
+        dir: src

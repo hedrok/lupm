@@ -1,0 +1,17 @@
+name: gstreamer
+description: A streaming media framework that enables applications to share 
+             a common set of plugins for things like video encoding and decoding,
+             filtering etc
+requires: glib,gobject-introspection
+download:
+    - link: http://gstreamer.freedesktop.org/src/gstreamer/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~
+root-after:
+    - permissions: groupadd -f gstplugininstall;
+                   lupm-dir.sh $PREFIX/include/gstreamer-1.0/gst/   gstplugininstall;
+                   lupm-dir.sh $PREFIX/lib/gstreamer-1.0/           gstplugininstall;
+                   lupm-dir.sh $PREFIX/share/gstreamer-1.0/presets/ gstplugininstall;

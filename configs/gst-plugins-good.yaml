@@ -1,0 +1,12 @@
+name: gst-plugins-good
+installgroups: install,gstplugininstall
+description: A set of plug-ins considered by the GStreamer developers
+             to have good quality code, correct functionality
+requires: gst-plugins-base
+download:
+    - link: http://gstreamer.freedesktop.org/src/gst-plugins-good/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - check: ~
+    - install: ~

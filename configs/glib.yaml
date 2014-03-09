@@ -11,3 +11,6 @@ build:
  - make: ~
 #- check: ~
  - install: ~
+root-after:
+    - permissions: lupm-dir.sh $PREFIX/lib/gio/modules/;
+                   lupm-dir.sh $PREFIX/share/glib-2.0/schemas/;

@@ -1,0 +1,12 @@
+name: libxslt
+installgroups: install,pythonmodinstall
+description: Contains XSLT libraries used for extending libxml2 libraries to support XSLT files
+requires: libxml2
+download:
+    - link: ftp://xmlsoft.org/libxslt/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - check: ~
+    - install: ~
