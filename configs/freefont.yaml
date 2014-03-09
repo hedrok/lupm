@@ -1,0 +1,9 @@
+name: freefont-otf
+installgroups: install,fontinstall
+description: 
+download:
+    - link: ftp://ftp.gnu.org/pub/gnu/freefont/
+build:
+    - copy: install -v -d -m755 $PREFIX/share/fonts/freefont;
+            install -v -m644 ~/source/freefont$PACKAGE_VERSION/*.otf $PREFIX/share/fonts/freefont;
+    - fontconfig: fc-cache -v $PREFIX/share/fonts/freefont

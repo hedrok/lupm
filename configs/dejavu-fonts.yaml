@@ -1,0 +1,9 @@
+name: dejavu-fonts-ttf
+installgroups: install,fontinstall
+description: These fonts are replacements for the Bitstream Vera fonts and provide Latin-based scripts with accents and Cyrillic glyphs
+download:
+    - link: http://dejavu-fonts.org/wiki/Download
+build:
+    - copy: install -v -d -m755 $PREFIX/share/fonts/dejavu;
+            install -v -m644 $PACKAGE_SRCDIR/ttf/*.ttf $PREFIX/share/fonts/dejavu;
+    - fontconfig: fc-cache -v $PREFIX/share/fonts/dejavu
