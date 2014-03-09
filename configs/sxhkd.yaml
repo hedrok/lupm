@@ -1,0 +1,10 @@
+name: sxhkd
+description: Simple X hotkey daemon
+download:
+    - link: https://github.com/baskerville/sxhkd.git
+      method: git
+build:
+    - make:
+        dir: src
+    - install:
+        dir: src
