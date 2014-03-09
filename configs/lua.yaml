@@ -1,0 +1,41 @@
+name: lua
+description: light-weight programming language designed for extending applications
+download:
+    - link: http://www.lua.org/ftp/
+build:
+    - preconfigure: sed -i "/#define LUA_ROOT/s:/usr/local/:$PREFIX:" src/luaconf.h
+    - make:
+        params: linux
+        dir: src
+    - test:
+        dir: src
+    - install:
+        command: make INSTALL_TOP=$PREFIX INSTALL_DATA="cp -d" INSTALL_MAN=$PREFIX/share/man/man1 install;
+        dir: src
+    - install-doc: 
+        command: mkdir -pv $PREFIX/share/doc/lua$PACKAGE_VERSION;
+                 cp -v doc/*.{html,css,gif,png} $PREFIX/share/doc/lua$PACKAGE_VERSION;
+        dir: src
+    - pkg-config: |
+                  cat > /usr/lib/pkgconfig/lua.pc << "EOF"
+                  V=$PACKAGE_VERSION
+
+                  prefix=\$PREFIX
+                  INSTALL_BIN=\${prefix}/bin
+                  INSTALL_INC=\${prefix}/include
+                  INSTALL_LIB=\${prefix}/lib
+                  INSTALL_MAN=\${prefix}/man/man1
+                  INSTALL_LMOD=\${prefix}/share/lua/${V}
+                  INSTALL_CMOD=\${prefix}/lib/lua/${V}
+                  exec_prefix=\${prefix}
+                  libdir=\${exec_prefix}/lib
+                  includedir=\${prefix}/include
+
+                  Name: Lua
+                  Description: An Extensible Extension Language
+                  Version: \${V}
+                  Requires:
+                  Libs: -L\${libdir} -llua -lm
+                  Cflags: -I\${includedir}
+                  EOF
+   
