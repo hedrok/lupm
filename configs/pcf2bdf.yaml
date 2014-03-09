@@ -1,0 +1,13 @@
+name: pcf2bdf
+description: Convert X font from Portable Compiled Format to
+             Bitmap Distribution Format
+download:
+    - link: https://github.com/ganaware/pcf2bdf.git
+      method: git
+build:
+    - make:
+        command: make -f Makefile.gcc
+        dir: src
+    - install:
+        command: make -f Makefile.gcc install
+        dir: src
