@@ -1,4 +1,5 @@
 name: avrdude
+installgroups: install,udevrulesinstall
 description: An utility to download/upload/manipulate the ROM and EEPROM contents of AVR microcontrollers
 download:
     - link: http://download.savannah.gnu.org/releases/avrdude/
@@ -6,3 +7,10 @@ build:
     - configure: --prefix=$PREFIX
     - make: ~
     - install: ~
+    - udevrule: |
+                cat > /usr/lib/udev/rules.d/43-avr.rules << "EOF"
+                SUBSYSTEM!="usb_device", ACTION!="add", GOTO="avr_end"
+                # FT2232C based AVR programmer
+                ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="660", GROUP="dialout"
+                LABEL="avr_end"]
+                EOF

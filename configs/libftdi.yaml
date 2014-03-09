@@ -1,0 +1,9 @@
+name: libftdi
+description: An open source library to talk to FTDI chips
+download:
+    - link: http://www.intra2net.com/en/developer/libftdi/download.php
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
