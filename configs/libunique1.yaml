@@ -1,0 +1,20 @@
+name: libunique
+description: Contains a library for writing single instance applications
+requires: gtk2
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/libunique/1.1/
+build:
+    - preconfigure: |
+                 if [ "z$PACKAGE_VERSION" == "z-1.1.6" ]; then
+                    wget -c http://www.linuxfromscratch.org/patches/blfs/svn/libunique-1.1.6-upstream_fixes-1.patch;
+                    patch -Np1 -i libunique-1.1.6-upstream_fixes-1.patch;
+                    autoreconf -fi;
+                 fi;
+    - configure:
+        params: --prefix=$PREFIX
+                --disable-static
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src

@@ -1,0 +1,10 @@
+name: libusb-compat
+description: The libusb-compat package aims to look, feel and behave exactly like libusb-0.1
+download:
+    - method: sourceforge
+      sourceforge-name: libusb
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

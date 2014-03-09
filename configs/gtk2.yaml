@@ -1,0 +1,22 @@
+name: gtk
+description: Contains the libraries used for creating graphical user interfaces for applications
+require: atk,gdk-pixbuf,pango
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/
+      versionPattern: '+-2[0-9.]\\+'
+root-before:
+    - permissions: mkdir -p $PREFIX/lib/gtk-2.0/modules;
+                   mkdir -p $PREFIX/share/themes/Default/;
+                   mkdir -p $PREFIX/share/themes/Emacs/;
+                   chown -v gtk2:gtk2 $PREFIX/lib/gtk-2.0/;
+                   chown -v gtk2:gtk2 $PREFIX/lib/gtk-2.0/modules;
+                   lupm-dir.sh $PREFIX/lib/gtk-2.0/modules;
+                   lupm-dir.sh $PREFIX/share/themes/;
+                   lupm-dir.sh $PREFIX/share/themes/Default/;
+                   lupm-dir.sh $PREFIX/share/themes/Emacs/;
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    # TODO: only if gtk-update-icon-cache exists...
+    - preinstall: sed -i 's/gtk-update-icon-cache\$(EXEEXT)$//' gtk/Makefile
+    - install: ~
