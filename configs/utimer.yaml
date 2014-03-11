@@ -1,0 +1,9 @@
+name: utimer
+description: Multifunction timer (command-line only)
+download:
+    - link: https://launchpad.net/utimer
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
