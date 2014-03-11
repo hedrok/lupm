@@ -12,6 +12,7 @@ for d in \
          include/X11 \
          share/X11 \
          share/X11/app-defaults \
+         share/X11/xorg.conf.d \
          share/fonts/X11 \
          etc/X11/app-defaults \
          ; do

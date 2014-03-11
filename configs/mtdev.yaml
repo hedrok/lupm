@@ -1,0 +1,9 @@
+name: mtdev
+description: Contains Multitouch Protocol Translation Library
+download:
+    - link: http://bitmath.org/code/mtdev/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
