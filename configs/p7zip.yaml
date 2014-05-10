@@ -1,0 +1,12 @@
+name: p7zip
+description: 7z archiver
+download:
+    - method: sourceforge
+      versionPattern: _[0-9.]\\+_src_all
+build:
+    - make-link: ln -svf ${PACKAGE_SRCDIR:0:-8} $PACKAGE_SRCDIR;
+    - make:
+        dir: src
+    - inst:
+        command: cp -v bin/7za /usr/bin
+        dir: src
