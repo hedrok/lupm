@@ -1,0 +1,8 @@
+name: lftp
+description: FTP client
+download:
+    - link: http://lftp.yar.ru/get.html
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
