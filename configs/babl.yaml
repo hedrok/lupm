@@ -1,0 +1,10 @@
+name: babl
+description: Pixel translation library
+download:
+    - link: http://download.gimp.org/pub/babl/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

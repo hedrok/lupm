@@ -1,0 +1,17 @@
+name: pygobject
+packagename: pygobject2
+installgroups: install,pythonmodinstall
+description: Python GObject bindings
+requires: py2cairo
+download:
+    - link: ftp://ftp.gnome.org/pub/gnome/sources/pygobject/
+      method: wget-folder
+      wget-folder-name: '2.2'
+build:
+    - configure: --prefix=$PREFIX --disable-introspection
+    - make: ~
+    - install: ~
+root-after:
+    #TODO: get python version
+    - permissions: lupm-dir.sh /usr/lib/python2.7/site-packages/gtk-2.0/;
+                   lupm-dir.sh /usr/include/pygtk-2.0;

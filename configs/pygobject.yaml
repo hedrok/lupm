@@ -1,0 +1,12 @@
+name: pygobject
+installgroups: install,pythonmodinstall
+description: Python GObject bindings
+requires: pycairo
+download:
+    - link: ftp://ftp.gnome.org/pub/gnome/sources/pygobject/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX --with-python=/usr/bin/python3
+    - make: ~
+    - install: ~

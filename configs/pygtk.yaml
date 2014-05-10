@@ -1,0 +1,12 @@
+name: pygtk
+installgroups: install,pythonmodinstall
+description: Python GTK bindings
+requires: pygobject
+download:
+    - link: ftp://ftp.gnome.org/pub/gnome/sources/pygtk/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

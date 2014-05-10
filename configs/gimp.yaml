@@ -1,0 +1,12 @@
+name: gimp
+description: image editor
+requires: babl,gegl,pygtk
+download:
+    - link: http://download.gimp.org/pub/gimp/
+      method: wget-folder
+      wget-folder-name: 'v'
+build:
+    - preconfigure: sed -i 's#freetype/#freetype2/#' app/text/gimpfont.c
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

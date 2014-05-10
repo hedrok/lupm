@@ -6,6 +6,9 @@ download:
     - name: xmlts
       link: http://www.w3.org/XML/Test/
       versionPattern: '[0-9]\\+'
+root-before:
+    - permissions: mkdir -p /usr/share/gtk-doc/html;
+                   lupm-dir.sh /usr/share/gtk-doc/html/;
 build:
     - preconfigure: tar -xvf $XMLTS_SRC_ARCHIVE
     - configure: --prefix=$PREFIX

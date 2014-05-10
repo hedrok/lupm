@@ -1,0 +1,10 @@
+name: gegl
+description: GEneric Graphics Library which is a graph based image processing format
+download:
+    - link: http://download.gimp.org/pub/gegl/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

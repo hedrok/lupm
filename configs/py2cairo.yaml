@@ -1,0 +1,16 @@
+name: py2cairo
+installgroups: install,pythonmodinstall
+description: Python 2 cairo bindings
+requires: python,cairo
+download:
+    - link: http://cairographics.org/releases/
+build:
+    - conf:
+        command: ./waf configure --prefix=$PREFIX
+        dir: src
+    - mk: 
+        command: ./waf build
+        dir: src
+    - inst:
+        command: ./waf install
+        dir: src
