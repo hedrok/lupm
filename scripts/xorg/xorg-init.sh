@@ -41,6 +41,16 @@ lupm-dir.sh $PREFIX/share/fonts fontinstall;
 for f in \
          share/icons \
          share/icons/hicolor \
+         share/icons/hicolor/16x16/apps \
+         share/icons/hicolor/16x16/mimetypes \
+         share/icons/hicolor/22x22/apps \
+         share/icons/hicolor/22x22/mimetypes \
+         share/icons/hicolor/24x24/apps \
+         share/icons/hicolor/24x24/mimetypes \
+         share/icons/hicolor/32x32/apps \
+         share/icons/hicolor/32x32/mimetypes \
+         share/icons/hicolor/48x48/apps \
+         share/icons/hicolor/48x48/mimetypes \
          ; do
     mkdir -p $PREFIX/$f/;
     lupm-dir.sh $PREFIX/$f;
