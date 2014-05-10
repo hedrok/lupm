@@ -736,6 +736,9 @@ sub processStage {
     print SCRIPT "set -e\n";
     print SCRIPT "{ time {\n";
     foreach my $var (keys %{$envvars}) {
+        if ($var ~~ /^[^A-Za-z]/) {
+            $var = "_$var";
+        }
         print SCRIPT "export $var=$envvars->{$var}\n";
     }
     print SCRIPT "$command\n";
