@@ -1,0 +1,12 @@
+name: djvulibre
+description: Implementation of DjVu
+download:
+    - link: http://djvu.sourceforge.net/
+build:
+    - link: ln -svf djvulibre$(echo "$PACKAGE_VERSION" | sed 's/\.[0-9]\+$//') $PACKAGE_SRCDIR
+    - preconfigure: sed -i 's/^SUBDIRS_LAST/#SUBDIRS_LAST/' Makefile.in;
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --enable-desktopfiles=no
+    - make: ~
+    - install: ~

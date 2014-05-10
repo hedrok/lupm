@@ -1,0 +1,9 @@
+name: zathura-djvu
+requires: zathura,djvulibre
+download:
+    - link: http://pwmt.org/projects/zathura-djvu/download/
+build:
+    - make:
+        dir: src
+    - install:
+        dir: src

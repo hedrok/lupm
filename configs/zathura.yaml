@@ -13,3 +13,6 @@ build:
         dir: src
     - install:
         dir: src
+root-after:
+    - plugin-dir: mkdir -p /usr/lib/zathura;
+                  lupm-dir.sh /usr/lib/zathura;
