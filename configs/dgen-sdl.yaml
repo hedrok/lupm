@@ -1,0 +1,9 @@
+name: dgen-sdl
+description: Sega genesis emulator
+download:
+    - method: sourceforge
+      sourceforge-name: dgen
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
