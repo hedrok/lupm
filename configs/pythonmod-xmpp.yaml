@@ -1,0 +1,13 @@
+name: xmpppy
+installgroups: install,pythonmodinstall
+requirements: python,python-setuptools
+download:
+   - method: sourceforge
+     versionPattern: -[0-9.]\\+\\(rc[0-9]\\)\?
+build:
+   - pybuild:
+        dir: src
+        command: python setup.py build
+   - pyinstall:
+        dir: src
+        command: python setup.py install

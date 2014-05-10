@@ -1,0 +1,13 @@
+name: profanity
+description: Profanity is a console based XMPP client written in C
+download:
+    - link: http://www.profanity.im/
+build:
+    - configure:
+        params: --prefix=$PREFIX
+                --disable-static
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src

@@ -1,0 +1,9 @@
+name: pythonmod-setuptools
+installgroups: install,pythonmodinstall
+requirements: python
+build:
+    - all: wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
+root-after:
+    # TODO get modules dir
+    - permissions: chgrp pythonmodinstall /usr/lib/python2.7/site-packages/easy-install.pth;
+                   chmod g+w /usr/lib/python2.7/site-packages/easy-install.pth;
