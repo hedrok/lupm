@@ -1,0 +1,9 @@
+name: libtorrent
+description: Torrent library for rtorrent
+download:
+    - link: http://libtorrent.rakshasa.no/downloads/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

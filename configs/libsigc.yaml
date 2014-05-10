@@ -1,0 +1,12 @@
+name: libsigc
+description: Implements a typesafe callback system for standard C++
+download:
+    - link: http://ftp.gnome.org/pub/GNOME/sources/libsigc++/
+      method: wget-folder
+      wget-folder-name: ''
+      versionPattern: ++-[0-9.]\\+
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

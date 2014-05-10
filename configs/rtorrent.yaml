@@ -1,0 +1,9 @@
+name: rtorrent
+description: Console torrent client
+download:
+    - link: http://libtorrent.rakshasa.no/downloads/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
