@@ -1,0 +1,28 @@
+name: wxWidgets
+description: A C++ library that lets developers create applications for Windows, Mac OS X, Linux and other platforms with a single code base
+requires: gtk2
+download:
+    - link: http://www.wxwidgets.org/downloads/
+      versionPattern: -2.[0-9.]\\+
+root-before:
+    - permissions: mkdir -p $PREFIX/lib/wx/include/;
+                   lupm-dir.sh $PREFIX/lib/wx/include/;
+build:
+    - preconfigure: sed 's/wxUSE_GLCANVAS 0/wxUSE_GLCANVAS 1/' -i ./include/wx/univ/setup.h
+    - configure: --prefix=$PREFIX
+                 --disable-static
+                 --with-gnomeprint
+    # disable non-english messages
+    - disable-langs: sed -i 's/^LOCALE_LINGUAS =.*$/LOCALE_LINUAS =/' Makefile;
+                     sed -i 's/^LOCALE_MSW_LINGUAS =.*$/LOCALE_MSW_LINUAS =/' Makefile;
+    - make: ~
+    - preinstall: sed -i 's/(cd $(DESTDIR)$(bindir) && $(LN_S) wxrc-$(WX_RELEASE) wxrc$(EXEEXT))//' utils/wxrc/Makefile;
+                  sed -i 's@$(INSTALL_PROGRAM) wxrc$(EXEEXT) $(DESTDIR)$(bindir)@@' utils/wxrc/Makefile;
+                  sed -i 's@rm -f $(DESTDIR)$(bindir)/wxrc$(EXEEXT) $(DESTDIR)$(bindir)/wxrc-$(WX_RELEASE)@@' utils/wxrc/Makefile;
+                  sed -i 's@mv -f $(DESTDIR)$(bindir)/wxrc$(EXEEXT) $(DESTDIR)$(bindir)/wxrc-$(WX_RELEASE)@$(INSTALL_PROGRAM) wxrc$(EXEEXT) $(DESTDIR)$(bindir)/wxrc-$(WX_RELEASE)@' utils/wxrc/Makefile;
+                  sed -i 's@(cd $(srcdir) ; $(INSTALL_DATA)  wxwin.m4 $(DESTDIR)$(datadir)/aclocal)@@' Makefile;
+                  sed -i 's@(cd $(DESTDIR)$(bindir) && rm -f wx-config && $(LN_S) $(libdir)/wx/config/$(TOOLCHAIN_FULLNAME) wx-config)@@' Makefile;
+                  sed -i 's@$(INSTALL_DATA)  wx.bkl wx_unix.bkl wx_win32.bkl $(DESTDIR)$(datadir)/bakefile/presets@@' Makefile;
+    - install: ~
+root-after:
+    - premissions: lupm-dir.sh $PREFIX/lib/wx/config/;

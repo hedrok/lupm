@@ -11,3 +11,5 @@ build:
                      sed -i 's/^LOCALE_MSW_LINGUAS =.*$/LOCALE_MSW_LINUAS =/' Makefile;
     - make: ~
     - install: ~
+root-after:
+    - premissions: lupm-dir.sh $PREFIX/lib/wx/config/;
