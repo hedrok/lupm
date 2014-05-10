@@ -1,0 +1,20 @@
+name: bzrtools
+installgroups: install,pythonmodinstall
+description: Bazaar version control system tools
+download:
+    - link: http://wiki.bazaar.canonical.com/BzrTools
+root-before:
+    # TODO determine python version
+    - permissions: mkdir -vp /usr/lib/python2.7/site-packages/bzrlib/plugins/bzrtools;
+                   chown -v bzrtools:bzrtools /usr/lib/python2.7/site-packages/bzrlib/plugins/bzrtools;
+build:
+    - link: ln -svf ~/source/bzrtools $PACKAGE_SRCDIR
+    - build:
+        dir: src
+        command: python setup.py build
+    - preinstall:
+        dir: src
+        command: rm -rvf bzrlib/locale
+    - install:
+        dir: src
+        command: python setup.py install

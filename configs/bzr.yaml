@@ -1,0 +1,15 @@
+name: bzr
+installgroups: install,pythonmodinstall
+description: Bazaar version control system
+download:
+    - link: https://launchpad.net/bzr/+download
+build:
+    - build:
+        dir: src
+        command: python setup.py build
+    - preinstall:
+        dir: src
+        command: rm -rvf bzrlib/locale
+    - install:
+        dir: src
+        command: python setup.py install
