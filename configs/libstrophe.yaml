@@ -1,0 +1,11 @@
+name: libstrophe
+description: A simple, lightweight C library for writing XMPP clients
+download:
+    - link: https://github.com/strophe/libstrophe.git
+      method: git
+build:
+    - preconfigure: ./bootstrap.sh
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~
