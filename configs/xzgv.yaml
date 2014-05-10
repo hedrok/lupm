@@ -1,0 +1,19 @@
+name: xzgv
+description: Keyboard-controllable image viewer
+requires: xorg
+download:
+    - method: sourceforge
+build:
+    - preconfigure: sed -i "s#/usr/local#$PREFIX#" config.mk;
+                    if [ "$(grep LDFLAGS config.mk)" == "" ] ; then
+                        echo 'LDFLAGS=-lX11 -lm' >> config.mk;
+                    fi;
+    - make:
+        vars: LDFLAGS="-lX11 -lm"
+        dir: src
+    - make-doc:
+        command: cd doc;
+                 make;
+        dir: src
+    - install:
+        dir: src
