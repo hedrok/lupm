@@ -1,0 +1,13 @@
+name: youtube-dl
+description: Command-line program to download video from youtube
+installgroups: install,pythonmodinstall
+download:
+    - link: https://github.com/rg3/youtube-dl.git
+      method: git
+build:
+    - build:
+        command: python setup.py build
+        dir: src
+    - install:
+        command: python setup.py install
+        dir: src
