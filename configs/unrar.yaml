@@ -1,0 +1,13 @@
+name: unrarsrc
+packagename: unrar
+description: Unarchive rar
+download:
+    - link: http://www.rarlab.com/rar_add.htm
+build:
+    - create-link: ln -svf ~/source/unrar $PACKAGE_SRCDIR;
+    - compile:
+        command: make -f makefile
+        dir: src
+    - inst:
+        command: install -v -m755 unrar /usr/bin
+        dir: src
