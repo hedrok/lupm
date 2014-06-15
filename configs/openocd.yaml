@@ -1,0 +1,22 @@
+name: openocd
+description: Open On-chip debugger
+download:
+    - method: sourceforge
+build:
+    - configure: --prefix=$PREFIX
+                 --enable-maintainer-mode
+                 --disable-option-checking
+                 --disable-werror
+                 --enable-dummy
+                 --enable-usb_blaster_libftdi
+                 --enable-ep93xx
+                 --enable-at91rm9200
+                 --enable-presto_libftdi
+                 --enable-usbprog
+                 --enable-jlink
+                 --enable-vsllink
+                 --enable-rlink
+                 --enable-arm-jtag-ew
+                 --enable-stlink
+    - make: ~
+    - install: ~
