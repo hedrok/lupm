@@ -1,0 +1,7 @@
+name: stm32-gdb
+installgroups: stm32install
+description: GDB for STM32
+target: cross-build
+configname: gdb
+envvars: PREFIX=/opt/stm32-toolchain
+         TARGET=arm-none-eabi

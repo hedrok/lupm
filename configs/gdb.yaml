@@ -1,12 +1,17 @@
 name: gdb
 installgroups: install,tty
 download:
- - link: http://ftp.gnu.org/gnu/gdb/
+    - link: http://ftp.gnu.org/gnu/gdb/
 build:
- - configure: --prefix=$PREFIX
- - make: ~
-#- chck: make -k check
- - inst: make -C gdb install
+    - configure: --prefix=$PREFIX
+    - make: ~
+#    - chck: make -k check
+    - inst: make -C gdb install
+cross-build:
+    - configure: --prefix=$PREFIX
+                 --target=$TARGET
+    - make: ~
+    - inst: make -C gdb install
 root-after:
     - permissions: groupadd -f gdbinstall;
                    mkdir -p $PREFIX/share/gdb/auto-load;
