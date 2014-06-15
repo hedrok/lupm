@@ -1,0 +1,13 @@
+name: stm32-binutils
+installgroups: stm32install
+description: Linker, assembler and other tools for STM32
+target: cross-build
+configname: binutils
+envvars: PREFIX=/opt/stm32-toolchain
+         TARGET=arm-none-eabi
+root-before:
+    - permissions: lupm-create-hierarchy.sh $PREFIX stm32install;
+                   mkdir -pv $PREFIX/arm-none-eabi/{bin,lib,include};
+                   lupm-dir.sh $PREFIX/arm-none-eabi/bin stm32install;
+                   lupm-dir.sh $PREFIX/arm-none-eabi/lib stm32install;
+                   lupm-dir.sh $PREFIX/arm-none-eabi/include stm32install;
