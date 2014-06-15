@@ -1,0 +1,15 @@
+name: stm32-gcc
+installgroups: stm32install
+description: GCC for STM32
+target: cross-build
+configname: gcc-newlib
+envvars: PREFIX=/opt/stm32-toolchain
+         TARGET=arm-none-eabi
+root-before:
+    - permissions: mkdir -pv $PREFIX/arm-none-eabi/sys-include stm32install;
+                   lupm-dir.sh $PREFIX/arm-none-eabi/sys-include stm32install;
+                   mkdir -pv $PREFIX/share/locale;
+                   chmod 777 $PREFIX/share/locale;
+                   lupm-dir.sh $PREFIX/share stm32install;
+root-after:
+    - clean-locale: rm -rf $PREFIX/share/locale;

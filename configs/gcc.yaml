@@ -10,6 +10,7 @@ download:
       link: http://www.multiprecision.org/index.php?prog=mpc&page=download
     - name: gmp
       link: http://gmplib.org/
+      versionPattern: -[0-9.]\\+[a-z]\\?
 root-before:
     - permissions: chown --no-dereference gcc:gcc /usr/lib/libgcc_s.so{,.1};
                    chown --no-dereference gcc:gcc /usr/lib/libstdc++.so{,.6};
@@ -157,6 +158,13 @@ build:
               #(allowing for platform-specific differences in dynamic linker name and a lib64 directory on 64-bit hosts):
               #found ld-linux.so.2 at /lib/ld-linux.so.2
     - cleanup: rm -v dummy.c a.out dummy.log
+cross-build:
+    - configure: --prefix=$PREFIX
+                 --target=$TARGET
+                 --enable-languages=c,c++
+                 --libexecdir=$PREFIX/lib
+    - make: ~
+    - install: ~
 cross-build:
     - configure: --prefix=$PREFIX
                  --target=$TARGET
