@@ -177,7 +177,7 @@ GetOptions(
 if (!(-d $packageDownloadDir)) {
     error("No sources directory provided: '$packageDownloadDir'");
 }
-my @vars = split /\s+/, $envvars;
+my @vars = split /\n/, $envvars;
 $envvars = {};
 foreach (@vars) {
     my @v = split /=/;
@@ -739,7 +739,7 @@ sub processStage {
         if ($var ~~ /^[^A-Za-z]/) {
             $var = "_$var";
         }
-        print SCRIPT "export $var=$envvars->{$var}\n";
+        print SCRIPT "export $var=\"$envvars->{$var}\"\n";
     }
     print SCRIPT "$command\n";
     print SCRIPT "}; } 2>&1 | tee $logfile\n";

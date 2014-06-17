@@ -3,8 +3,10 @@ installgroups: stm32install
 description: GCC for STM32
 target: cross-build
 configname: gcc-newlib
-envvars: PREFIX=/opt/stm32-toolchain
+envvars: |
+         PREFIX=/opt/stm32-toolchain
          TARGET=arm-none-eabi
+         EXTRAGCCFLAGS=--with-arch=armv7-m --with-mode=thumb --with-float=hard
 root-before:
     - permissions: mkdir -pv $PREFIX/arm-none-eabi/sys-include stm32install;
                    lupm-dir.sh $PREFIX/arm-none-eabi/sys-include stm32install;

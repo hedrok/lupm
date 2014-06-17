@@ -15,5 +15,6 @@ cross-build:
                  --libexecdir=$PREFIX/lib
                  --with-newlib
                  --with-headers=$NEWLIB_SRC_DIR/newlib/libc/include
+                 $EXTRAGCCFLAGS
     - make: ~
     - install: ~
