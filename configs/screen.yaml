@@ -1,0 +1,16 @@
+name: screen
+description: terminal multiplexer
+download:
+    - link: http://ftp.gnu.org/gnu/screen/
+build:
+    - configure: --prefix=$PREFIX
+                 --infodir=$PREFIX/share/info
+                 --mandir=$PREFIX/share/man
+                 --with-socket-dir=/run/screen
+                 --with-pty-group=5
+                 --with-sys-screenrc=/etc/screenrc
+    - sed: sed -i -e "s%/usr/local/etc/screenrc%/etc/screenrc%" $PACKAGE_SRCDIR/{etc,doc}/*
+    - make:
+        dir: src
+    - install:
+        dir: src
