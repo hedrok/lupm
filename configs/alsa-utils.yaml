@@ -16,3 +16,4 @@ build:
 root-after:
     - state: touch /var/lib/alsa/asound.state;
              alsactl store;
+    - permissions: lupm-dir.sh /usr/share/sounds;

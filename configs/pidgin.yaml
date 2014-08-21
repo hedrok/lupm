@@ -1,0 +1,18 @@
+name: pidgin
+description: Instant messaging client
+download:
+    - method: sourceforge
+build:
+    - configure: --prefix=$PREFIX
+                 --sysconfdir=$PREFIX/etc
+                 --disable-avahi
+                 --disable-dbus
+                 --disable-gtkspell
+                 --disable-gstreamer
+                 --disable-meanwhile
+                 --disable-idn
+                 --disable-nm
+                 --disable-vv
+                 --disable-tcl
+    - make: ~
+    - install: ~

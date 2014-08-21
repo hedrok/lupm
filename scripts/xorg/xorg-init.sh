@@ -53,6 +53,9 @@ for f in \
          share/icons/hicolor/48x48/mimetypes \
          share/icons/hicolor/256x256/apps \
          share/icons/hicolor/256x256/mimetypes \
+         share/icons/hicolor/scalable/apps \
+         share/icons/hicolor/scalable/mimetypes \
+         share/pixmaps \
          ; do
     mkdir -p $PREFIX/$f/;
     lupm-dir.sh $PREFIX/$f;
