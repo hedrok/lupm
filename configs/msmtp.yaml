@@ -1,0 +1,10 @@
+name: msmtp
+description: An smtp client
+download:
+    - method: git
+      link: git://git.code.sf.net/p/msmtp/code
+build:
+    - preconfigure: autoreconf -i
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
