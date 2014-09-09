@@ -6,7 +6,7 @@ configname: gcc-newlib
 envvars: |
          PREFIX=/opt/stm32-toolchain
          TARGET=arm-none-eabi
-         EXTRAGCCFLAGS=--with-arch=armv7-m --with-mode=thumb --with-float=hard
+         EXTRAGCCFLAGS=--with-arch=armv7-m --with-mode=thumb
 root-before:
     - permissions: mkdir -pv $PREFIX/arm-none-eabi/sys-include stm32install;
                    lupm-dir.sh $PREFIX/arm-none-eabi/sys-include stm32install;
