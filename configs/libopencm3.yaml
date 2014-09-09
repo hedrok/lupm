@@ -1,0 +1,16 @@
+name: libopencm3
+description: open-source cortex m3 library
+installgroups: stm32install
+download:
+    - link: https://github.com/libopencm3/libopencm3.git
+      method: git
+root-before:
+    - dir: mkdir /opt/libopencm3;
+           chown libopencm3:libopencm3 /opt/libopencm3;
+build:
+    - make:
+        dir: src
+        vars: PREFIX=arm-none-eabi
+    - install:
+        vars: DESTDIR=/opt/libopencm3 PREFIX=arm-none-eabi
+        dir: src
