@@ -1,0 +1,13 @@
+name: ha
+description: HA decompression
+download:
+    - link: http://www.ibiblio.org/pub/Linux/utils/compress
+      versionPattern: '[0-9_]\\+[a-z]'
+      suffix: -linux
+build:
+    - precopy: cp -rv ~/source/* .
+    - premake: rm -vrf bin makefile machine.h;
+               mv -v grr/Makefile grr/machine.h .;
+    - mk: make ha;
+    - inst: cp -v ha /usr/bin;
+         
