@@ -1,0 +1,10 @@
+name: nrg2iso
+description: Convert NRG to ISO format
+download:
+    - link: http://gregory.kokanosky.free.fr/v4/linux/nrg2iso.en.html
+build:
+    - make:
+        dir: src
+    - inst:
+        command: cp -v nrg2iso $PREFIX/bin;
+        dir: src
