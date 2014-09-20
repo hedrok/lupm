@@ -6,6 +6,8 @@ download:
       method: wget-folder
       wget-folder-name: ''
       versionPattern: '+-[0-9.]\\+'
+root-before:
+    - chown: chown gtk $PREFIX/share/glib-2.0/schemas/gschemas.compiled;
 build:
     - configure: --prefix=$PREFIX
     - make: ~
