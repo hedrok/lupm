@@ -336,34 +336,16 @@ sub getGit {
     return $dir;
 }
 sub getLinkSourceForge { #{{{
-#                http://sourceforge.net/api/project/name/tcl/json
-#                Get from that link project id, use it to find lates package:
-#                http://sourceforge.net/api/file/index/project-id/10894/json
-#                Get from this link
-#                'http://sourceforge.net/projects/tcl/files/Tcl/8.6.0/tcl-core8.6.0-src.tar.gz/download'
-#                -src?..
-#                 packagesuffix, versionsuffix
+    # new API:
+    # https://sourceforge.net/projects/limechat/rss
     my $package = shift(@_);
-    my $downloaddir = "$packagedir/download";
-    system("mkdir -p $downloaddir") == 0
-        or error("Couldn't create directory $downloaddir");
-    my $tmpfile = "$downloaddir/$package-project-sf";
-    my $link = "http://sourceforge.net/api/project/name/$package/json";
-    message("Trying to get $link to $tmpfile\n");
-    system("wget -O $tmpfile \"$link\"") == 0
-        or error("Couldn't download list from '$link' to '$tmpfile' (sourceforge)\n");
-    my $id = `sed -n "s/\\"id\\":\\([0-9]\\+\\)/\\1/p" $tmpfile`;
-    $id  =~ s/^\s+//;
-    $id  =~ s/,\s+$//;
-    if (!$id) {
-        error("Couldn't get id of sourceforge package!");
-    }
-    return "http://sourceforge.net/api/file/index/project-id/$id/rss";
+    return "https://sourceforge.net/projects/$package/rss"
 } #}}}
 sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, $afterpackage) #{{{
     my $params = shift(@_);
     my $link = $params->{'link'};
     my $package = $params->{'package'};
+    my $packagesuffix = $params->{'packagesuffix'} // '';
     my $suffix = $params->{'suffix'} // '';
     my $posturl = $params->{'posturl'} // '';
     my $prelink = $params->{'prelink'} // "href=[\\\"']";
@@ -382,15 +364,15 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $downloadLink = '';
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
-    print "sed -n \"s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
-    my $version = `sed -n "s/^.*$package\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
+    print "sed -n \"s/^.*$package$packagesuffix\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
+    my $version = `sed -n "s/^.*$package$packagesuffix\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
     $version  =~ s/^\s+//;
     $version  =~ s/\s+$//;
     print "version: $version\n";
     for (@filetypes) {
         my $filetypesRe = $_;
-        print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
-        $downloadLink = `sed -n "s/^.*$prelink\\([^'\\"]*$package$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
+        print "sed -n \"s/^.*$prelink\\([^'\\\"]*$package$packagesuffix$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
+        $downloadLink = `sed -n "s/^.*$prelink\\([^'\\"]*$package$packagesuffix$version$suffix\.$filetypesRe\\)${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
         if ($downloadLink) {
             last;
         }
@@ -408,16 +390,16 @@ sub getVersionByLink {
     my $params = shift(@_);
     my $link = $params->{'link'};
     my $package = $params->{'package'};
+    my $packagesuffix = $params->{'packagesuffix'} // '';
     my $suffix = $params->{'suffix'} // '';
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = join("|", @filetypes);
-    print "filetypesRe: $filetypesRe\n";
-    $link =~ /$package([^\/]*)$suffix\.($filetypesRe)/;
+    print "filetypesRe: $filetypesRe, link: $link, re: re: /$package$packagesuffix([^\\/]*)$suffix\\.($filetypesRe)/\n";
+    $link =~ /$package$packagesuffix([^\/]*)$suffix\.($filetypesRe)/;
     my $version = $1;
     my $filetype = $2;
-    my $packageFilename = "$package$version$suffix.$filetype";
+    my $packageFilename = "$package$packagesuffix$version$suffix.$filetype";
     print "package: $package, version: $version, suffix: $suffix, filetype: $filetype, result: $packageFilename\n";
-
     return ($packageFilename, $filetype, $link, $version);
 }
 sub extract { #($archivename, $filetype, $srcdir) #{{{
@@ -530,6 +512,7 @@ if ($target ne 'root-before' && $target ne 'root-after') {
             my $wgetParams = {
                 'link' => $link,
                 'package' => $name,
+                'packagesuffix' => ($_->{'packagesuffix'} // ''),
                 'suffix' => ($_->{'suffix'} // ''),
                 'posturl' => ($_->{'posturl'} // '')
             };
