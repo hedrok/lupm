@@ -1,0 +1,12 @@
+name: fbpdf
+description: FrameBuffer PDF viewer
+requires: mupdf,mujs
+download:
+    - link: git://repo.or.cz/fbpdf.git
+      method: git
+build:
+    - cp: cp -v $PACKAGE_SRCDIR/* .;
+    - change: |
+              sed -i 's/all: fbpdf fbdjvu/all: fbpdf2 fbdjvu/' Makefile;
+    - make: ~
+    - inst: cp -v fbpdf2 fbdjvu $PREFIX/bin;
