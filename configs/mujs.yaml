@@ -1,0 +1,10 @@
+name: mujs
+description: Lightweight JS interpreter
+download:
+    - link: git://git.ghostscript.com/mujs.git
+      method: git
+build:
+    - copy: cp -vr $PACKAGE_SRCDIR/* .;
+    - compiler: sed -i 's/clang/gcc/' Makefile;
+    - make: release
+    - inst: make prefix=$PREFIX install

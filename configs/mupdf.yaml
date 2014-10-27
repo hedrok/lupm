@@ -1,0 +1,9 @@
+name: mupdf
+description: PDF rendering library
+download:
+    - link: http://mupdf.com/downloads/
+      suffix: -source
+build:
+    - copy: cp -vr $PACKAGE_SRCDIR/* .;
+    - make: prefix=$PREFIX
+    - inst: make prefix=$PREFIX install

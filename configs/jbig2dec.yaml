@@ -1,0 +1,10 @@
+name: jbig2dec
+description: Decoder for JBIG2 image format
+download:
+    - link: git://git.ghostscript.com/jbig2dec.git
+      method: git
+build:
+    - preconfigure: ./autogen.sh; make distclean;
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
