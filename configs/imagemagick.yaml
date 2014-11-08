@@ -1,0 +1,14 @@
+name: ImageMagick
+installgroups: install,perlmod
+packagename: imagemagick
+description: Various utilities manipulating images
+download:
+    - link: ftp://ftp.imagemagick.org/pub/ImageMagick/
+      versionPattern: -[0-9.-]\\+
+build:
+    - configure: --prefix=$PREFIX
+                 --with-modules
+                 --with-perl
+                 --disable-static
+    - make: ~
+    - install: ~
