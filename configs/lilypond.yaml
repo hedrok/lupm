@@ -1,0 +1,13 @@
+name: lilypond
+description: Music notation
+requires: guile-1,texlive,netpbm,rsync,dblatex,texi2html,fontforge,libunistring
+download:
+    - link: git://git.sv.gnu.org/lilypond.git
+      method: git
+build:
+    - autoconf:
+        command: autoconf
+        dir: src
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

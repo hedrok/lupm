@@ -1,0 +1,8 @@
+name: libunistring
+description: Manipulating Unicode strings
+download:
+    - link: ftp://ftp.gnu.org/gnu/libunistring/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
