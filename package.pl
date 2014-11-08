@@ -368,6 +368,9 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $version = `sed -n "s/^.*$package$packagesuffix\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
     $version  =~ s/^\s+//;
     $version  =~ s/\s+$//;
+    if (!$version) {
+        error("Couldn't get version of package: ''");
+    }
     print "version: $version\n";
     for (@filetypes) {
         my $filetypesRe = $_;
