@@ -1,0 +1,9 @@
+name: pysheng
+installgroups: install,pythonmodinstall
+description: Download books from Google Book
+download:
+    - link: https://code.google.com/p/pysheng/downloads/list
+build:
+    - pyinstall:
+        dir: src
+        command: python setup.py install
