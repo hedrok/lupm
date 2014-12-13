@@ -1,0 +1,30 @@
+name: nss
+description: Network Security Services
+download:
+    - link: https://hg.mozilla.org/projects/nss
+      method: hg
+build:
+    - get-patch:
+        dir: src
+        command: cd .. && wget -c http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.17.3-standalone-1.patch;
+    - patch:
+        dir: src
+        command: cd .. && patch -Np1 -i ./nss-3.17.3-standalone-1.patch;
+    - make:
+        dir: src
+        command: MAKEFLAGS= make BUILD_OPT=1
+                      NSPR_INCLUDE_DIR=$PREFIX/include/nspr
+                      USE_SYSTEM_ZLIB=1
+                      ZLIB_LIBS=-lz
+                      $([ $(uname -m) = x86_64 ] && echo USE_64=1)
+                      $([ -f /usr/include/sqlite3.h ] && echo NSS_USE_SYSTEM_SQLITE=1)
+    - inst:
+        dir: src
+        command: cd ../dist;
+                 install -v -m755 Linux*/lib/*.so              $PREFIX/lib;
+                 install -v -m644 Linux*/lib/{*.chk,libcrmf.a} $PREFIX/lib;
+                 install -v -m755 -d                           $PREFIX/include/nss;
+                 cp -v -RL {public,private}/nss/*              $PREFIX/include/nss;
+                 chmod 644                                     $PREFIX/include/nss/*;
+                 install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} $PREFIX/bin;
+                 install -v -m644 Linux*/lib/pkgconfig/nss.pc  $PREFIX/lib/pkgconfig;
