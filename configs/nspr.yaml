@@ -1,0 +1,14 @@
+name: nspr
+description: Netscape Portable Runtime
+download:
+    - link: https://hg.mozilla.org/projects/nspr
+      method: hg
+build:
+    - preconfigure: sed -ri 's#^(RELEASE_BINS =).*#\1#' pr/src/misc/Makefile.in;
+                    sed -i 's/$(LIBRARY) //' config/rules.mk;
+    - configure: --prefix=$PREFIX
+                 --with-mozilla
+                 --with-pthreads
+                 $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+    - make: ~
+    - install: ~
