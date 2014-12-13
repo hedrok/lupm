@@ -1,0 +1,22 @@
+name: qt-everywhere-opensource-src
+username: qt
+description: Qt cross-platform C++ framework (graphics, db, containers and many more)
+requires: libpci
+download:
+    - link: http://www.qt.io/download-open-source/
+# Create /opt/qt$version as root,
+# add to ld conf, PATH and PKG_CONFIG_PATH
+build:
+    - configure: -prefix /opt/qt$PACKAGE_VERSION
+                 -opensource
+                 -confirm-license
+                 -dbus-linked
+                 -openssl-linked
+                 -system-sqlite
+                 -plugin-sql-sqlite
+                 -no-nis
+                 -opengl es2
+                 -optimized-qmake
+                 -nomake examples
+    - make: ~
+    - install: ~
