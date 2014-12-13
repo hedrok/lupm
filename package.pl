@@ -47,6 +47,7 @@
 #                  it should write list of all patches to $status->{'downloads'}{'name'} On update it should
 #                  check whether there is some changes in file set that match regular expression.
 #   git: just clone git repo from link
+#   hg: just clone mercurial repo from link
 #
 # Planned methods are: git, svn, fixed
 #
@@ -335,6 +336,20 @@ sub getGit {
     $dir =~ s/\.git$//;
     return $dir;
 }
+sub getHg {
+    my $link = shift(@_);
+    my $srcdir = shift(@_);
+    system("mkdir -p $srcdir") == 0
+        or error("Couldn't create directory $srcdir");
+    message("Trying to clone $link to $srcdir\n");
+    system("cd $srcdir; hg clone \"$link\"") == 0
+        or error("Couldn't clone from '$link' (git)\n");
+    my $dir = $link;
+    $dir =~ s/\/$//;
+    $dir =~ s/.*\///;
+    $dir =~ s/\.hg$//;
+    return $dir;
+}
 sub getLinkSourceForge { #{{{
     # new API:
     # https://sourceforge.net/projects/limechat/rss
@@ -610,9 +625,16 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                 status("Downloaded multiple $name");
             } elsif ($method eq 'git') {
                 if (!$link) {
-                    error("No link provided for download of $name (wget)");
+                    error("No link provided for download of $name (git)");
                 }
                 my $dirname = getGit($link, $srcdir);
+                $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$dirname";
+                $status->{'downloads'}{$name}{'downloaded'} = '1';
+            } elsif ($method eq 'hg') {
+                if (!$link) {
+                    error("No link provided for download of $name (hg)");
+                }
+                my $dirname = getHg($link, $srcdir);
                 $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$dirname";
                 $status->{'downloads'}{$name}{'downloaded'} = '1';
             } else {

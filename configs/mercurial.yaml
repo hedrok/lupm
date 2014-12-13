@@ -1,0 +1,21 @@
+name: mercurial
+description: Distributed version control system
+installgroups: install,pythonmodinstall
+download:
+    - link: http://mercurial.selenic.com/release/
+build:
+    - make:
+        dir: src
+        command: make build
+    - install:
+        dir: src
+        command: make PREFIX=/usr install-bin
+    - certs: |
+             if [ ! -e /etc/mercurial/hgrc ]; then
+             install -v -d -m755 /etc/mercurial;
+             cat >> /etc/mercurial/hgrc << "EOF"
+             [web]
+             cacerts = /etc/ssl/ca-bundle.crt
+             EOF
+             fi;
+
