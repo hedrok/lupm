@@ -4,12 +4,19 @@ download:
 build:
  - make:
     command: make PREFIX=$PREFIX
+                  SHAREDIR=$PREFIX/share/misc
+                  MANDIR=$PREFIX/share/man
+                  SHARED=yes
+                  ZLIB=no
+                  all
     dir: src
  - install:
-    command: make PREFIX=$PREFIX install
+    command: make PREFIX=$PREFIX
+                  SHAREDIR=$PREFIX/share/misc
+                  MANDIR=$PREFIX/share/man
+                  SHARED=yes
+                  ZLIB=no
+                  install install-lib
     dir: src
- - static:
-    command: install -v -m 755 -d /usr/include/pci;
-             install -v -m 644 lib/libpci.a /usr/lib;
-             install -v -m 644 lib/*.h /usr/include/pci;
-    dir: src
+ - mode:
+    command: chmod -v 755 $PREFIX/lib/libpci.so.*
