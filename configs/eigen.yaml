@@ -1,0 +1,10 @@
+name: eigen
+description: Linear algebra library
+download:
+    - link: http://eigen.tuxfamily.org/index.php?title=Main_Page#Download
+      wgetpackage: 'eigen\/get\/' 
+build:
+    - makelink: ln -svf ~/source/eigen-eigen-* $PACKAGE_SRCDIR;
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $PACKAGE_SRCDIR;
+    - make: ~
+    - install: ~
