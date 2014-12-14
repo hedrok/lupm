@@ -1,0 +1,14 @@
+name: OpenCSG
+username: opencsg
+description: Constructive Solid Geometry rendering
+download:
+    - link: http://opencsg.org/
+build:
+    - make:
+        dir: src
+        command: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./lib make
+    - preinstall:
+        dir: src
+        command: find . -name Makefile -exec sed -i "s#/usr/local#$PREFIX#g" {} \;
+    - install:
+        dir: src
