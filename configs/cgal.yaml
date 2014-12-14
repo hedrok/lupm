@@ -1,0 +1,9 @@
+name: CGAL
+username: cgal
+description: Qt cross-platform C++ framework (graphics, db, containers and many more)
+download:
+    - link: https://gforge.inria.fr/frs/?group_id=52
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $PACKAGE_SRCDIR;
+    - make: ~
+    - install: ~
