@@ -1,0 +1,24 @@
+name: qt-everywhere-opensource-src
+username: qt4
+description: Qt cross-platform C++ framework (graphics, db, containers and many more)
+requires: libpci
+download:
+    - link: http://download.qt-project.org/archive/qt/4.8/
+      method: wget-folder
+      wget-folder-name: ''
+# Create /opt/qt$version as root,
+# add to ld conf, PATH and PKG_CONFIG_PATH
+build:
+    - configure: -prefix /opt/qt$PACKAGE_VERSION
+                 -opensource
+                 -confirm-license
+                 -dbus-linked
+                 -openssl-linked
+                 -system-sqlite
+                 -plugin-sql-sqlite
+                 -no-nis
+                 -opengl es2
+                 -optimized-qmake
+                 -nomake examples
+    - make: ~
+    - install: ~
