@@ -1,0 +1,9 @@
+name: pycam
+installgroups: install,pythonmodinstall
+description: gcode generation
+download:
+    - method: sourceforge
+build:
+    - inst:
+        dir: src
+        command: python setup.py install

@@ -2,12 +2,15 @@ name: MesaLib
 username: mesalib
 installgroups: install,xorginstall
 description: An OpenGL compatible 3D graphics library
-requires: expat,libdrm,libxml2,makedepend,elfutils,llvm
+requires: expat,libdrm,libxml2,makedepend,elfutils,llvm,libva
 download:
     - link: ftp://ftp.freedesktop.org/pub/mesa/
       method: wget-folder
       wget-folder-name: ''
       versionPattern: -[0-9.]\\+\(-rc[0-9]\)\?
+root-before:
+    - vdpau: mkdir -pv $PREFIX/lib/vdpau;
+             lupm-dir.sh $PREFIX/lib/vdpau;
 build:
     - link: ln -svf ~/source/Mesa$PACKAGE_VERSION $PACKAGE_SRCDIR;
     - preconfigure: autoreconf -fi;
@@ -15,7 +18,6 @@ build:
                  --enable-texture-float
                  --enable-gles1
                  --enable-gles2
-                 --enable-openvg
                  --enable-osmesa
                  --enable-xa
                  --enable-gbm

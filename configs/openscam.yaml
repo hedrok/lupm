@@ -1,0 +1,12 @@
+name: openscam
+description: CNC simulation
+download:
+    - link: https://github.com/CauldronDevelopmentLLC/OpenSCAM
+      method: git
+build:
+    - build:
+        dir: src
+        command: CBANG_HOME=$PREFIX/share/cbang scons
+    - install:
+        dir: src
+        command: CBANG_HOME=$PREFIX/share/cbang scons prefix=$PREFIX install

@@ -1,0 +1,17 @@
+name: cbang
+description: Utilities library for openscam
+requires: v8
+download:
+    - link: https://github.com/CauldronDevelopmentLLC/cbang.git
+      method: git
+build:
+    - build:
+        dir: src
+        command: scons
+    - install:
+        dir: src
+        command: scons prefix=$PREFIX install
+    - postinstall:
+        dir: src
+        command: mkdir -p $PREFIX/share/cbang;
+                 cp -rv config $PREFIX/share/cbang;

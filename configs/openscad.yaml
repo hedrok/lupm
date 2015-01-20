@@ -5,9 +5,7 @@ download:
     - link: http://files.openscad.org/
       suffix: .src
 build:
-    - preconfigure: echo 'DEFINES += QT_NO_OPENGL_ES_2' >> openscad.pro;
-                    echo 'LIBS += -lGLU -lX11 -lGL' >> openscad.pro;
-                    sed -i "s#/usr/local#$PREFIX#g" openscad.pro;
+    - preconfigure: sed -i "s#/usr/local#$PREFIX#g" openscad.pro;
     - qmake: qmake $PACKAGE_SRCDIR;
     - make: ~
     - install: ~

@@ -1,0 +1,12 @@
+name: mesa-demos
+description: Several demos of mesa
+requires: mesalib
+download:
+    - link: ftp://ftp.freedesktop.org/pub/mesa/demos/
+      method: wget-folder
+      wget-folder-name: ''
+      versionPattern: -[0-9.]\\+
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

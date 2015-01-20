@@ -1,0 +1,10 @@
+name: depot_tools
+description: Google depot tools
+download:
+    - link: https://chromium.googlesource.com/chromium/tools/depot_tools.git
+      method: git
+build:
+    - install:
+        dir: src
+        command: mkdir -pv $PREFIX/share/depot_tools;
+                 cp -rv *  $PREFIX/share/depot_tools;

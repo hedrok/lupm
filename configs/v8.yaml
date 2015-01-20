@@ -1,0 +1,20 @@
+name: v8
+description: JavaScript virtual machine
+download:
+    - link: http://github.com/v8/v8.git
+      method: git
+build:
+    # for cbang we need old API
+    - select-branch:
+        dir: src
+        command: git checkout 3.14
+    - dependencies:
+        dir: src
+        command: PATH=$PATH:/usr/share/depot_tools make dependencies
+    - make:
+        dir: src
+        command: PATH=$PATH:/usr/share/depot_tools make library=shared werror=no native
+    - install:
+        dir: src
+        command: cp -v ./out/native/lib.target/libv8.so $PREFIX/lib;
+                 cp -v ./include/v8{,stdint}.h $PREFIX/include;
