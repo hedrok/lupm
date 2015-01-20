@@ -17,7 +17,6 @@ build:
                  -system-sqlite
                  -plugin-sql-sqlite
                  -no-nis
-                 -opengl es2
                  -optimized-qmake
                  -nomake examples
     - make: ~
