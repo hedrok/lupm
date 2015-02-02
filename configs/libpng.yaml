@@ -2,6 +2,8 @@ name: libpng
 download:
  - method: sourceforge
 build:
+ - preconfigure: wget --max-redirect=100 -c http://downloads.sourceforge.net/libpng-apng/libpng$PACKAGE_VERSION-apng.patch.gz;
+                 gzip -cd ./libpng$PACKAGE_VERSION-apng.patch.gz | patch -p1;
  - configure: --prefix=$PREFIX
               --disable-static
  - make: ~

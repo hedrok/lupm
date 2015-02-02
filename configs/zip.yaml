@@ -1,0 +1,13 @@
+name: zip
+download:
+   # Last update was in 2008, i'm too lazy to make up something
+   # better. Problem is with zip232 and unzip552
+   - link: ftp://ftp.info-zip.org/pub/infozip/src/
+     versionPattern: 30
+build:
+   - make:
+       dir: src
+       command: make -f unix/Makefile generic_gcc
+   - install:
+       dir: src
+       command: make prefix=$PREFIX -f unix/Makefile install
