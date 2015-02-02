@@ -383,8 +383,8 @@ sub getVersionWget { #($link, $package, $suffix, $posturl, $prelink, $postlink, 
     my $downloadLink = '';
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = '\(' . join("\\|", @filetypes) . '\)';
-    print "sed -n \"s/^.*$wgetpackage$packagesuffix\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
-    my $version = `sed -n "s/^.*$wgetpackage$packagesuffix\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
+    print "sed -n \"s/^.*[^a-z.-]$wgetpackage$packagesuffix\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi\" $tmpfile | sort $sortmethod | tail -n 1\n";
+    my $version = `sed -n "s/^.*[^a-z.-]$wgetpackage$packagesuffix\\($versionPattern\\)$suffix\.$filetypesRe${posturl}$postlink.*\$/\\1/pi" $tmpfile | sort $sortmethod | tail -n 1`;
     $version  =~ s/^\s+//;
     $version  =~ s/\s+$//;
     if (!$version) {
