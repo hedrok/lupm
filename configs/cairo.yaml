@@ -8,6 +8,7 @@ build:
         dir: src
         params: --prefix=$PREFIX
                 --disable-static
+                --enable-tee
     - make:
         dir: src
     # Requires all kinds of fonts,
