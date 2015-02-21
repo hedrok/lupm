@@ -52,7 +52,7 @@
 # Planned methods are: git, svn, fixed
 #
 # Each download exports variable NAME_SRC_DIR, and creates (except wget-multiple)
-# $status->{'downloads'}{'name'}{'srcdir'} - extracted or synced source tree
+# $status->{'downloads'}{'name'}{'srcdir'} - extracted or synced source tree path
 # $status->{'downloads'}{'name'}{'version'} - version of sources (like "-3.2.2" in archive case, revision in git/svn)
 # $status->{'downloads'}{'name'}{'archive'} - full path to archive (or none in case of none)
 # $status->{'downloads'}{'name'}{'filetype'} - filetype of archive (or none in case of none)
@@ -490,6 +490,10 @@ sub exportDownloadVariables {
             $p =~ s/-/_/g;
             my $varname = "${p}_SRC_DIR";
             $envvars->{$varname} = $s->{'downloads'}{$packagename}{'srcdir'};
+            if (exists($s->{'downloads'}{$packagename}{'srclink'})) {
+                $varname= "${p}_SRC_LINK";
+                $envvars->{$varname} = $s->{'downloads'}{$packagename}{'srclink'};
+            }
             my $varnamearch = "${p}_SRC_ARCHIVE";
             $envvars->{$varnamearch} = $s->{'downloads'}{$packagename}{'archive'};
             if ($packagename eq $config->{'name'}) {
@@ -605,6 +609,7 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                 extract($archivename, $filetype, $srcdir);
                 status("Extracted $archivename");
                 $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$name$version";
+                $status->{'downloads'}{$name}{'srclink'} = $link;
                 $status->{'downloads'}{$name}{'version'} = $version;
                 $status->{'downloads'}{$name}{'archive'} = $archivename;
                 $status->{'downloads'}{$name}{'filetype'} = $filetype;

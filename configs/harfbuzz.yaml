@@ -5,6 +5,7 @@ download:
     - link: http://www.freedesktop.org/software/harfbuzz/release/
 build:
     - configure: --prefix=$PREFIX
+                 --with-graphite2=yes
     - make: ~
     - check: ~
     - install: ~

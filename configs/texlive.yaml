@@ -1,0 +1,43 @@
+name: texlive
+download:
+    - link: ftp://tug.org/texlive/historic/
+      wget-folder-name: ''
+      method: wget-folder
+      suffix: -source
+#root:
+# mkdir /opt/texlive-20140525
+# chown texlive:texlive /opt/texlive-20140525/
+build:
+    - link: ln -svf ~/source/texlive${PACKAGE_VERSION}{-source,}
+    - configure: --prefix=/opt/texlive${PACKAGE_VERSION}
+                 --bindir=/opt/texlive${PACKAGE_VERSION}/bin/$(uname -m | sed -e 's/i.86/i386/' -e 's/$/-linux/')
+                 --datarootdir=/opt/texlive${PACKAGE_VERSION}
+                 --includedir=/usr/include
+                 --infodir=/opt/texlive${PACKAGE_VERSION}/texmf-dist/doc/info
+                 --libdir=/usr/lib
+                 --mandir=/opt/texlive${PACKAGE_VERSION}/texmf-dist/doc/man
+                 --disable-native-texlive-build
+                 --disable-static
+                 --enable-shared
+                 --with-system-cairo
+                 --with-system-fontconfig
+                 --with-system-freetype2
+                 --with-system-graphite2
+                 --with-system-harfbuzz
+                 --with-system-icu
+                 --with-system-libgs
+                 --with-system-libpaper
+                 --with-system-libpng
+                 --with-system-pixman
+                 --with-system-poppler
+                 --with-system-xpdf
+                 --with-system-zlib
+                 --with-banner-add=" - BLFS"
+    - make: ~
+    - install: ~
+    - texlinks: make texlinks
+    - texmf: |
+             TEXMF_LINK=$(echo "$TEXLIVE_SRC_LINK" | sed 's/source/texmf/');
+             wget -c $TEXMF_LINK;
+             TEXMF_FILENAME=$(echo "$TEXMF_LINK" | sed 's#.*/##')
+             tar -xf $TEXMF_FILENAME -C /opt/texlive${PACKAGE_VERSION} --strip-components=1

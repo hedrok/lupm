@@ -1,0 +1,10 @@
+name: graphite2
+description: Rendering engine for graphite fonts
+download:
+    - method: sourceforge
+      sourceforge-name: silgraphite
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $PACKAGE_SRCDIR;
+    - make: ~
+    - test: ~
+    - install: ~
