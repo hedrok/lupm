@@ -36,6 +36,7 @@ build:
                 cp -v $PACKAGE_SRCDIR/sunrpc/rpcsvc/*.h $PREFIX/include/rpcsvc;
                 cp -v $PACKAGE_SRCDIR/nis/rpcsvc/*.h $PREFIX/include/rpcsvc;
  - locales: mkdir -pv /usr/lib/locale;
+            localedef -i uk_UA -f UTF-8 uk_UA.UTF-8;
             localedef -i cs_CZ -f UTF-8 cs_CZ.UTF-8;
             localedef -i de_DE -f ISO-8859-1 de_DE;
             localedef -i de_DE@euro -f ISO-8859-15 de_DE@euro;
