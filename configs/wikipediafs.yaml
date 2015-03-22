@@ -1,0 +1,8 @@
+name: wikipediafs
+installgroups: install,pythonmodinstall
+download:
+    - method: sourceforge
+build:
+    - install:
+        command: python setup.py install
+        dir: src

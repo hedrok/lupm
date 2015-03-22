@@ -1,0 +1,8 @@
+name: fuse-python
+installgroups: pythonmodinstall
+download:
+    - link: https://pypi.python.org/pypi/fuse-python/
+build:
+    - install:
+        command: python setup.py install
+        dir: src
