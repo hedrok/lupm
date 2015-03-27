@@ -1,0 +1,12 @@
+name: xclip
+description: Xorg clipboard interaction
+download:
+    - method: sourceforge
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src
