@@ -1,0 +1,14 @@
+name: fbterm
+download:
+    - link: https://code.google.com/p/fbterm/downloads/list
+build:
+    - link: ln -svf ~/source/fbterm${PACKAGE_VERSION:0:4} $PACKAGE_SRCDIR
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - check:
+        dir: src
+    - install:
+        dir: src
