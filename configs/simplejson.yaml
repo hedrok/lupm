@@ -1,0 +1,8 @@
+name: simplejson
+installgroups: pythonmodinstall
+download:
+    - link: https://pypi.python.org/pypi/simplejson/
+build:
+    - install:
+        command: python setup.py install
+        dir: src
