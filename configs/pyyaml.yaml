@@ -1,0 +1,9 @@
+name: PyYAML
+packagename: pyyaml
+installgroups: pythonmodinstall
+download:
+    - link: http://pyyaml.org/wiki/PyYAML
+build:
+    - install:
+        command: python setup.py install
+        dir: src
