@@ -1,0 +1,8 @@
+name: source-highlight
+description: Source code highlighter
+download:
+    - link: ftp://ftp.gnu.org/gnu/src-highlite/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
