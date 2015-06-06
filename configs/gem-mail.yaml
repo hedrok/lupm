@@ -1,0 +1,5 @@
+name: gem-mail
+installgroups: rubygeminstall
+description: ruby gem mail
+build:
+    - gem: gem install --ignore-dependencies mail

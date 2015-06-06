@@ -9,3 +9,10 @@ build:
     - make: ~
     - test: ~
     - install: ~
+root-after:
+   - ruby-gems: groupadd -f rubygemsinstall;
+                lupm-dir.sh /usr/lib/ruby/gems/${PACKAGE_VERSION:1:3}.0 rubygemsinstall;
+                lupm-dir.sh /usr/lib/ruby/gems/${PACKAGE_VERSION:1:3}.0/cache rubygemsinstall;
+                lupm-dir.sh /usr/lib/ruby/gems/${PACKAGE_VERSION:1:3}.0/doc rubygemsinstall;
+                lupm-dir.sh /usr/lib/ruby/gems/${PACKAGE_VERSION:1:3}.0/specifications rubygemsinstall;
+                lupm-dir.sh /usr/lib/ruby/gems/${PACKAGE_VERSION:1:3}.0/gems rubygemsinstall;

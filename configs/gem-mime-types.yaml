@@ -1,0 +1,5 @@
+name: gem-mime-types
+installgroups: rubygemsinstall
+description: ruby gem mime-types
+build:
+    - gem: gem install --ignore-dependencies mime-types

@@ -24,12 +24,13 @@ build:
                  if pkg-config lua; then
                     VIM_EXTRA_FEATURES="$VIM_EXTRA_FEATURES --enable-luainterp=dynamic";
                  fi;
-                 if pkg-config ruby; then
+                 if pkg-config --list-all | grep ruby > /dev/null; then
                     VIM_EXTRA_FEATURES="$VIM_EXTRA_FEATURES --enable-rubyinterp=dynamic";
+                    export LDFLAGS="$LDFLAGS -lruby";
                  fi;
-                 $PACKAGE_SRCDIR/configure --prefix=$PREFIX 
-                                           --enable-multibyte
-                                           --enable-gui=no
+                 $PACKAGE_SRCDIR/configure --prefix=$PREFIX \
+                                           --enable-multibyte \
+                                           --enable-gui=no \
                                            $VIM_EXTRA_FEATURES
         dir: src
     - make:
