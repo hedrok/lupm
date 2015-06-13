@@ -1,0 +1,14 @@
+name: libtirpc
+description: Remote Procedure Call API usage
+download:
+    - method: sourceforge
+build:
+    - configure:
+        params: --prefix=$PREFIX
+                --disable-static
+                --disable-gssapi
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src
