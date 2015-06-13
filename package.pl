@@ -316,6 +316,9 @@ sub getLinkFolderWget { #{{{
         error("Couldn't get version of $package (foldername: $foldername, folder method).\n");
     }
     $flink = fixRelativeLink($link, $flink);
+    if ($flink !~ m#/$#) {
+        $flink .= '/';
+    }
     message("got link: $link, flink: $flink");
     return $flink;
 } #}}}
