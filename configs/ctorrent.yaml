@@ -1,0 +1,12 @@
+name: ctorrent
+description: Torrent creation
+download:
+    - method: sourceforge
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        vars: CFLAGS=-fpermissive CXXFLAGS=-fpermissive CPPFLAGS=-fpermissive
+    - make:
+        vars: CFLAGS=-fpermissive CXXFLAGS=-fpermissive CPPFLAGS=-fpermissive
+    - install:
+        vars: CFLAGS=-fpermissive CXXFLAGS=-fpermissive CPPFLAGS=-fpermissive
