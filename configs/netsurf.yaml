@@ -1,0 +1,13 @@
+name: netsurf
+description: Lightweight web browser
+download:
+    - link: http://www.netsurf-browser.org/downloads/source/
+      packagesuffix: -all
+build:
+    - link: ln -svf netsurf-all$PACKAGE_VERSION $PACKAGE_SRCDIR
+    - make:
+        dir: src
+        vars: TARGET=framebuffer
+    - install:
+        dir: src
+        vars: TARGET=framebuffer
