@@ -6,10 +6,10 @@ download:
 build:
     - get-patch:
         dir: src
-        command: cd .. && wget -c http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.17.3-standalone-1.patch;
+        command: cd .. && wget -c http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.19.2-standalone-1.patch;
     - patch:
         dir: src
-        command: cd .. && patch -Np1 -i ./nss-3.17.3-standalone-1.patch;
+        command: cd .. && patch -Np1 -i ./nss-3.19.2-standalone-1.patch;
     - make:
         dir: src
         command: MAKEFLAGS= make BUILD_OPT=1

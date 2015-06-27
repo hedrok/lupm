@@ -1,7 +1,7 @@
 name: firefox
 description: Mozilla Firefox browser
 download:
-    - link: ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/latest/source/
+    - link: http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/latest/source/
       suffix: '.source'
 build:
     - link: ln -svf mozilla-release $PACKAGE_SRCDIR;
