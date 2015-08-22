@@ -1,0 +1,9 @@
+name: supertuxkart
+description: Racing game
+download:
+    - method: sourceforge
+      suffix: '-src'
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $PACKAGE_SRCDIR;
+    - make: ~
+    - install: ~

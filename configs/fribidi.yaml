@@ -1,0 +1,8 @@
+name: fribidi
+description: bidirectional unicode
+download:
+    - link: http://fribidi.org/download/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

@@ -1,0 +1,9 @@
+name: openal-soft
+username: openal
+description: Open Audio library
+download:
+    - link: http://kcat.strangesoft.net/openal-releases/
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $PACKAGE_SRCDIR;
+    - make: ~
+    - install: ~

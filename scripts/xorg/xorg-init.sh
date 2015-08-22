@@ -51,10 +51,13 @@ for f in \
          share/icons/hicolor/32x32/mimetypes \
          share/icons/hicolor/48x48/apps \
          share/icons/hicolor/48x48/mimetypes \
+         share/icons/hicolor/128x128/apps \
+         share/icons/hicolor/128x128/mimetypes \
          share/icons/hicolor/256x256/apps \
          share/icons/hicolor/256x256/mimetypes \
          share/icons/hicolor/scalable/apps \
          share/icons/hicolor/scalable/mimetypes \
+         share/appdata \
          share/pixmaps \
          ; do
     mkdir -p $PREFIX/$f/;
