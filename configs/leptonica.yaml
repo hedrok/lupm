@@ -1,0 +1,8 @@
+name: leptonica
+description: Image recognition library
+download:
+    - link: http://www.leptonica.com/download.html
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
