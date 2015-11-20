@@ -1,0 +1,28 @@
+name: tesseract
+description: open source ocr
+download:
+    - link: https://github.com/tesseract-ocr/tesseract.git
+      method: git
+build:
+    - get-tessdata:
+        dir: src
+        command: |
+                 if [ -d tessdata-repo ]; then
+                        cd tessdata-repo;
+                        git pull;
+                 else 
+                        git clone https://github.com/tesseract-ocr/tessdata.git tessdata-repo
+                 fi;
+    - autogen:
+        dir: src
+        command: ./autogen.sh --prefix=$PREFIX
+    - configure:
+        dir: src
+        params: --prefix=$PREFIX
+    - make:
+        dir: src
+    - install:
+        dir: src
+    - install-langs:
+        dir: src
+        command: cp -v tessdata-repo/* $PREFIX/share/tessdata;
