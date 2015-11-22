@@ -1,0 +1,8 @@
+name: cairomm
+description: C++ interface for cairo
+download:
+    - link: http://cairographics.org/releases/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
