@@ -1,0 +1,13 @@
+name: gtkmm
+username: gtkmm2
+description: ??
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/gtkmm/
+      method: wget-folder
+      wget-folder-name: '2.2'
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        vars: CXXFLAGS="-std=c++11"
+    - make: ~
+    - install: ~
