@@ -1,0 +1,10 @@
+name: glibmm
+description: C++ interface for Glib
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/glibmm/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
