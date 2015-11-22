@@ -1,0 +1,8 @@
+name: popt
+description: C++ parse options
+download:
+    - link: http://rpm5.org/files/popt/
+build:
+    - configure: --prefix=$PREFIX --disable-static
+    - make: ~
+    - install: ~

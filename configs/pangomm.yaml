@@ -1,0 +1,10 @@
+name: pangomm
+description: C++ interface for pango
+download:
+    - link: http://ftp.gnome.org/pub/gnome/sources/pangomm/
+      method: wget-folder
+      wget-folder-name: ''
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
