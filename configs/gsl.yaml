@@ -1,0 +1,8 @@
+name: gsl
+description: GNU Scientific Library
+download:
+    - link: http://ftp.gnu.org/pub/gnu/gsl/
+build:
+    - configure: --prefix=$PREFIX --disable-static
+    - make: ~
+    - install: ~
