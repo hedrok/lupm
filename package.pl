@@ -417,8 +417,8 @@ sub getVersionByLink {
     my $suffix = $params->{'suffix'} // '';
     my @filetypes = getSupportedArchiveFiletypes();
     my $filetypesRe = join("|", @filetypes);
-    print "filetypesRe: $filetypesRe, link: $link, re: re: /$wgetpackage$packagesuffix([^\\/]*)$suffix\\.($filetypesRe)/\n";
-    $link =~ /$wgetpackage$packagesuffix([^\/]*)$suffix\.($filetypesRe)/;
+    print "filetypesRe: $filetypesRe, link: $link, re: re: /\Q$wgetpackage$packagesuffix\E([^\\/]*)\Q$suffix\E\\.(\Q$filetypesRe\E)/\n";
+    $link =~ /\Q$wgetpackage$packagesuffix\E([^\/]*)\Q$suffix\E\.($filetypesRe)/;
     my $version = $1;
     my $filetype = $2;
     my $packageFilename = "$package$packagesuffix$version$suffix.$filetype";
@@ -758,6 +758,8 @@ sub processStage {
         if ($var ~~ /^[^A-Za-z]/) {
             $var = "_$var";
         }
+        # Just removing some special chars...
+        $var =~ s/[+?]//g;
         print SCRIPT "export $var=\"$envvars->{$var}\"\n";
     }
     print SCRIPT "$command\n";
