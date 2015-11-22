@@ -1,0 +1,10 @@
+name: inkscape
+description: vector image editor
+download:
+    - link: https://inkscape.org/en/download/source/
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        vars: CXXFLAGS="-g -O2 -std=c++11"
+    - make: ~
+    - install: ~
