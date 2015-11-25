@@ -1,0 +1,14 @@
+name: qt-box-editor
+description: Editor of box files for tesseract training
+download:
+    - link: https://github.com/zdenop/qt-box-editor
+      method: git
+build:
+    - qmake:
+        command: qmake
+        dir: src
+    - make:
+        dir: src
+    - install:
+        command: rm -vf /usr/bin/qt-box-editor-* && cp -v qt-box-editor-* /usr/bin/qt-box-editor;
+        dir: src
