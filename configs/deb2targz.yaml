@@ -1,0 +1,9 @@
+name: deb2targz
+description: Convert deb file to targz
+download:
+    - link: http://downloads.linuxfromscratch.org/deb2targz.tar.bz2
+      method: fixed
+build:
+    - inst:
+        command: ./install
+        dir: src
