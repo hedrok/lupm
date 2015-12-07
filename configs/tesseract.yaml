@@ -26,3 +26,9 @@ build:
     - install-langs:
         dir: src
         command: cp -v tessdata-repo/* $PREFIX/share/tessdata;
+    - make-training:
+        dir: src
+        command: make training
+    - install-training:
+        dir: src
+        command: make training-install
