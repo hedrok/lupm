@@ -1,0 +1,18 @@
+name: sane-backends
+installgroups: install,sanner,udevrulesinstall
+download:
+    - link: http://fossies.org/linux/misc/
+root-before:
+    - groups: groupadd -g 70 scanner;
+build:
+    - configure: --prefix=$PREFIX
+                 --localstatedir=/var
+                 --with-docdir=$PREFIX/share/doc/sane-backend$PACKAGE_VERSION
+                 --with-group=scanner
+                 --enable-libusb_1_0
+    - make: ~
+    - no-translations: sed -i 's/INSTALL_TRANSLATIONS = install-translations/INSTALL_TRANSLATIONS =/' po/Makefile;
+    - install: ~
+    - udev-rules: install -m 644 -v tools/udev/libsane.rules $PREFIX/etc/udev/rules.d/65-scanner.rules
+root-after:
+    - permissions: touch /var/lock/sane && chgrp -v scanner /var/lock/sane
