@@ -1,0 +1,19 @@
+name: xsane
+installgroups: install
+download:
+    - link: http://www.xsane.org/download/
+root-before:
+    - sane-xsane: mkdir -v /usr/share/sane/xsane;
+                  chown xsane:xsane /usr/share/sane/xsane;
+build:
+    - prepatch:
+        command: sed -i -e 's/png_ptr->jmpbuf/png_jmpbuf(png_ptr)/' src/xsane-save.c
+        dir: src
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - inst:
+        command: make xsanedocdir=$PREFIX/share/doc/xsane$PACKAGE_VERSION install;
+        dir: src
