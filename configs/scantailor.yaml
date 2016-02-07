@@ -1,0 +1,9 @@
+name: scantailor
+description: interactive post-processing tool for scanned pages
+download:
+    - link: https://github.com/scantailor/scantailor
+      method: git
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $PACKAGE_SRCDIR;
+    - make: ~
+    - install: ~
