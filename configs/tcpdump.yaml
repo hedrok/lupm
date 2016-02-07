@@ -1,0 +1,8 @@
+name: tcpdump
+installgroups: install
+download:
+    - link: http://www.tcpdump.org/release/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

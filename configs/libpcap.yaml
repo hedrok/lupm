@@ -1,0 +1,15 @@
+name: libpcap
+installgroups: install
+download:
+    - link: http://www.tcpdump.org/release/
+build:
+    - get-patch:
+        command: wget  http://www.linuxfromscratch.org/patches/blfs/svn/libpcap$PACKAGE_VERSION-enable_bluetooth-1.patch
+        dir: src
+    - apply-patch:
+        command: patch -Np1 -i libpcap$PACKAGE_VERSION-enable_bluetooth-1.patch
+        dir: src
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - disable-static: sed -i '/INSTALL_DATA.*libpcap.a\|RANLIB.*libpcap.a/ s/^/#/' Makefile
+    - install: ~
