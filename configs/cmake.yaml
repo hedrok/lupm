@@ -7,11 +7,9 @@ download:
       wget-folder-name: 'v'
 build:
     - configure: --prefix=$PREFIX
-                 --system-libs
                  --mandir=/share/man
                  --docdir=/share/doc/cmake$PACKAGE_VERSION
     - make: ~
-    - test: ~
     - install: ~
     - postinstall: mkdir -p $PREFIX/lib/cmake;
 root-after:
