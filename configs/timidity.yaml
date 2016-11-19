@@ -1,0 +1,16 @@
+username: timidity
+name: TiMidity
+description: MIDI server
+download:
+    - method: sourceforge
+      sourceforge-name: timidity
+      packagesuffix: '%2B%2B'
+build:
+    - link: ln -svr ~/source/TiMidity++$PACKAGE_VERSION $PACKAGE_SRCDIR;
+    - configure: --prefix=$PREFIX
+                 --with-default-path=/etc/timidity.cfg
+                 --enable-audio=oss,alsa,vorbis,flac
+                 --enable-alsaseq
+    - make: ~
+    - install: ~
+
