@@ -437,7 +437,7 @@ sub extract { #($archivename, $filetype, $srcdir) #{{{
                 or error("Couldn't extract $archivename");
             last;
         }
-        if (/\.zip$/) {
+        if (/zip$/) {
             system("unzip -d '$srcdir' '$archivename'") == 0
                 or error("Couldn't extract $archivename");
             last;
