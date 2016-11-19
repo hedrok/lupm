@@ -2,8 +2,11 @@ name: git
 installgroups: install,perlmod
 requirements: curl,expat,openssl,python,pcre,svn,asciidoc,xmlto
 download:
-   - link: http://code.google.com/p/git-core/downloads/list
+    - link: https://www.kernel.org/pub/software/scm/git/
 build:
+   - autoconf:
+        command: autoconf
+        dir: src
    - configure:
         params: --prefix=$PREFIX
                 --libexecdir=$PREFIX/lib
@@ -12,11 +15,11 @@ build:
    - make:
         dir: src
         command: make NO_GETTEXT=1
-   - test:
-        dir: src
-        command: make NO_GETTEXT=1 test
+#   - test:
+#        dir: src
+#        command: make NO_GETTEXT=1 test
    - install:
         dir: src
         command: make NO_GETTEXT=1 install
-   - install-man: wget -c http://git-core.googlecode.com/files/git-manpages$PACKAGE_VERSION.tar.gz;
-                  tar -xf git-manpages$PACKAGE_VERSION.tar.gz -C /usr/share/man --no-overwrite-dir;
+   - install-man: wget -c https://www.kernel.org/pub/software/scm/git/git-manpages$PACKAGE_VERSION.tar.xz;
+                  tar -xf git-manpages$PACKAGE_VERSION.tar.xz -C /usr/share/man --no-overwrite-dir;
