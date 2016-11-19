@@ -1,0 +1,14 @@
+name: guile
+packagename: guile-1
+installgroups: install
+description: GNU extension language library version 1
+requires: libunistring
+download:
+    - link: http://ftp.gnu.org/pub/gnu/guile/
+      versionPattern: -1[0-9.]\\+
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - disable-werror: find . -name Makefile -exec sed -i 's/-Werror//' {} \;
+    - make: ~
+    - install: ~
