@@ -1,0 +1,9 @@
+name: pianobooster
+description: piano tutorial
+download:
+    - method: sourceforge
+      versionPattern: -src-[0-9.]\\+[a-z]\?
+build:
+    - cmake: cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $PACKAGE_SRCDIR/src;
+    - make: ~
+    - install: ~
