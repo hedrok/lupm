@@ -15,3 +15,6 @@ build:
  - make: ~
  - check: ~
  - install: ~
+root-after:
+ - group: groupadd -f texinfomod;
+ - permissions: lupm-dir.sh $PREFIX/share/texinfo/init/ texinfomod;

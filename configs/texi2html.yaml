@@ -1,0 +1,12 @@
+name: texi2html
+installgroups: install,texinfomod
+description: texinfo to html
+download:
+    - link: http://download.savannah.gnu.org/releases/texi2html/
+root-before:
+    - texinfo-html: mkdir -p $PREFIX/share/texinfo/html;
+                    chown texi2html:texi2html $PREFIX/share/texinfo/html;
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
