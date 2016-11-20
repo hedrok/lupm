@@ -1,0 +1,12 @@
+name: dblatex
+description: docbook to latex
+installgroups: install,pythonmodinstall
+download:
+    - method: sourceforge
+build:
+    - build:
+        dir: src
+        command: python setup.py build
+    - install:
+        dir: src
+        command: python setup.py install
