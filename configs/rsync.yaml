@@ -1,0 +1,8 @@
+name: rsync
+description: remote synchronization
+download:
+    - link: https://download.samba.org/pub/rsync/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
