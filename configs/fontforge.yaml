@@ -1,0 +1,24 @@
+name: fontforge
+description: font editing
+installgroups: install,pythonmodinstall
+download:
+    - link: https://github.com/fontforge/fontforge
+      method: git
+root-before:
+    - locale: chown fontforge:fontforge $PREFIX/share/locale
+build:
+    - latest-release:
+        command: git checkout $(git tag | sort -n | tail -n 1)
+        dir: src
+    - bootstrap:
+        command: ./bootstrap
+        dir: src
+    - fixuthash:
+        command: sed -i 's#top_srcdir)/uthash#top_builddir)/uthash#' fontforge/Makefile.am;
+        dir: src
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
+root-after:
+    - locale: rm -rf $PREFIX/share/locale;
+              mkdir -p $PREFIX/share/locale;
