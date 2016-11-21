@@ -1,0 +1,10 @@
+name: guile
+description: GNU extension language library
+requires: libunistring
+download:
+    - link: ftp://ftp.gnu.org/pub/gnu/guile/
+build:
+    - configure: --prefix=$PREFIX
+                 --disable-static
+    - make: ~
+    - install: ~

@@ -1,0 +1,10 @@
+name: netpbm
+description: Toolkit for manipulation of graphic images
+download:
+    - method: svn
+      link: http://svn.code.sf.net/p/netpbm/code/stable
+build:
+    - config: printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" | $PACKAGE_SRCDIR/configure
+    - mak: MAKEFLAGS="" make
+    - pkg: MAKEFLAGS="" make package
+    - inst: printf "\n/usr/\n\n\n\nn\n\n\n\n\n\n\n\n" | $PACKAGE_SRCDIR/installnetpbm

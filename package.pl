@@ -48,8 +48,8 @@
 #                  check whether there is some changes in file set that match regular expression.
 #   git: just clone git repo from link
 #   hg: just clone mercurial repo from link
-#
-# Planned methods are: git, svn, fixed
+#   svn: clone svn repo
+#   fixed: just download from link as package archive
 #
 # Each download exports variable NAME_SRC_DIR, and creates (except wget-multiple)
 # $status->{'downloads'}{'name'}{'srcdir'} - extracted or synced source tree path
@@ -339,6 +339,17 @@ sub getGit {
     $dir =~ s/\.git$//;
     return $dir;
 }
+sub getSvn {
+    my $link = shift(@_);
+    my $srcdir = shift(@_);
+    my $pkgname = shift(@_);
+    system("mkdir -p $srcdir") == 0
+        or error("Couldn't create directory $srcdir");
+    message("Trying to checkout $link to $pkgname\n");
+    system("cd $srcdir; svn checkout \"$link\" $pkgname") == 0
+        or error("Couldn't checkout from '$link' (svn)\n");
+    return $pkgname
+}
 sub getHg {
     my $link = shift(@_);
     my $srcdir = shift(@_);
@@ -346,7 +357,7 @@ sub getHg {
         or error("Couldn't create directory $srcdir");
     message("Trying to clone $link to $srcdir\n");
     system("cd $srcdir; hg clone \"$link\"") == 0
-        or error("Couldn't clone from '$link' (git)\n");
+        or error("Couldn't clone from '$link' (hg)\n");
     my $dir = $link;
     $dir =~ s/\/$//;
     $dir =~ s/.*\///;
@@ -639,6 +650,13 @@ if ($target ne 'root-before' && $target ne 'root-after') {
                     error("No link provided for download of $name (git)");
                 }
                 my $dirname = getGit($link, $srcdir);
+                $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$dirname";
+                $status->{'downloads'}{$name}{'downloaded'} = '1';
+            } elsif ($method eq 'svn') {
+                if (!$link) {
+                    error("No link provided for download of $name (svn)");
+                }
+                my $dirname = getSvn($link, $srcdir, $name);
                 $status->{'downloads'}{$name}{'srcdir'} = "$srcdir/$dirname";
                 $status->{'downloads'}{$name}{'downloaded'} = '1';
             } elsif ($method eq 'hg') {
