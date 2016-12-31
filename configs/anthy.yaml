@@ -1,0 +1,11 @@
+name: anthy
+description: japanese input
+download:
+    - method: sourceforge
+      versionPattern: -9100h
+# INSTALLED manually! Downloded from
+# https://osdn.net/projects/anthy/
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~

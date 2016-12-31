@@ -1,0 +1,15 @@
+name: uim
+description: Multilingual input method framework
+download:
+    - link: https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/uim/uim-1.8.6.tar.bz2
+      method: fixed
+root-before:
+    - gtk-allow: lupm-dir.sh /usr/lib/gtk-2.0/2.10.0/immodules;
+                 lupm-dir.sh /usr/lib/gtk-3.0/3.0.0/immodules;
+build:
+    - configure: --prefix=$PREFIX
+                 --with-anthy-utf8
+                 --with-qt4
+                 --with-qt4-immodule
+    - mk: make -j1
+    - inst: make install -j1
