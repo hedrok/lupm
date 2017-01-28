@@ -1,0 +1,10 @@
+name: xdclient
+description: XDXF reader
+requires: tre
+download:
+    - link: http://download.savannah.gnu.org/releases/xdclient/
+      versionPattern: -[0-9.]\\+.beta[0-9]\\+
+build:
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
