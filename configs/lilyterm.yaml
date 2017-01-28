@@ -1,0 +1,12 @@
+name: lilyterm
+description: GTK Terminal
+download:
+    - link: http://lilyterm.luna.com.tw/html/download.html
+build:
+    - configure:
+        params: --prefix=$PREFIX
+        dir: src
+    - make:
+        dir: src
+    - install:
+        dir: src
