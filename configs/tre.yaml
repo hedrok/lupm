@@ -1,0 +1,12 @@
+name: tre
+description: lightwight portable regex library
+download:
+    - link: https://github.com/laurikari/tre.git
+      method: git
+build:
+    - autoconf:
+        command: ./utils/autogen.sh
+        dir: src
+    - configure: --prefix=$PREFIX
+    - make: ~
+    - install: ~
