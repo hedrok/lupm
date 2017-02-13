@@ -6,6 +6,9 @@ build:
  - configure:
     params: --prefix=$PREFIX
     dir: src
+ - sedfl:
+    command: sed -i 's#LEXLIB = -lfl#LEXLIB = /usr/lib/libfl.a#' src/Makefile
+    dir: src
  - make:
     command: MAKEFLAGS= make
     dir: src
